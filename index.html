@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crema pratas</title>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="image/logo-redonda.png">
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header class="site-header">
+        <div class="container header-content">
+            <h1><img class="logo" src="image/logo-transparente.png" alt="Logo"></h1>
+            <nav class="main-nav">
+                <a href="#">Início</a>
+                <a href="#produtos">Nossos Produtos</a>
+                <a href="#">Mais Vendidos</a>
+                <a href="#">Lançamentos</a>
+            </nav>
+            <div class="header-icons">
+                <button class="icon-btn"><i class="fa-solid fa-search"></i></button>
+                <button class="icon-btn"><i class="fa-solid fa-user"></i></button>
+                <button id="favorites-btn" class="icon-btn">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="favorites-count" class="icon-count hidden">0</span>
+                </button>
+                <button id="cart-btn" class="icon-btn">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span id="cart-count" class="icon-count hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Seção de Benefícios -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <h3>5X SEM JUROS</h3>
+                    <p>Parcelamento facilitado</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h3>FRETE GRÁTIS</h3>
+                    <p>Acima de R$300 para todo Brasil</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fa-solid fa-gem"></i>
+                    <h3>GARANTIA ETERNA</h3>
+                    <p>Referente ao teor da Joia.</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fa-solid fa-gift"></i>
+                    <h3>BRINDE EXCLUSIVO</h3>
+                    <p>Para deixar sua joia sempre brilhando</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Produtos -->
+    <main id="produtos" class="products-section container">
+        <h2 class="section-title">OS MAIS VENDIDOS</h2>
+        <div id="product-list" class="product-grid">
+            <!-- Produtos serão inseridos aqui pelo JavaScript -->
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2024 Lumen Desenvolvimento. Todos os direitos reservados.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal do Carrinho -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2>Meu Carrinho</h2>
+                <button id="close-modal-btn" class="close-modal-btn">&times;</button>
+            </header>
+            <div id="cart-items" class="modal-body">
+                <!-- Itens do carrinho -->
+            </div>
+            <footer class="modal-footer">
+                <div class="total-section">
+                    <span>Total:</span>
+                    <span id="cart-total">R$ 0,00</span>
+                </div>
+                <button id="checkout-btn" class="whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> Finalizar Compra no WhatsApp
+                </button>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- Modal de Favoritos -->
+    <div id="favorites-modal" class="modal">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2>Meus Favoritos</h2>
+                <button id="close-favorites-modal-btn" class="close-modal-btn">&times;</button>
+            </header>
+            <div id="favorite-items" class="modal-body">
+                <!-- Itens favoritos -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
