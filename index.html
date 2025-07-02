@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
     <link rel="icon" href="image/logo-redonda.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <style>
@@ -30,8 +30,9 @@
     <!-- Cabeçalho -->
     <header class="site-header">
         <div class="container header-content">
-            <!-- Imagem da logo substituída por um placeholder -->
-            <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
+            <a>
+                <img href="index.html" class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
+            </a>
             <nav class="main-nav">
                 <a href="#">Início</a>
                 <a href="#produtos">Nossos Produtos</a>
@@ -39,8 +40,10 @@
                 <a href="#">Lançamentos</a>
             </nav>
             <div class="header-icons">
-                <button class="icon-btn"><i class="fa-solid fa-search"></i></button>
-                <button class="icon-btn"><i class="fa-solid fa-user"></i></button>
+                <a href="login.html" class="icon-btn">
+                    <a class="fa-solid fa-search"></a>
+                </a>
+                <button class="icon-btn" ><i class="fa-solid fa-user"></i></button>
                 <button id="favorites-btn" class="icon-btn">
                     <i class="fa-solid fa-heart"></i>
                     <span id="favorites-count" class="icon-count hidden">0</span>
@@ -118,16 +121,74 @@
 
     </main>
         
-    
+    <!-- NOVA SEÇÃO DE LANÇAMENTOS -->
+    <section id="lancamentos" class="products-section container">
+        <div class="divisor-de-secao">
+            <h2 class="section-title">LANÇAMENTOS</h2>
+            <p class="section-subtitle">As novidades que acabaram de chegar!</p>
+        </div>
+        <div class="swiper releases-swiper">
+            <div id="releases-list" class="swiper-wrapper"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+        <div class="mais-produtos"><a>Ver todos os produtos</a></div>
+    </section>
 
     <!-- Rodapé -->
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2024 Lumen Desenvolvimento. Todos os direitos reservados.</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <div class="footer-grid">
+                <!-- Coluna de Contato -->
+                <div class="footer-column">
+                    <div class="footer-contact-card">
+                        <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
+                        <p>Horário de Atendimento: De seg à sex das 9h às 18h</p>
+                        <p><i class="fa-solid fa-phone"></i> (XX) XXXX-XXXX</p>
+                        <p><i class="fa-solid fa-envelope"></i> contato@cremapratas.com</p>
+                    </div>
+                </div>
+                <!-- Coluna Loja -->
+                <div class="footer-column">
+                    <h4>LOJA</h4>
+                    <ul>
+                        <li><a href="#">Anéis</a></li>
+                        <li><a href="#">Brincos</a></li>
+                        <li><a href="#">Correntes</a></li>
+                        <li><a href="#">Escapulários</a></li>
+                        <li><a href="#">Pingentes</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna Ajuda -->
+                <div class="footer-column">
+                    <h4>AJUDA</h4>
+                    <ul>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Perguntas Frequentes</a></li>
+                        <li><a href="#">Política de Entregas</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna Institucional -->
+                <div class="footer-column">
+                    <h4>INSTITUCIONAL</h4>
+                    <ul>
+                        <li><a href="#">Quem Somos</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Política de Trocas e Devoluções</a></li>
+                        <li><a href="#">Política de Cupom de Descontos</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-section">
+                    <p>&copy; 2025 Crema Pratas. Todos os direitos reservados.</p>
+                </div>
+                <div class="footer-bottom-section social-links">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
             </div>
         </div>
     </footer>
@@ -163,30 +224,7 @@
         </div>
     </div>
 
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-            apiKey: "AIzaSyAOJYhteeQkDf90pNc-Q26TWC4dpRcWGnw",
-            authDomain: "cremapratas-e70b9.firebaseapp.com",
-            projectId: "cremapratas-e70b9",
-            storageBucket: "cremapratas-e70b9.firebasestorage.app",
-            messagingSenderId: "601950880055",
-            appId: "1:601950880055:web:9660320d933ec2468adab2",
-            measurementId: "G-V31HKENBBY"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        </script>
-    <script src="script.js"></script>
+    <script src="scripts/script.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html>

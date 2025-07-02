@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Cadastro - Crema Pratas</title>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/login.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Cabeçalho do seu site -->
+    <header class="site-header">
+        <div class="container header-content">
+            <a href="index.html" class="logo-link">
+                <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas" href="index.html">
+            </a>
+            <nav class="main-nav">
+                <a href="#">Início</a>
+                <a href="#produtos">Nossos Produtos</a>
+                <a href="#">Mais Vendidos</a>
+                <a href="#">Lançamentos</a>
+            </nav>
+            <div class="header-icons">
+                <button class="icon-btn"><i class="fa-solid fa-search"></i></button>
+                <button class="icon-btn"><i class="fa-solid fa-user"></i></button>
+                <button id="favorites-btn" class="icon-btn">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="favorites-count" class="icon-count hidden">0</span>
+                </button>
+                <button id="cart-btn" class="icon-btn">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span id="cart-count" class="icon-count hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo principal da página -->
+    <main class="login-main">
+        <div class="login-container">
+            
+            <!-- FORMULÁRIO DE LOGIN -->
+            <div id="login-form" class="form-container active">
+                <h1 class="form-title">Iniciar sessão</h1>
+                <form>
+                    <div class="form-group">
+                        <label for="login-email">E-mail</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">INICIAR SESSÃO</button>
+                </form>
+                <p class="form-link">Não possui uma conta? <a id="show-register">Criar uma conta</a></p>
+            </div>
+
+            <!-- FORMULÁRIO DE CADASTRO -->
+            <div id="register-form" class="form-container">
+                <h1 class="form-title">Criar conta</h1>
+                <form>
+                    <div class="form-group">
+                        <label for="register-name">Nome</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">E-mail</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Senha</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">CRIAR CONTA</button>
+                </form>
+                <p class="form-link">Já possui uma conta? <a id="show-login">Iniciar sessão</a></p>
+            </div>
+            
+            <div id="message-area"></div>
+        </div>
+    </main>
+
+    <!-- Rodapé do seu site -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Coluna de Contato -->
+                <div class="footer-column">
+                    <div class="footer-contact-card">
+                        <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
+                        <p>Horário de Atendimento: De seg à sex das 9h às 18h</p>
+                        <p><i class="fa-solid fa-phone"></i> (55) 11 97678-1660</p>
+                        <p><i class="fa-solid fa-envelope"></i> contato@cremapratas.com</p>
+                    </div>
+                </div>
+                <!-- Coluna Loja -->
+                <div class="footer-column">
+                    <h4>LOJA</h4>
+                    <ul>
+                        <li><a href="#">Anéis</a></li>
+                        <li><a href="#">Brincos</a></li>
+                        <li><a href="#">Correntes</a></li>
+                        <li><a href="#">Escapulários</a></li>
+                        <li><a href="#">Pingentes</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna Ajuda -->
+                <div class="footer-column">
+                    <h4>AJUDA</h4>
+                    <ul>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Perguntas Frequentes</a></li>
+                        <li><a href="#">Política de Entregas</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna Institucional -->
+                <div class="footer-column">
+                    <h4>INSTITUCIONAL</h4>
+                    <ul>
+                        <li><a href="#">Quem Somos</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Política de Trocas e Devoluções</a></li>
+                        <li><a href="#">Política de Cupom de Descontos</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-section">
+                    <p>&copy; 2025 Crema Pratas. Todos os direitos reservados.</p>
+                </div>
+                <div class="footer-bottom-section social-links">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/login.js"></script>
+    <script src="scripts/script.js" type="module"></script>
+</body>
+</html>

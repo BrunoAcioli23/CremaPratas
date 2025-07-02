@@ -232,7 +232,7 @@
             height: 50px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
-        }
+        }            
 
         .mais-produtos:hover {
             transform: translateY(-5px);
@@ -544,6 +544,96 @@
         .whatsapp-btn i {
             margin-right: 0.75rem;
             font-size: 1.5rem;
+        }
+
+        .site-footer {
+            background-color: #1c1c1c;
+            padding: 4rem 0 2rem 0;
+            width: 100%;
+            margin-top: auto;
+            border-top: 1px solid #333;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .footer-column h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--cor-texto-principal);
+        }
+        .footer-column ul {
+            list-style: none;
+        }
+        .footer-column li {
+            margin-bottom: 0.8rem;
+        }
+        .footer-column a {
+            color: var(--cor-texto-secundario);
+        }
+        .footer-column a:hover {
+            color: var(--cor-primaria);
+        }
+        .footer-contact-card {
+            border: 1px solid var(--cor-primaria);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .footer-contact-card .logo {
+            height: 50px;
+            margin-bottom: 1rem;
+        }
+        .footer-contact-card p {
+            color: var(--cor-texto-secundario);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        .footer-contact-card i {
+            margin-right: 0.8rem;
+            width: 20px;
+            text-align: center;
+            color: var(--cor-primaria)
+        }
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .footer-bottom-section {
+            text-align: center;
+        }
+        .footer-bottom .social-links a {
+            color: var(--cor-texto-secundario);
+            font-size: 1.5rem;
+        }
+        .footer-bottom .social-links a:hover {
+            color: var(--cor-primaria);
+        }
+        .footer-bottom p {
+            color: var(--cor-texto-secundario);
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .footer-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+            }
         }
 
         /* --- Media Queries para Responsividade --- */
