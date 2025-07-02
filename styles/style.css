@@ -55,6 +55,7 @@
         }
 
         .logo {
+            cursor: pointer;
             height: 40px;
             object-fit: contain; /* Para não distorcer a logo */
         }
