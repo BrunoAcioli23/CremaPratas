@@ -1,20 +1,30 @@
-// O CÓDIGO JAVASCRIPT PERMANECE O MESMO, MAS COM PEQUENOS AJUSTES
-        // PARA MANIPULAR AS NOVAS CLASSES CSS.
-        document.addEventListener('DOMContentLoaded', () => {
-            const products = [
-                { id: 1, name: 'Corrente 0.7mm Veneziana 70cm', price: 139.90, oldPrice: 159.99, rating: 4.8, reviews: 297, image: 'image/Prata1.jpeg' },
-                { id: 2, name: 'Corrente 2mm 1x1 60cm', price: 209.90, oldPrice: 219.99, rating: 4.9, reviews: 272, image: 'image/Prata2.jpeg' },
-                { id: 3, name: 'Pulseira 2.5mm Cordão Baiano', price: 179.90, oldPrice: 219.00, rating: 5.0, reviews: 303, image: 'image/Prata3.jpeg' },
-                { id: 4, name: 'Brinco Brilhante 5mm', price: 49.90, oldPrice: 99.98, rating: 4.7, reviews: 79, image: 'https://placehold.co/400x400/1a1a1a/ffffff?text=Joia+4' },
-                { id: 5, name: 'Anel Solitário Ouro', price: 349.90, oldPrice: 400.00, rating: 4.9, reviews: 150, image: 'https://placehold.co/400x400/1a1a1a/ffffff?text=Joia+5' },
-                { id: 6, name: 'Pingente Cruz Detalhada', price: 89.90, oldPrice: 110.00, rating: 4.8, reviews: 95, image: 'https://placehold.co/400x400/1a1a1a/ffffff?text=Joia+6' },
-                { id: 7, name: 'Tornozeleira Ponto de Luz', price: 75.50, oldPrice: 90.00, rating: 4.7, reviews: 120, image: 'https://placehold.co/400x400/1a1a1a/ffffff?text=Joia+7' },
-                { id: 8, name: 'Argola Cravejada Média', price: 129.90, oldPrice: 150.00, rating: 4.9, reviews: 210, image: 'https://placehold.co/400x400/1a1a1a/ffffff?text=Joia+8' }
-            ];
-            const whatsappNumber = '5511942138664'; 
+// Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- PASSO 1: Cole aqui o seu objeto de configuração do Firebase ---
+        const firebaseConfig = {
+            apiKey: "COLE_SUA_API_KEY_AQUI",
+            authDomain: "SEU_PROJETO.firebaseapp.com",
+            projectId: "SEU_PROJECT_ID",
+            storageBucket: "SEU_PROJETO.appspot.com",
+            messagingSenderId: "SEU_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- Restante do seu código JavaScript ---
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Variáveis globais
+            let allProducts = [];
             let cart = [];
             let favorites = [];
 
+            // Elementos do DOM
             const productList = document.getElementById('product-list');
             const cartBtn = document.getElementById('cart-btn');
             const favoritesBtn = document.getElementById('favorites-btn');
@@ -22,40 +32,97 @@
             const favoritesModal = document.getElementById('favorites-modal');
             const closeModalBtn = document.getElementById('close-modal-btn');
             const closeFavoritesModalBtn = document.getElementById('close-favorites-modal-btn');
+            const whatsappNumber = '5511942138664'; 
 
-            function renderProducts() {
+            // Inicialização do Swiper de Banners
+            const bannerSwiper = new Swiper(".mySwiper", {
+                pagination: { el: ".swiper-pagination", dynamicBullets: true },
+                loop: true,
+                autoplay: { delay: 3000, disableOnInteraction: false },
+            });
+            
+            // Swiper de produtos (será inicializado depois)
+            let productSwiper;
+
+            // --- FUNÇÕES ---
+
+            // Busca produtos no Firestore
+            async function fetchProducts() {
+                try {
+                    const productsCol = collection(db, 'products'); // Nome da sua coleção
+                    const productSnapshot = await getDocs(productsCol);
+                    const productsData = productSnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    return productsData;
+                } catch (error) {
+                    console.error("Erro ao buscar produtos: ", error);
+                    productList.innerHTML = "<p>Não foi possível carregar os produtos. Tente novamente mais tarde.</p>";
+                    return [];
+                }
+            }
+
+            function renderProducts(products) {
                 productList.innerHTML = '';
+                if (!products || products.length === 0) {
+                    productList.innerHTML = "<p>Nenhum produto encontrado.</p>";
+                    return;
+                }
+
                 products.forEach(product => {
                     const isFavorite = favorites.some(fav => fav.id === product.id);
-                    const productCard = document.createElement('div');
-                    productCard.className = 'product-card';
-                    productCard.innerHTML = `
-                        <div class="product-image-wrapper">
-                            <img src="${product.image}" alt="${product.name}" class="product-image">
-                            <button class="icon-btn favorite-btn ${isFavorite ? 'active' : ''}" data-product-id="${product.id}">
-                                <i class="fa-${isFavorite ? 'solid' : 'regular'} fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="product-info">
-                            <h3>${product.name}</h3>
-                            <div class="product-rating">
-                                <div class="stars">${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}</div>
-                                <span class="reviews">${product.reviews} avaliações</span>
+                    const swiperSlide = document.createElement('div');
+                    swiperSlide.className = 'swiper-slide';
+
+                    swiperSlide.innerHTML = `
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.onerror=null;this.src='https://placehold.co/400x400/1a1a1a/ffffff?text=Imagem+Indisponível';">
+                                <button class="icon-btn favorite-btn ${isFavorite ? 'active' : ''}" data-product-id="${product.id}">
+                                    <i class="fa-${isFavorite ? 'solid' : 'regular'} fa-heart"></i>
+                                </button>
                             </div>
-                            <div class="product-pricing">
-                                <span class="old-price">R$ ${product.oldPrice.toFixed(2).replace('.', ',')}</span>
-                                <span class="current-price">R$ ${product.price.toFixed(2).replace('.', ',')}</span>
+                            <div class="product-info">
+                                <h3>${product.name || 'Nome indisponível'}</h3>
+                                <div class="product-rating">
+                                    <div class="stars">${'★'.repeat(Math.floor(product.rating || 0))}${'☆'.repeat(5 - Math.floor(product.rating || 0))}</div>
+                                    <span class="reviews">${product.reviews || 0} avaliações</span>
+                                </div>
+                                <div class="product-pricing">
+                                    <span class="old-price">R$ ${(product.oldPrice || 0).toFixed(2).replace('.', ',')}</span>
+                                    <span class="current-price">R$ ${(product.price || 0).toFixed(2).replace('.', ',')}</span>
+                                </div>
+                                <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
                             </div>
-                            <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
                         </div>
                     `;
-                    productCard.querySelector('.add-to-cart-btn').addEventListener('click', () => addToCart(product));
-                    productCard.querySelector('.favorite-btn').addEventListener('click', (e) => {
+                    swiperSlide.querySelector('.add-to-cart-btn').addEventListener('click', () => addToCart(product));
+                    swiperSlide.querySelector('.favorite-btn').addEventListener('click', (e) => {
                         e.stopPropagation();
                         toggleFavorite(product);
                     });
-                    productList.appendChild(productCard);
+                    productList.appendChild(swiperSlide);
                 });
+                
+                // Inicializa ou atualiza o swiper de produtos
+                if (productSwiper) {
+                    productSwiper.update();
+                } else {
+                    productSwiper = new Swiper(".product-swiper", {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                        navigation: {
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
+                        },
+                        breakpoints: {
+                            640: { slidesPerView: 2, spaceBetween: 20 },
+                            768: { slidesPerView: 3, spaceBetween: 30 },
+                            1024: { slidesPerView: 4, spaceBetween: 30 },
+                        },
+                    });
+                }
             }
 
             function renderCart() {
@@ -99,10 +166,10 @@
                 cartCount.classList.toggle('hidden', totalItems === 0);
 
                 document.querySelectorAll('.remove-from-cart-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => removeFromCart(parseInt(e.currentTarget.dataset.productId)));
+                    btn.addEventListener('click', (e) => removeFromCart(e.currentTarget.dataset.productId));
                 });
                 document.querySelectorAll('.quantity-change').forEach(btn => {
-                    btn.addEventListener('click', (e) => updateQuantity(parseInt(e.currentTarget.dataset.productId), parseInt(e.currentTarget.dataset.change)));
+                    btn.addEventListener('click', (e) => updateQuantity(e.currentTarget.dataset.productId, parseInt(e.currentTarget.dataset.change)));
                 });
             }
             
@@ -139,14 +206,14 @@
 
                 document.querySelectorAll('.remove-from-favorites-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
-                        const product = products.find(p => p.id === parseInt(e.currentTarget.dataset.productId));
+                        const product = allProducts.find(p => p.id === e.currentTarget.dataset.productId);
                         toggleFavorite(product);
                     });
                 });
                 
                 document.querySelectorAll('.add-fav-to-cart-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
-                        const product = products.find(p => p.id === parseInt(e.currentTarget.dataset.productId));
+                        const product = allProducts.find(p => p.id === e.currentTarget.dataset.productId);
                         addToCart(product);
                         toggleModal(favoritesModal, false);
                         toggleModal(cartModal, true);
@@ -188,7 +255,7 @@
                 } else {
                     favorites.push(product);
                 }
-                renderProducts();
+                renderProducts(allProducts); // Re-renderiza com os dados atuais
                 renderFavorites();
             }
 
@@ -196,6 +263,7 @@
                 modal.classList.toggle('visible', show);
             }
 
+            // --- EVENT LISTENERS ---
             cartBtn.addEventListener('click', () => { renderCart(); toggleModal(cartModal, true); });
             favoritesBtn.addEventListener('click', () => { renderFavorites(); toggleModal(favoritesModal, true); });
             closeModalBtn.addEventListener('click', () => toggleModal(cartModal, false));
@@ -205,32 +273,22 @@
             
             document.getElementById('checkout-btn').addEventListener('click', () => {
                 if (cart.length === 0) {
-                    // Exibe uma mensagem no console se o carrinho estiver vazio.
                     console.log('Carrinho vazio!');
                     return;
                 }
-                
-                // Monta a mensagem do pedido
                 let message = 'Olá! Gostaria de fazer um pedido com os seguintes itens:\n\n';
                 let total = 0;
-            
                 cart.forEach(item => {
                     message += `*${item.name}* (${item.quantity}x) - R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\n`;
                     total += item.price * item.quantity;
                 });
-            
                 message += `\n*Total do Pedido: R$ ${total.toFixed(2).replace('.', ',')}*`;
-            
-                // Codifica a mensagem para ser usada na URL
                 const encodedMessage = encodeURIComponent(message);
-            
-                // --- LINHA CORRIGIDA ---
-                // Usa a URL da API do WhatsApp para garantir a abertura no WhatsApp Web
                 const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
-            
-                // Abre o link em uma nova aba
                 window.open(whatsappUrl, '_blank');
             });
 
-            renderProducts();
+            // --- INICIALIZAÇÃO ---
+            allProducts = await fetchProducts();
+            renderProducts(allProducts);
         });

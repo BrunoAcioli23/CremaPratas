@@ -12,13 +12,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="image/logo-redonda.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <style>
+
+    .swiper-pagination-bullet {
+        background-color: #a0a0a0;
+    }
+
+    .swiper-pagination-bullet-active {
+        background-color: #dfdfdf;
+    }
+
+    </style>
 </head>
 <body>
 
     <!-- Cabeçalho -->
     <header class="site-header">
         <div class="container header-content">
-            <h1><img class="logo" src="image/logo-transparente.png" alt="Logo"></h1>
+            <!-- Imagem da logo substituída por um placeholder -->
+            <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
             <nav class="main-nav">
                 <a href="#">Início</a>
                 <a href="#produtos">Nossos Produtos</a>
@@ -39,6 +52,23 @@
             </div>
         </div>
     </header>
+
+    <!-- Carrossel Swiper -->
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <!-- Imagens do banner substituídas por placeholders -->
+            <div class="swiper-slide">
+                <img src="image/logo.jpeg" alt="Banner 1">
+            </div>
+            <div class="swiper-slide">
+                <img src="image/logo.jpeg" alt="Banner 2">
+            </div>
+            <div class="swiper-slide">
+                <img src="image/logo.jpeg" alt="Banner 3">
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
 
     <!-- Seção de Benefícios -->
     <section class="benefits-section">
@@ -70,11 +100,25 @@
 
     <!-- Seção de Produtos -->
     <main id="produtos" class="products-section container">
-        <h2 class="section-title">OS MAIS VENDIDOS</h2>
-        <div id="product-list" class="product-grid">
-            <!-- Produtos serão inseridos aqui pelo JavaScript -->
+        <div class="divisor-de-secao">
+            <h2 class="section-title">OS MAIS VENDIDOS</h2>
+            <p class="section-subtitle">Fique por dentro das mais desejadas!</p>
         </div>
+        <div class="swiper product-swiper">
+            <div id="product-list" class="swiper-wrapper">
+                <!-- Slides de produtos serão inseridos aqui -->
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+
+        <div class="mais-produtos">
+            <a>Ver mais produtos</a>
+        </div>
+
     </main>
+        
+    
 
     <!-- Rodapé -->
     <footer class="site-footer">
@@ -95,9 +139,7 @@
                 <h2>Meu Carrinho</h2>
                 <button id="close-modal-btn" class="close-modal-btn">&times;</button>
             </header>
-            <div id="cart-items" class="modal-body">
-                <!-- Itens do carrinho -->
-            </div>
+            <div id="cart-items" class="modal-body"></div>
             <footer class="modal-footer">
                 <div class="total-section">
                     <span>Total:</span>
@@ -117,12 +159,34 @@
                 <h2>Meus Favoritos</h2>
                 <button id="close-favorites-modal-btn" class="close-modal-btn">&times;</button>
             </header>
-            <div id="favorite-items" class="modal-body">
-                <!-- Itens favoritos -->
-            </div>
+            <div id="favorite-items" class="modal-body"></div>
         </div>
     </div>
 
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyAOJYhteeQkDf90pNc-Q26TWC4dpRcWGnw",
+            authDomain: "cremapratas-e70b9.firebaseapp.com",
+            projectId: "cremapratas-e70b9",
+            storageBucket: "cremapratas-e70b9.firebasestorage.app",
+            messagingSenderId: "601950880055",
+            appId: "1:601950880055:web:9660320d933ec2468adab2",
+            measurementId: "G-V31HKENBBY"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        </script>
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html>
