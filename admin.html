@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administrador</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cor-fundo: #111111;
+            --cor-fundo-secundario: #1a1a1a;
+            --cor-texto-principal: #f0f0f0;
+            --cor-primaria: #dfdfdf;
+            --cor-sucesso: #25D366;
+            --cor-erro: #f44336;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto-principal);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            background-color: var(--cor-fundo-secundario);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: var(--cor-texto-principal);
+            box-sizing: border-box;
+        }
+        .form-group input[type="file"] {
+            padding: 0.5rem;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .checkbox-group input {
+            width: auto;
+        }
+        .btn {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-primary {
+            background-color: var(--cor-primaria);
+            color: var(--cor-fundo);
+        }
+        .btn-primary:hover {
+            background-color: #b0b0b0;
+        }
+        .btn-danger {
+            background-color: var(--cor-erro);
+            color: white;
+            margin-top: 1rem;
+        }
+        .hidden {
+            display: none;
+        }
+        #message-area {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        #message-area.success {
+            background-color: var(--cor-sucesso);
+            color: var(--cor-fundo);
+        }
+        #message-area.error {
+            background-color: var(--cor-erro);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- TELA DE LOGIN -->
+        <div id="login-section">
+            <h1>Login do Administrador</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+        </div>
+
+        <!-- PAINEL DE CADASTRO DE PRODUTO -->
+        <div id="admin-panel" class="hidden">
+            <h2>Cadastrar Novo Produto</h2>
+            <form id="product-form">
+                <div class="form-group">
+                    <label for="product-name">Nome do Produto</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Preço (ex: 159.90)</label>
+                    <input type="number" step="0.01" id="product-price" required>
+                </div>
+                 <div class="form-group">
+                    <label for="product-old-price">Preço Antigo (Opcional)</label>
+                    <input type="number" step="0.01" id="product-old-price">
+                </div>
+                <div class="form-group">
+                    <label for="product-image">Imagem do Produto</label>
+                    <input type="file" id="product-image" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-collection">Salvar em:</label>
+                    <select id="product-collection">
+                        <option value="products">Mais Vendidos</option>
+                        <option value="releases">Lançamentos</option>
+                    </select>
+                </div>
+                <!-- NOVO CAMPO DE CATEGORIA -->
+                <div class="form-group">
+                    <label for="product-category">Categoria</label>
+                    <select id="product-category" required>
+                        <option value="">Selecione...</option>
+                        <option value="anel">Anel</option>
+                        <option value="brinco">Brinco</option>
+                        <option value="corrente">Corrente</option>
+                        <option value="escapulario">Escapulário</option>
+                        <option value="pingente">Pingente</option>
+                        <option value="pulseira">Pulseira</option>
+                    </select>
+                </div>
+                 <div class="form-group checkbox-group">
+                    <input type="checkbox" id="product-is-selected">
+                    <label for="product-is-selected">Marcar como "Seleção do Crema"</label>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Cadastrar Produto</button>
+            </form>
+            <button id="logout-btn" class="btn btn-danger">Sair</button>
+        </div>
+        
+        <div id="message-area" class="hidden"></div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js";
+
+        // Sua configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAOJYhteeQkDf90pNc-Q26TWC4dpRcWGnw",
+            authDomain: "cremapratas-e70b9.firebaseapp.com",
+            projectId: "cremapratas-e70b9",
+            storageBucket: "cremapratas-e70b9.appspot.com",
+            messagingSenderId: "601950880055",
+            appId: "1:601950880055:web:9660320d933ec2468adab2",
+            measurementId: "G-V31HKENBBY"
+        };
+
+        // Inicializar Serviços do Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Elementos do DOM
+        const loginSection = document.getElementById('login-section');
+        const adminPanel = document.getElementById('admin-panel');
+        const loginForm = document.getElementById('login-form');
+        const productForm = document.getElementById('product-form');
+        const logoutBtn = document.getElementById('logout-btn');
+        const messageArea = document.getElementById('message-area');
+        const submitBtn = document.getElementById('submit-btn');
+
+        // --- LÓGICA DE AUTENTICAÇÃO E VERIFICAÇÃO ---
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDocRef = doc(db, "users", user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (userDocSnap.exists() && userDocSnap.data().role === 'admin') {
+                    loginSection.classList.add('hidden');
+                    adminPanel.classList.remove('hidden');
+                } else {
+                    loginSection.classList.add('hidden');
+                    adminPanel.classList.add('hidden');
+                    showMessage('Acesso negado. Você não é um administrador.', 'error');
+                    await signOut(auth);
+                }
+            } else {
+                loginSection.classList.remove('hidden');
+                adminPanel.classList.add('hidden');
+            }
+        });
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                console.error("Erro no login:", error);
+                showMessage(`Erro no login: ${error.message}`, 'error');
+            }
+        });
+
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showMessage('Você saiu da sua conta.', 'success');
+            } catch (error) {
+                console.error("Erro ao sair:", error);
+                showMessage(`Erro ao sair: ${error.message}`, 'error');
+            }
+        });
+
+        // --- LÓGICA DE CADASTRO DE PRODUTO ---
+        productForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+
+            // Pegar todos os dados do formulário, incluindo os novos
+            const name = document.getElementById('product-name').value;
+            const price = parseFloat(document.getElementById('product-price').value);
+            const oldPrice = parseFloat(document.getElementById('product-old-price').value) || 0;
+            const imageFile = document.getElementById('product-image').files[0];
+            const collectionName = document.getElementById('product-collection').value;
+            const category = document.getElementById('product-category').value;
+            const isSelected = document.getElementById('product-is-selected').checked; // Pega o valor do checkbox
+
+            if (!imageFile || !category) {
+                showMessage('Por favor, preencha todos os campos obrigatórios, incluindo a categoria e a imagem.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Cadastrar Produto';
+                return;
+            }
+
+            try {
+                showMessage('Fazendo upload da imagem...', 'success');
+                const storageRef = ref(storage, `images/${Date.now()}_${imageFile.name}`);
+                await uploadBytes(storageRef, imageFile);
+                const imageUrl = await getDownloadURL(storageRef);
+                
+                showMessage('Imagem enviada! Salvando produto...', 'success');
+
+                // Objeto do produto com os novos campos
+                const productData = {
+                    name,
+                    price,
+                    oldPrice,
+                    image: imageUrl,
+                    category, // Salva a categoria
+                    isSelected, // Salva se é selecionado ou não (true/false)
+                    createdAt: serverTimestamp()
+                };
+
+                // Adiciona o documento na coleção escolhida
+                await addDoc(collection(db, collectionName), productData);
+
+                showMessage('Produto cadastrado com sucesso!', 'success');
+                productForm.reset();
+
+            } catch (error) {
+                console.error("Erro ao cadastrar produto:", error);
+                showMessage(`Erro: ${error.message}`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Cadastrar Produto';
+            }
+        });
+
+        function showMessage(msg, type) {
+            messageArea.textContent = msg;
+            messageArea.className = type;
+            messageArea.classList.remove('hidden');
+            setTimeout(() => {
+                messageArea.classList.add('hidden');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
