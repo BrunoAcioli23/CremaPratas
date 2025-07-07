@@ -21,7 +21,7 @@ const db = getFirestore(app);
 let cart = [];
 let favorites = [];
 let allProducts = [];
-let allReleases = [];
+let allLaunches = [];
 let allSelected = [];
 
 // Elementos do DOM
@@ -73,6 +73,9 @@ async function fetchData(collectionName, options = {}) {
 function createProductCardHTML(product) {
     const isFavorite = favorites.some(fav => fav.id === product.id);
     let tagsHTML = '';
+    if (product.stock === 0) {
+        tagsHTML += `<span class="tag" style="background-color:#f44336;color:white;">ESGOTADO</span>`;
+    }
     if (product.discountPercentage) {
         tagsHTML += `<span class="tag">${product.discountPercentage}% OFF</span>`;
     }
@@ -93,7 +96,9 @@ function createProductCardHTML(product) {
                     <span class="old-price">R$ ${(product.oldPrice || 0).toFixed(2).replace('.', ',')}</span>
                     <span class="current-price">R$ ${(product.price || 0).toFixed(2).replace('.', ',')}</span>
                 </div>
-                <button class="add-to-cart-btn">COMPRAR</button>
+                ${product.stock > 0 
+                ? `<button class="add-to-cart-btn">COMPRAR</button>` 
+                : `<button class="add-to-cart-btn" disabled style="background-color:#555; cursor:not-allowed; opacity:0.6;">ESGOTADO</button>`}
             </div>
         </div>`;
 }
@@ -208,16 +213,52 @@ closeFavoritesModalBtn.addEventListener('click', () => toggleModal(favoritesModa
 cartModal.addEventListener('click', (e) => { if (e.target === cartModal) toggleModal(cartModal, false); });
 favoritesModal.addEventListener('click', (e) => { if (e.target === favoritesModal) toggleModal(favoritesModal, false); });
 
-document.getElementById('checkout-btn').addEventListener('click', () => {
-    if (cart.length === 0) { console.log('Carrinho vazio!'); return; }
+document.getElementById('checkout-btn').addEventListener('click', async () => {
+    if (cart.length === 0) {
+        console.log('Carrinho vazio!');
+        return;
+    }
+
     let message = 'Olá! Gostaria de fazer um pedido com os seguintes itens:\n\n';
     let total = 0;
-    cart.forEach(item => { message += `*${item.name}* (${item.quantity}x) - R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\n`; total += item.price * item.quantity; });
+
+    const orderItems = cart.map(item => {
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+        message += `*${item.name}* (${item.quantity}x) - R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+        return {
+            productId: item.id,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price
+        };
+    });
+
     message += `\n*Total do Pedido: R$ ${total.toFixed(2).replace('.', ',')}*`;
+
+    // 📥 Salvar pedido no Firestore
+    try {
+        await addDoc(collection(db, 'orders'), {
+            items: orderItems,
+            total,
+            status: 'pendente',
+            createdAt: serverTimestamp()
+        });
+        console.log('Pedido salvo no Firestore');
+    } catch (error) {
+        console.error('Erro ao salvar pedido:', error);
+    }
+
+    // Enviar para o WhatsApp
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
+
+    // Limpar o carrinho local
+    cart = [];
+    renderCart();
 });
+
 
 // --- INICIALIZAÇÃO DO SITE ---
 async function init() {
@@ -226,19 +267,20 @@ async function init() {
     const releasesSwiperConfig = { container: '.releases-swiper', options: { slidesPerView: 1, spaceBetween: 10, navigation: { nextEl: ".releases-swiper.swiper-button-next", prevEl: ".releases-swiper.swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
 
     // Busca todos os dados em paralelo para otimizar o carregamento
-    const [productsData, releasesData, selectedData] = await Promise.all([
-      fetchData('products'),
-      fetchData('releases'),
-      fetchData('selected')
+    const [productsData, selectedData, launchesData] = await Promise.all([
+    fetchData('products', { sortBy: 'createdAt', sortDirection: 'desc' }),
+    fetchData('selected'),
+    fetchData('products', { sortBy: 'createdAt', sortDirection: 'desc', limitNumber: 10 })
     ]);
 
+
     allProducts = productsData;
-    allReleases = releasesData;
+    allLaunches = launchesData;
     allSelected = selectedData;
 
     // Renderiza cada seção com seus respectivos dados
     renderCarousel('product-list', allProducts, productSwiperConfig);
-    renderCarousel('releases-list', allReleases, releasesSwiperConfig);
+    renderCarousel('releases-list', allLaunches, releasesSwiperConfig);
     renderGrid('selected-products-grid', allSelected);
 }
 
