@@ -171,6 +171,18 @@
                     <input type="checkbox" id="product-is-selected">
                     <label for="product-is-selected">Marcar como "Seleção do Crema"</label>
                 </div>
+                <!-- NOVO CAMPO DE TERMOS ASSOCIADOS -->
+                <div class="form-group">
+                    <label for="product-terms">Termos Associados</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="term-lancamento" name="terms" value="Lançamento">
+                        <label for="term-lancamento">Lançamento</label>
+                        <input type="checkbox" id="term-selecao" name="terms" value="Seleção do Crema">
+                        <label for="term-selecao">Seleção do Crema</label>
+                        <input type="checkbox" id="term-mais-vendidos" name="terms" value="Mais Vendidos">
+                        <label for="term-mais-vendidos">Mais Vendidos</label>
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary" id="submit-btn">Cadastrar Produto</button>
             </form>
             <button id="logout-btn" class="btn btn-danger">Sair</button>
@@ -191,7 +203,7 @@
             apiKey: "AIzaSyAOJYhteeQkDf90pNc-Q26TWC4dpRcWGnw",
             authDomain: "cremapratas-e70b9.firebaseapp.com",
             projectId: "cremapratas-e70b9",
-            storageBucket: "cremapratas-e70b9.appspot.com",
+            storageBucket: "gs://cremapratas-e70b9.firebasestorage.app",
             messagingSenderId: "601950880055",
             appId: "1:601950880055:web:9660320d933ec2468adab2",
             measurementId: "G-V31HKENBBY"
@@ -269,6 +281,8 @@
             const collectionName = document.getElementById('product-collection').value;
             const category = document.getElementById('product-category').value;
             const isSelected = document.getElementById('product-is-selected').checked; // Pega o valor do checkbox
+            // Pega os valores dos termos associados
+            const terms = Array.from(document.querySelectorAll('input[name="terms"]:checked')).map(el => el.value);
 
             if (!imageFile || !category) {
                 showMessage('Por favor, preencha todos os campos obrigatórios, incluindo a categoria e a imagem.', 'error');
@@ -293,6 +307,7 @@
                     image: imageUrl,
                     category, // Salva a categoria
                     isSelected, // Salva se é selecionado ou não (true/false)
+                    terms, // Salva os termos associados
                     createdAt: serverTimestamp()
                 };
 

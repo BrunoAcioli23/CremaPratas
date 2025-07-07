@@ -1,6 +1,6 @@
 // Importar todas as funções necessárias do Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getFirestore, collection, getDocs, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where, orderBy, limit, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 // Sua configuração do Firebase
 const firebaseConfig = {
@@ -244,3 +244,49 @@ async function init() {
 
 // Inicia o site
 document.addEventListener('DOMContentLoaded', init);
+
+const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mainNav = document.getElementById('main-nav');
+        const categoriesBtn = document.querySelector('.categories-btn');
+        const submenu = document.getElementById('submenu');
+
+        hamburgerBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+
+        categoriesBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Impede que o link navegue
+            e.stopPropagation(); // Impede que o clique feche o menu imediatamente
+            submenu.classList.toggle('active');
+        });
+
+        // Fecha o submenu se clicar fora dele
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('.submenu-container')) {
+                submenu.classList.remove('active');
+            }
+        });
+
+        // Lógica de envio do formulário de cadastro de produtos
+        const productForm = document.getElementById('product-form');
+        productForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(productForm);
+            const productData = {
+                name: formData.get('name'),
+                price: parseFloat(formData.get('price')),
+                oldPrice: parseFloat(formData.get('oldPrice')),
+                image: formData.get('image'),
+                terms: formData.getAll('terms'),
+                timestamp: serverTimestamp()
+            };
+
+            try {
+                await addDoc(collection(db, 'products'), productData);
+                showMessage('Produto cadastrado com sucesso!', 'success');
+                productForm.reset();
+            } catch (error) {
+                showMessage('Erro ao cadastrar produto: ' + error.message, 'error');
+            }
+        });
