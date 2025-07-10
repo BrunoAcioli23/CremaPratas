@@ -19,7 +19,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--cor-fundo);
+            background-color: #000;
             color: var(--cor-texto-principal);
         }
 
@@ -157,8 +157,8 @@
             position: relative;
         }
         
-        .product-swiper .swiper-button-next,
-        .product-swiper .swiper-button-prev {
+        .swiper .swiper-button-next,
+        .swiper .swiper-button-prev {
             color: var(--cor-texto-principal);
             background-color: rgba(0, 0, 0, 0.5);
             width: 44px;
@@ -167,13 +167,13 @@
             transition: background-color 0.3s ease;
         }
 
-        .product-swiper .swiper-button-next:hover,
-        .product-swiper .swiper-button-prev:hover {
+        .swiper .swiper-button-next:hover,
+        .swiper .swiper-button-prev:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
 
-        .product-swiper .swiper-button-next::after,
-        .product-swiper .swiper-button-prev::after {
+        .swiper .swiper-button-next::after,
+        .swiper .swiper-button-prev::after {
             font-size: 1.2rem;
             font-weight: bold;
         }
@@ -213,7 +213,7 @@
         }
 
         .products-section {
-            padding: 4rem 0;
+            padding: 1rem 4rem;
         }
 
         .section-title {
@@ -686,7 +686,7 @@
 
         .selected-products-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
         }
 

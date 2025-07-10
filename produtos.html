@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos</title>
+    <title>Crema pratas</title>
     <!-- Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Google Fonts -->
@@ -11,27 +11,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/produtos.css">
     <link rel="icon" href="image/logo-redonda.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-    <style>
-
-    .swiper-pagination-bullet {
-        background-color: #a0a0a0;
-    }
-
-    .swiper-pagination-bullet-active {
-        background-color: #dfdfdf;
-    }
-
-    </style>
 </head>
 <body>
-    <header class="site-header">
+  <header class="site-header">
+
         <div class="container header-content">
             <a href="index.html" class="logo-link"><img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas"></a>
             
             <nav class="main-nav" id="main-nav">
-                <a href="#">Início</a>
+                <a href="index.html">Início</a>
                 <a href="produtos.html">Nossos Produtos</a>
                 <div class="submenu-container">
                     <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
@@ -44,7 +35,7 @@
                         <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
                     </ul>
                 </div>
-                <a href="#">Sobre nós</a>
+                <a href="sobrenos.html">Sobre nós</a>
             </nav>
 
             <div class="header-icons">
@@ -60,10 +51,39 @@
         </div>
     </header>
 
-    
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Buscar produto...">
+  </div>
 
-    <!-- Rodapé -->
-    <footer class="site-footer">
+  <div class="produtos-container">
+    <!-- FILTROS -->
+    <aside class="filtros">
+      <h3>Categoria</h3>
+      <label><input type="checkbox" class="filtro-categoria" value="anel"> Anel</label>
+      <label><input type="checkbox" class="filtro-categoria" value="brinco"> Brinco</label>
+      <label><input type="checkbox" class="filtro-categoria" value="corrente"> Corrente</label>
+      <label><input type="checkbox" class="filtro-categoria" value="escapulario"> Escapulário</label>
+      <label><input type="checkbox" class="filtro-categoria" value="pingente"> Pingente</label>
+      <label><input type="checkbox" class="filtro-categoria" value="pulseira"> Pulseira</label>
+
+      <h3 style="margin-top:1rem;">Espessura</h3>
+      <label><input type="checkbox" class="filtro-mm" value="1mm"> 1mm</label>
+      <label><input type="checkbox" class="filtro-mm" value="2mm"> 2mm</label>
+      <label><input type="checkbox" class="filtro-mm" value="3mm"> 3mm</label>
+
+      <h3 style="margin-top:1rem;">Comprimento</h3>
+      <label><input type="checkbox" class="filtro-cm" value="45cm"> 45cm</label>
+      <label><input type="checkbox" class="filtro-cm" value="50cm"> 50cm</label>
+      <label><input type="checkbox" class="filtro-cm" value="60cm"> 60cm</label>
+    </aside>
+
+    <!-- GRADE DE PRODUTOS -->
+    <main id="produtos-grid" class="produtos-grid">
+      <!-- JS irá preencher aqui os produtos -->
+    </main>
+  </div>
+
+  <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
                 <!-- Coluna de Contato -->
@@ -152,6 +172,7 @@
     </div>
 
     <script src="scripts/script.js" type="module"></script>
+    <script src="scripts/produto.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html>

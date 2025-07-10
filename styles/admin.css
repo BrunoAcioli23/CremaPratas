@@ -1,0 +1,167 @@
+:root {
+            --cor-fundo: #111111;
+            --cor-fundo-secundario: #1a1a1a;
+            --cor-texto-principal: #f0f0f0;
+            --cor-primaria: #dfdfdf;
+            --cor-sucesso: #25D366;
+            --cor-erro: #f44336;
+        }
+        
+        .container-admin {
+            width: 100%;
+            max-width: 1024px;
+            min-height: 800px;
+            margin: 80px auto;
+            padding: 2rem;
+            background-color: var(--cor-fundo-secundario);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: var(--cor-texto-principal);
+            box-sizing: border-box;
+        }
+        .form-group input[type="file"] {
+            padding: 0.5rem;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .checkbox-group input {
+            width: auto;
+        }
+        .btn {
+            width: 100px;
+            padding: 0.5rem;
+            margin: 10px auto;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-primary {
+            background-color: var(--cor-primaria);
+            color: var(--cor-fundo);
+        }
+        .btn-primary:hover {
+            background-color: #b0b0b0;
+        }
+        .btn-danger {
+            background-color: var(--cor-erro);
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+        #message-area {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        #message-area.success {
+            background-color: var(--cor-sucesso);
+            color: var(--cor-fundo);
+        }
+        #message-area.error {
+            background-color: var(--cor-erro);
+            color: white;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background-color: #333;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .tab-btn:hover {
+            background-color: #555;
+        }
+        .tab-btn.active {
+            background-color: var(--cor-primaria);
+            color: black;
+        }
+
+        #category-chart {
+            max-width: 300px;
+            max-height: 300px;
+            margin: auto;
+        }
+
+        .sales-chart {
+            max-width: 300px;
+            max-height: 300px;
+            margin: auto;
+        }
+
+        .graphic-filter {
+            margin: 20px auto;
+            border-radius: 15px;
+            max-height: 50px;
+            background: linear-gradient(250deg, #dfdfdf, #adadad);
+        }
+
+        .cancel-btn {
+            background-color: #ff8800;
+        }
+        
+        .orders-table-body td{
+            margin: 60px 160px;
+        }
+
+        .modal-orders {
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex; /* ATENÇÃO: isso é essencial */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999999;
+            
+        }
+
+        .modal.hidden {
+            display: none !important; /* força esconder quando necessário */
+        }
+
+        .modal-orders .modal-content {
+            padding: 1rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .modal-orders .modal-content input {
+            height: 30px;
+        }

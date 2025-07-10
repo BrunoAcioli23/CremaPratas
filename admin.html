@@ -3,135 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Administrador</title>
+    <title>Painel Administrador</title>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --cor-fundo: #111111;
-            --cor-fundo-secundario: #1a1a1a;
-            --cor-texto-principal: #f0f0f0;
-            --cor-primaria: #dfdfdf;
-            --cor-sucesso: #25D366;
-            --cor-erro: #f44336;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--cor-fundo);
-            color: var(--cor-texto-principal);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .container {
-            width: 100%;
-            max-width: 1024px;
-            margin: 0 auto;
-            padding: 2rem;
-            background-color: var(--cor-fundo-secundario);
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        h1, h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 0.75rem;
-            border-radius: 6px;
-            border: 1px solid #444;
-            background-color: #333;
-            color: var(--cor-texto-principal);
-            box-sizing: border-box;
-        }
-        .form-group input[type="file"] {
-            padding: 0.5rem;
-        }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .checkbox-group input {
-            width: auto;
-        }
-        .btn {
-            width: 100%;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .btn-primary {
-            background-color: var(--cor-primaria);
-            color: var(--cor-fundo);
-        }
-        .btn-primary:hover {
-            background-color: #b0b0b0;
-        }
-        .btn-danger {
-            background-color: var(--cor-erro);
-            color: white;
-            margin-top: 1rem;
-        }
-        .hidden {
-            display: none;
-        }
-        #message-area {
-            text-align: center;
-            padding: 1rem;
-            margin-top: 1rem;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-        #message-area.success {
-            background-color: var(--cor-sucesso);
-            color: var(--cor-fundo);
-        }
-        #message-area.error {
-            background-color: var(--cor-erro);
-            color: white;
-        }
-
-        .tab-btn {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            background-color: #333;
-            color: white;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        .tab-btn:hover {
-            background-color: #555;
-        }
-        .tab-btn.active {
-            background-color: var(--cor-primaria);
-            color: black;
-        }
-
-    </style>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/admin.css">
+    <link rel="icon" href="image/logo-redonda.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <div class="container">
+    <header class="site-header">
+
+        <div class="container header-content">
+            <a href="index.html" class="logo-link"><img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas"></a>
+            
+            <nav class="main-nav" id="main-nav">
+                <a href="index.html">Início</a>
+                <a href="produtos.html">Nossos Produtos</a>
+                <div class="submenu-container">
+                    <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+                    <ul class="submenu" id="submenu">
+                        <li><a href="produtos.html?category=anel">Anéis</a></li>
+                        <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                        <li><a href="produtos.html?category=corrente">Correntes</a></li>
+                        <li><a href="produtos.html?category=escapulario">Escapulários</a></li>
+                        <li><a href="produtos.html?category=pingente">Pingentes</a></li>
+                        <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                    </ul>
+                </div>
+                <a href="sobrenos.html">Sobre nós</a>
+            </nav>
+
+            <div class="header-icons">
+                <button class="icon-btn"><i class="fa-solid fa-search"></i></button>
+                <a href="login.html" class="icon-btn"><i class="fa-solid fa-user"></i></a>
+                <button id="favorites-btn" class="icon-btn">
+                    <i class="fa-solid fa-heart"></i>
+                    <span id="favorites-count" class="icon-count hidden">0</span>
+                </button>
+                <button id="cart-btn" class="icon-btn"><i class="fa-solid fa-shopping-cart"></i><span id="cart-count" class="icon-count hidden">0</span></button>
+                <button class="icon-btn hamburger-btn" id="hamburger-btn"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-admin">
 
         <div id="admin-tabs" class="hidden" style="margin-bottom: 2rem;">
             <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
@@ -165,6 +87,10 @@
                 <div class="form-group">
                     <label for="product-name">Nome do Produto</label>
                     <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-cost">Valor de Compra (ex: 79.90)</label>
+                    <input type="number" step="0.01" id="product-cost" required>
                 </div>
                 <div class="form-group">
                     <label for="product-price">Preço (ex: 159.90)</label>
@@ -232,9 +158,34 @@
                     <p id="total-products" style="font-size: 2rem; font-weight: bold;"></p>
                 </div>
                 <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
+                    <h3>Valor do Estoque</h3>
+                    <p id="total-stock-value" style="font-size: 2rem; font-weight: bold;"></p>
+                </div>
+                <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
+                    <h3>Valor Potencial de Vendas</h3>
+                    <p id="total-stock-sales" style="font-size: 2rem; font-weight: bold;"></p>
+                </div>
+                <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
+                    <h3>Lucro Potencial</h3>
+                    <p id="total-stock-profit" style="font-size: 2rem; font-weight: bold;"></p>
+                </div>
+                <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
                     <h3>Produtos Esgotados</h3>
                     <p id="total-outofstock" style="font-size: 2rem; font-weight: bold;"></p>
                 </div>
+                
+                <h3 style="margin-top: 2rem;">Vendas por Período</h3>
+                <select class="graphic-filter" id="chart-filter">
+                    <option value="all">Desde Sempre</option>
+                    <option value="year">Este Ano</option>
+                    <option value="month">Este Mês</option>
+                    <option value="week">Esta Semana</option>
+                    <option value="today">Hoje</option>
+                </select>
+                <canvas id="sales-chart" height="200px"></canvas>
+
+                <h3 style="margin-top: 2rem;">Distribuição por Categoria</h3>
+                <canvas id="category-chart"></canvas>
             </div>
         </div>
 
@@ -259,7 +210,7 @@
         <!-- PAINEL DE PRODUTOS -->
         <div id="products-panel" class="hidden">
             <h2>Produtos Cadastrados</h2>
-            <table style="width: 100%; color: white; border-collapse: collapse; margin-top: 1rem;">
+            <table style="width: 100%; color: white; border-collapse: collapse;">
                 <thead>
                     <tr style="border-bottom: 1px solid #555;">
                         <th>Imagem</th>
@@ -277,373 +228,109 @@
         <div id="message-area" class="hidden"></div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, collection, getDocs, addDoc, deleteDoc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js";
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Coluna de Contato -->
+                <div class="footer-column">
+                    <div class="footer-contact-card">
+                        <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
+                        <p>Horário de Atendimento: De seg à sex das 9h às 18h</p>
+                        <p><i class="fa-solid fa-phone"></i> (11) 97678-1660</p>
+                        <p><i class="fa-solid fa-envelope"></i> contato@cremapratas.com</p>
+                    </div>
+                </div>
+                <!-- Coluna Loja -->
+                <div class="footer-column">
+                    <h4>LOJA</h4>
+                    <ul>
+                        <li><a href="#">Anéis</a></li>
+                        <li><a href="#">Brincos</a></li>
+                        <li><a href="#">Correntes</a></li>
+                        <li><a href="#">Escapulários</a></li>
+                        <li><a href="#">Pingentes</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna Ajuda -->
+                <div class="footer-column">
+                    <h4>AJUDA</h4>
+                    <ul>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Perguntas Frequentes</a></li>
+                        <li><a href="#">Política de Entregas</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna Institucional -->
+                <div class="footer-column">
+                    <h4>INSTITUCIONAL</h4>
+                    <ul>
+                        <li><a href="#">Quem Somos</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Política de Trocas e Devoluções</a></li>
+                        <li><a href="#">Política de Cupom de Descontos</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-section">
+                    <p>&copy; 2025 Crema Pratas. Todos os direitos reservados.</p>
+                </div>
+                <div class="footer-bottom-section social-links">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2>Meu Carrinho</h2>
+                <button id="close-modal-btn" class="close-modal-btn">&times;</button>
+            </header>
+            <div id="cart-items" class="modal-body"></div>
+            <footer class="modal-footer">
+                <div class="total-section">
+                    <span>Total:</span>
+                    <span id="cart-total">R$ 0,00</span>
+                </div>
+                <button id="checkout-btn" class="whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> Finalizar Compra no WhatsApp
+                </button>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- Modal de Favoritos -->
+    <div id="favorites-modal" class="modal">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2>Meus Favoritos</h2>
+                <button id="close-favorites-modal-btn" class="close-modal-btn">&times;</button>
+            </header>
+            <div id="favorite-items" class="modal-body"></div>
+        </div>
+    </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAOJYhteeQkDf90pNc-Q26TWC4dpRcWGnw",
-            authDomain: "cremapratas-e70b9.firebaseapp.com",
-            projectId: "cremapratas-e70b9",
-            storageBucket: "cremapratas-e70b9.firebasestorage.app",
-            messagingSenderId: "601950880055",
-            appId: "1:601950880055:web:9660320d933ec2468adab2",
-            measurementId: "G-V31HKENBBY"
-        };
+    <!-- Modal de Editar Pedidos -->
+    <div id="edit-order-modal" class="modal-orders hidden">
+        <div class="modal-content">
+            <h2>Editar Pedido</h2>
+            <div id="edit-order-items"></div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
+            <label for="edit-order-total">Total:</label>
+            <input type="number" id="edit-order-total" step="0.01" />
 
-        const loginSection = document.getElementById('login-section');
-        const adminPanel = document.getElementById('admin-panel');
-        const loginForm = document.getElementById('login-form');
-        const productForm = document.getElementById('product-form');
-        const logoutBtn = document.getElementById('logout-btn');
-        const messageArea = document.getElementById('message-area');
-        const submitBtn = document.getElementById('submit-btn');
-
-        const ordersPanel = document.getElementById('orders-panel');
-        const ordersTableBody = document.getElementById('orders-table-body');
-        const dashboard = document.getElementById('dashboard');
-        const totalOrdersEl = document.getElementById('total-orders');
-        const totalSalesEl = document.getElementById('total-sales');
-        const totalProductsEl = document.getElementById('total-products');
-        const totalOutOfStockEl = document.getElementById('total-outofstock');
-        const adminTabs = document.getElementById('admin-tabs');
-
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const userDocRef = doc(db, "users", user.uid);
-                const userDocSnap = await getDoc(userDocRef);
-
-                if (userDocSnap.exists() && userDocSnap.data().role === 'admin') {
-                    loginSection.classList.add('hidden');
-                    adminPanel.classList.remove('hidden');
-                    ordersPanel.classList.remove('hidden');
-                    dashboard.classList.remove('hidden');
-                    adminTabs.classList.remove('hidden');
-                    showTab('dashboard');
-
-                    loadOrders();
-                    loadProducts();
-                    loadDashboard();
-                } else {
-                    loginSection.classList.add('hidden');
-                    adminPanel.classList.add('hidden');
-                    showMessage('Acesso negado. Você não é um administrador.', 'error');
-                    await signOut(auth);
-                }
-            } else {
-                loginSection.classList.remove('hidden');
-                adminPanel.classList.add('hidden');
-            }
-        });
-
-        const productsTableBody = document.getElementById('products-table-body');
-
-        async function loadProducts() {
-            productsTableBody.innerHTML = '<tr><td colspan="5">Carregando...</td></tr>';
-            try {
-                const snapshot = await getDocs(collection(db, "products"));
-                productsTableBody.innerHTML = '';
-
-                snapshot.forEach(docSnap => {
-                    const product = docSnap.data();
-                    const id = docSnap.id;
-
-                    const row = document.createElement('tr');
-                    row.style.borderBottom = '1px solid #444';
-
-                    row.innerHTML = `
-                        <td><img src="${product.image}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
-                        <td>${product.name}</td>
-                        <td>R$ ${product.price.toFixed(2).replace('.', ',')}</td>
-                        <td>${product.stock || 0}</td>
-                        <td>
-                            <button class="btn btn-primary" onclick="editProduct('${id}')">Editar</button>
-                            <button class="btn btn-danger" onclick="deleteProduct('${id}', '${product.image}')">Excluir</button>
-                        </td>
-                    `;
-                    productsTableBody.appendChild(row);
-                });
-
-            } catch (err) {
-                console.error("Erro ao carregar produtos:", err);
-                productsTableBody.innerHTML = '<tr><td colspan="5">Erro ao carregar produtos.</td></tr>';
-            }
-        }
-
-        async function deleteProduct(productId, imageUrl) {
-        if (!confirm("Tem certeza que deseja excluir este produto?")) return;
-
-        try {
-            await deleteDoc(doc(db, "products", productId));
-
-            if (imageUrl) {
-                const imageRef = ref(storage, imageUrl);
-                await imageRef.delete?.(); // se for uma referência Firebase
-            }
-
-            showMessage("Produto excluído com sucesso.", "success");
-            loadProducts();
-            loadDashboard(); // atualiza contagem
-
-        } catch (error) {
-            console.error("Erro ao excluir produto:", error);
-            showMessage("Erro ao excluir produto.", "error");
-        }
-    }
-
-
-        async function loadOrders() {
-            ordersTableBody.innerHTML = '<tr><td colspan="5">Carregando...</td></tr>';
-
-            try {
-                const querySnapshot = await getDocs(collection(db, "orders"));
-                const orders = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-                ordersTableBody.innerHTML = '';
-
-                orders.sort((a, b) => b.createdAt?.seconds - a.createdAt?.seconds);
-
-                orders.forEach(order => {
-                    const row = document.createElement('tr');
-                    row.style.borderBottom = '1px solid #333';
-
-                    const date = order.createdAt?.toDate().toLocaleString() || '—';
-                    const items = order.items.map(i => `${i.name} (${i.quantity}x)`).join('<br>');
-                    const total = `R$ ${order.total.toFixed(2).replace('.', ',')}`;
-                    const status = order.status;
-
-                    row.innerHTML = `
-                        <td>${date}</td>
-                        <td>${items}</td>
-                        <td>${total}</td>
-                        <td style="text-transform: capitalize;">${status}</td>
-                        <td>
-                            ${status === 'pendente' ? `<button data-id="${order.id}" class="finalize-btn btn btn-primary">Finalizar</button>` : ''}
-                            <button data-id="${order.id}" class="delete-btn btn btn-danger">Excluir</button>
-                        </td>
-                    `;
-
-                    ordersTableBody.appendChild(row);
-                });
-
-                addOrderListeners();
-
-            } catch (error) {
-                console.error("Erro ao carregar pedidos:", error);
-                ordersTableBody.innerHTML = '<tr><td colspan="5">Erro ao carregar pedidos</td></tr>';
-            }
-        }
-
-        function addOrderListeners() {
-            document.querySelectorAll('.finalize-btn').forEach(btn => {
-                btn.addEventListener('click', () => finalizeOrder(btn.dataset.id));
-            });
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', () => deleteOrder(btn.dataset.id));
-            });
-        }
-
-        async function finalizeOrder(orderId) {
-            const orderRef = doc(db, "orders", orderId);
-            const orderSnap = await getDoc(orderRef);
-            if (!orderSnap.exists()) return;
-
-            const order = orderSnap.data();
-            const batch = writeBatch(db);
-
-            for (const item of order.items) {
-                const productRef = doc(db, "products", item.productId);
-                const productSnap = await getDoc(productRef);
-
-                if (productSnap.exists()) {
-                    const data = productSnap.data();
-                    const newStock = Math.max((data.stock || 0) - item.quantity, 0);
-                    const newSold = (data.sold || 0) + item.quantity;
-
-                    batch.update(productRef, { stock: newStock, sold: newSold });
-                }
-            }
-
-            batch.update(orderRef, { status: "finalizado" });
-
-            try {
-                await batch.commit();
-                showMessage('Pedido finalizado com sucesso!', 'success');
-                loadOrders();
-                loadProducts();
-                loadDashboard();
-            } catch (err) {
-                console.error("Erro ao finalizar pedido:", err);
-                showMessage('Erro ao finalizar pedido.', 'error');
-            }
-        }
-
-        async function deleteOrder(orderId) {
-            try {
-                await deleteDoc(doc(db, "orders", orderId));
-                showMessage('Pedido excluído com sucesso.', 'success');
-                loadOrders();
-                loadProducts();
-                loadDashboard();
-            } catch (error) {
-                console.error("Erro ao excluir pedido:", error);
-                showMessage('Erro ao excluir pedido.', 'error');
-            }
-        }
-
-        async function loadDashboard() {
-            try {
-                const ordersSnapshot = await getDocs(collection(db, "orders"));
-                const orders = ordersSnapshot.docs.map(doc => doc.data());
-
-                const finalizedOrders = orders.filter(o => o.status === "finalizado");
-                const totalSales = finalizedOrders.reduce((sum, o) => sum + (o.total || 0), 0);
-
-                totalOrdersEl.textContent = orders.length;
-                totalSalesEl.textContent = `R$ ${totalSales.toFixed(2).replace('.', ',')}`;
-
-                const productsSnapshot = await getDocs(collection(db, "products"));
-                const products = productsSnapshot.docs.map(doc => doc.data());
-
-                totalProductsEl.textContent = products.length;
-                totalOutOfStockEl.textContent = products.filter(p => (p.stock || 0) === 0).length;
-
-            } catch (err) {
-                console.error("Erro ao carregar dashboard:", err);
-                showMessage('Erro ao carregar resumo.', 'error');
-            }
-        }
-
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                console.error("Erro no login:", error);
-                showMessage(`Erro no login: ${error.message}`, 'error');
-            }
-        });
-
-        logoutBtn.addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                showMessage('Você saiu da sua conta.', 'success');
-            } catch (error) {
-                console.error("Erro ao sair:", error);
-                showMessage(`Erro ao sair: ${error.message}`, 'error');
-            }
-        });
-
-        productForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Enviando...';
-
-            const name = document.getElementById('product-name').value;
-            const price = parseFloat(document.getElementById('product-price').value);
-            const oldPrice = parseFloat(document.getElementById('product-old-price').value) || 0;
-            const imageFile = document.getElementById('product-image').files[0];
-            const collectionName = 'products';
-            const category = document.getElementById('product-category').value;
-            const isSelected = document.getElementById('product-is-selected').checked;
-            const stock = parseInt(document.getElementById('product-stock').value);
-            if (isNaN(stock) || stock < 0) {
-                showMessage('Por favor, insira uma quantidade válida em estoque.', 'error');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Cadastrar Produto';
-                return;
-            }
-            const terms = Array.from(document.querySelectorAll('input[name="terms"]:checked')).map(el => el.value);
-
-            if (!imageFile || !category) {
-                showMessage('Por favor, preencha todos os campos obrigatórios, incluindo a categoria e a imagem.', 'error');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Cadastrar Produto';
-                return;
-            }
-
-            try {
-                showMessage('Fazendo upload da imagem...', 'success');
-                const storageRef = ref(storage, `images/${Date.now()}_${imageFile.name}`);
-                await uploadBytes(storageRef, imageFile);
-                const imageUrl = await getDownloadURL(storageRef);
-
-                showMessage('Imagem enviada! Salvando produto...', 'success');
-
-                const productData = {
-                    name,
-                    price,
-                    oldPrice,
-                    image: imageUrl,
-                    category,
-                    isSelected,
-                    terms,
-                    createdAt: serverTimestamp(),
-                    stock
-                };
-
-                await addDoc(collection(db, collectionName), productData);
-
-                showMessage('Produto cadastrado com sucesso!', 'success');
-                productForm.reset();
-
-            } catch (error) {
-                console.error("Erro ao cadastrar produto:", error);
-                showMessage(`Erro: ${error.message}`, 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Cadastrar Produto';
-            }
-        });
-
-        function showMessage(msg, type) {
-            messageArea.textContent = msg;
-            messageArea.className = type;
-            messageArea.classList.remove('hidden');
-            setTimeout(() => {
-                messageArea.classList.add('hidden');
-            }, 4000);
-        }
-
-        // Abas do painel
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabSections = {
-            dashboard: document.getElementById('dashboard'),
-            'admin-panel': document.getElementById('admin-panel'),
-            'orders-panel': document.getElementById('orders-panel'),
-            'products-panel': document.getElementById('products-panel'),
-
-        };
-
-        function showTab(tab) {
-            Object.keys(tabSections).forEach(id => {
-                if (id === tab) {
-                    tabSections[id].classList.remove('hidden');
-                } else {
-                    tabSections[id].classList.add('hidden');
-                }
-            });
-
-            tabButtons.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.tab === tab);
-            });
-        }
-
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', () => showTab(btn.dataset.tab));
-        });
-
-        </script>
+            <div style="margin-top: 1rem;">
+                <button id="save-edit-order" class="btn btn-primary">Salvar</button>
+                <button id="cancel-edit-order" class="btn btn-danger">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="scripts/admin.js" type="module"></script>
 </body>
 </html>

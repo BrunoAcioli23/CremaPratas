@@ -1,5 +1,6 @@
 // Importar todas as funções necessárias do Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
 import { getFirestore, collection, getDocs, query, where, orderBy, limit, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 // Sua configuração do Firebase
@@ -234,6 +235,7 @@ document.getElementById('checkout-btn').addEventListener('click', async () => {
         };
     });
 
+
     message += `\n*Total do Pedido: R$ ${total.toFixed(2).replace('.', ',')}*`;
 
     // 📥 Salvar pedido no Firestore
@@ -241,7 +243,7 @@ document.getElementById('checkout-btn').addEventListener('click', async () => {
         await addDoc(collection(db, 'orders'), {
             items: orderItems,
             total,
-            status: 'pendente',
+            status: 'aberto',
             createdAt: serverTimestamp()
         });
         console.log('Pedido salvo no Firestore');
@@ -267,12 +269,11 @@ async function init() {
     const releasesSwiperConfig = { container: '.releases-swiper', options: { slidesPerView: 1, spaceBetween: 10, navigation: { nextEl: ".releases-swiper.swiper-button-next", prevEl: ".releases-swiper.swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
 
     // Busca todos os dados em paralelo para otimizar o carregamento
-    const [productsData, selectedData, launchesData] = await Promise.all([
-    fetchData('products', { sortBy: 'createdAt', sortDirection: 'desc' }),
-    fetchData('selected'),
-    fetchData('products', { sortBy: 'createdAt', sortDirection: 'desc', limitNumber: 10 })
+    const [productsData, launchesData, selectedData] = await Promise.all([
+    fetchData('products', { sortBy: 'sold', sortDirection: 'desc', limitNumber: 10 }),
+    fetchData('products', { sortBy: 'createdAt', sortDirection: 'desc', limitNumber: 10 }),
+    fetchData('products', { filterField: 'isSelected', filterValue: true })
     ]);
-
 
     allProducts = productsData;
     allLaunches = launchesData;
@@ -311,7 +312,8 @@ const hamburgerBtn = document.getElementById('hamburger-btn');
 
         // Lógica de envio do formulário de cadastro de produtos
         const productForm = document.getElementById('product-form');
-        productForm.addEventListener('submit', async (e) => {
+        if (productForm) {
+            productForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const formData = new FormData(productForm);
@@ -332,3 +334,80 @@ const hamburgerBtn = document.getElementById('hamburger-btn');
                 showMessage('Erro ao cadastrar produto: ' + error.message, 'error');
             }
         });
+        }
+
+        // Página de produtos.html
+if (window.location.pathname.includes("produtos.html")) {
+  document.addEventListener("DOMContentLoaded", async () => {
+    const produtosGrid = document.getElementById("produtos-grid");
+    const searchInput = document.getElementById("search-input");
+    let produtos = [];
+
+    try {
+      const snapshot = await getDocs(collection(db, "products"));
+      produtos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderGrid("produtos-grid", produtos);
+    } catch (err) {
+      console.error("Erro ao carregar produtos:", err);
+      produtosGrid.innerHTML = `<p style="color:white;">Erro ao carregar produtos.</p>`;
+    }
+
+    // Filtro por categoria, milimetro, centimetro
+    const filtros = {
+      categorias: [],
+      mm: [],
+      cm: [],
+      busca: ""
+    };
+
+    const aplicarFiltros = () => {
+      let filtrados = [...produtos];
+
+      if (filtros.categorias.length > 0) {
+        filtrados = filtrados.filter(p => filtros.categorias.includes(p.category));
+      }
+
+      if (filtros.mm.length > 0) {
+        filtrados = filtrados.filter(p => filtros.mm.includes(p.milimetro));
+      }
+
+      if (filtros.cm.length > 0) {
+        filtrados = filtrados.filter(p => filtros.cm.includes(p.centimetro));
+      }
+
+      if (filtros.busca) {
+        const termo = filtros.busca.toLowerCase();
+        filtrados = filtrados.filter(p => p.name?.toLowerCase().includes(termo));
+      }
+
+      renderGrid("produtos-grid", filtrados);
+    };
+
+    // Listeners dos filtros
+    document.querySelectorAll(".filtro-categoria").forEach(input => {
+      input.addEventListener("change", () => {
+        filtros.categorias = Array.from(document.querySelectorAll(".filtro-categoria:checked")).map(i => i.value);
+        aplicarFiltros();
+      });
+    });
+
+    document.querySelectorAll(".filtro-mm").forEach(input => {
+      input.addEventListener("change", () => {
+        filtros.mm = Array.from(document.querySelectorAll(".filtro-mm:checked")).map(i => i.value);
+        aplicarFiltros();
+      });
+    });
+
+    document.querySelectorAll(".filtro-cm").forEach(input => {
+      input.addEventListener("change", () => {
+        filtros.cm = Array.from(document.querySelectorAll(".filtro-cm:checked")).map(i => i.value);
+        aplicarFiltros();
+      });
+    });
+
+    searchInput.addEventListener("input", e => {
+      filtros.busca = e.target.value;
+      aplicarFiltros();
+    });
+  });
+}

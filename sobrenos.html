@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre Nós</title>
+    <title>Crema pratas</title>
     <!-- Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Google Fonts -->
@@ -11,27 +11,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/sobrenos.css">
     <link rel="icon" href="image/logo-redonda.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-    <style>
-
-    .swiper-pagination-bullet {
-        background-color: #a0a0a0;
-    }
-
-    .swiper-pagination-bullet-active {
-        background-color: #dfdfdf;
-    }
-
-    </style>
 </head>
 <body>
+    <!-- Cabeçalho -->
     <header class="site-header">
+
         <div class="container header-content">
             <a href="index.html" class="logo-link"><img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas"></a>
             
             <nav class="main-nav" id="main-nav">
-                <a href="#">Início</a>
+                <a href="index.html">Início</a>
                 <a href="produtos.html">Nossos Produtos</a>
                 <div class="submenu-container">
                     <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
@@ -44,7 +36,7 @@
                         <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
                     </ul>
                 </div>
-                <a href="#">Sobre nós</a>
+                <a href="sobrenos.html">Sobre nós</a>
             </nav>
 
             <div class="header-icons">
@@ -60,7 +52,30 @@
         </div>
     </header>
 
-    
+    <!-- Conteúdo Principal -->
+    <main>
+        <section class="about-us-section">
+            <div class="container about-us-content">
+                <div class="text-column">
+                    <h4>SOBRE NÓS</h4>
+                    <h1>Alta Qualidade</h1>
+                    <p>Somos feitos de histórias reais. De quedas, de superações, de sonhos que insistem em viver.</p>
+                    <p>Cada peça que criamos é forjada com a prata da coragem, polida pela força da união, e lapidada pela vontade de deixar um legado.</p>
+                    <p>Não vendemos apenas joias. Entregamos identidade, atitude e liberdade para quem sabe que a vida é curta demais para ser comum.</p>
+                    <p>Somos El Patron Platas. Somos movimento. Somos legado.</p>
+                    <p><strong>Brilha. Conquista. Inspire.</strong></p>
+                    <a href="produtos.html" class="btn">VER PRODUTOS</a>
+                </div>
+                <div class="image-column">
+                    <div class="image-stack">
+                        <img src="image/Banner2.jpg" alt="Modelo com joias Crema Pratas" class="img-1">
+                        <img src="image/Prata4.jpg" alt="Detalhe de uma joia" class="img-2">
+                        <img src="image/Prata2.jpeg" alt="Outro detalhe de joia" class="img-3">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Rodapé -->
     <footer class="site-footer">
@@ -152,6 +167,6 @@
     </div>
 
     <script src="scripts/script.js" type="module"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="scripts/sobrenos.js"></script>
 </body>
 </html>

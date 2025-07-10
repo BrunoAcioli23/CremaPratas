@@ -4,6 +4,25 @@
         const showRegisterLink = document.getElementById('show-register');
         const showLoginLink = document.getElementById('show-login');
 
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+        const auth = getAuth();
+
+        document.getElementById("register-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("register-email").value;
+        const password = document.getElementById("register-password").value;
+
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            alert("Usuário registrado com sucesso!");
+            window.location.href = "index.html";
+        } catch (error) {
+            alert("Erro ao registrar: " + error.message);
+        }
+        });
+
+
         showRegisterLink.addEventListener('click', () => {
             loginFormContainer.classList.remove('active');
             registerFormContainer.classList.add('active');
