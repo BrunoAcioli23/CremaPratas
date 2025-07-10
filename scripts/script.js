@@ -17,6 +17,10 @@ const firebaseConfig = {
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth();
+let currentUser = null;
+
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 // Variáveis globais
 let cart = [];
@@ -24,6 +28,13 @@ let favorites = [];
 let allProducts = [];
 let allLaunches = [];
 let allSelected = [];
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    await carregarCarrinhoEFavoritos();
+  }
+});
 
 // Elementos do DOM
 const cartBtn = document.getElementById('cart-btn');
@@ -200,11 +211,85 @@ function renderFavorites() {
     }));
 }
 
-function addToCart(product) { const existingItem = cart.find(item => item.id === product.id); if (existingItem) { existingItem.quantity++; } else { cart.push({...product, quantity: 1 }); } renderCart(); }
-function removeFromCart(productId) { cart = cart.filter(item => item.id!== productId); renderCart(); }
-function updateQuantity(productId, change) { const item = cart.find(item => item.id === productId); if (item) { item.quantity += change; if (item.quantity <= 0) { removeFromCart(productId); } else { renderCart(); } } }
-function toggleFavorite(product) { const existingIndex = favorites.findIndex(item => item.id === product.id); if (existingIndex > -1) { favorites.splice(existingIndex, 1); } else { favorites.push(product); } renderProducts(allProducts); renderReleases(allReleases); renderGrid('selected-products-grid', allSelected); renderFavorites(); }
-function toggleModal(modal, show) { modal.classList.toggle('visible', show); }
+import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+async function carregarCarrinhoEFavoritos() {
+  if (!currentUser) return;
+
+  try {
+    const userDocRef = doc(db, "users", currentUser.uid);
+    const userSnap = await getDoc(userDocRef);
+    const userData = userSnap.exists() ? userSnap.data() : {};
+
+    cart = userData.cart || [];
+    favorites = userData.favorites || [];
+
+    renderCart();
+    renderFavorites();
+  } catch (err) {
+    console.error("Erro ao carregar dados do usuário:", err);
+  }
+}
+
+async function salvarDadosDoUsuario() {
+  if (!currentUser) return;
+
+  try {
+    const userDocRef = doc(db, "users", currentUser.uid);
+    await setDoc(userDocRef, {
+      cart,
+      favorites
+    }, { merge: true });
+  } catch (err) {
+    console.error("Erro ao salvar dados do usuário:", err);
+  }
+}
+
+
+function addToCart(product) {
+  const existingItem = cart.find(item => item.id === product.id);
+  if (existingItem) {
+    existingItem.quantity++;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+  renderCart();
+  salvarDadosDoUsuario();
+}
+
+function removeFromCart(productId) {
+  cart = cart.filter(item => item.id !== productId);
+  renderCart();
+  salvarDadosDoUsuario();
+}
+
+function updateQuantity(productId, change) {
+  const item = cart.find(item => item.id === productId);
+  if (item) {
+    item.quantity += change;
+    if (item.quantity <= 0) {
+      removeFromCart(productId);
+    } else {
+      renderCart();
+    }
+    salvarDadosDoUsuario();
+  }
+}
+
+function toggleFavorite(product) {
+  const existingIndex = favorites.findIndex(item => item.id === product.id);
+  if (existingIndex > -1) {
+    favorites.splice(existingIndex, 1);
+  } else {
+    favorites.push(product);
+  }
+
+  renderProducts(allProducts);
+  renderReleases(allReleases);
+  renderGrid('selected-products-grid', allSelected);
+  renderFavorites();
+  salvarDadosDoUsuario();
+}
 
 // --- EVENT LISTENERS ---
 cartBtn.addEventListener('click', () => { renderCart(); toggleModal(cartModal, true); });
@@ -265,8 +350,8 @@ document.getElementById('checkout-btn').addEventListener('click', async () => {
 // --- INICIALIZAÇÃO DO SITE ---
 async function init() {
     // Configurações dos carrosséis
-    const productSwiperConfig = { container: '.product-swiper', options: { slidesPerView: 1, spaceBetween: 10, navigation: { nextEl: ".product-swiper.swiper-button-next", prevEl: ".product-swiper.swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
-    const releasesSwiperConfig = { container: '.releases-swiper', options: { slidesPerView: 1, spaceBetween: 10, navigation: { nextEl: ".releases-swiper.swiper-button-next", prevEl: ".releases-swiper.swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
+    const productSwiperConfig = { container: '.product-swiper', options: { slidesPerView: 1, spaceBetween: 30, navigation: { nextEl: ".product-swiper.swiper-button-next", prevEl: ".product-swiper.swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
+    const releasesSwiperConfig = { container: '.releases-swiper', options: { slidesPerView: 1, spaceBetween: 30, navigation: { nextEl: ".releases-swiper.swiper-button-next", prevEl: ".releases-swiper.swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
 
     // Busca todos os dados em paralelo para otimizar o carregamento
     const [productsData, launchesData, selectedData] = await Promise.all([

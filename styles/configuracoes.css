@@ -1,0 +1,75 @@
+h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .logout-btn {
+      border: 1px solid #fff;
+      background: none;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-bottom: 2rem;
+    }
+
+    .account-section {
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 3rem;
+    }
+
+    .account-flex {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 250px;
+    }
+
+    .box {
+      flex: 1;
+      min-width: 270px;
+    }
+
+    .box h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-box {
+      border: 1px solid #ccc;
+      border-radius: 30px;
+      padding: 1rem;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .account-details p {
+      margin: 0.25rem 0;
+    }
+
+    .btn-secondary {
+      border: 1px solid #fff;
+      background: none;
+      color: #fff;
+      padding: 0.4rem 1rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    .config-container {
+        margin: 6rem auto;
+        padding: 2rem;
+        font-family: 'Inter', sans-serif;
+        color: #fff;
+        background: linear-gradient(305deg, #cccccc10, #ffffff1c);
+        border: 2px solid #5c5c5c;
+        border-radius: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+    }

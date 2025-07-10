@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crema pratas</title>
     <!-- Font Awesome para ícones -->
@@ -11,19 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/configuracoes.css">
     <link rel="icon" href="image/logo-redonda.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-    <style>
-
-    .swiper-pagination-bullet {
-        background-color: #a0a0a0;
-    }
-
-    .swiper-pagination-bullet-active {
-        background-color: #dfdfdf;
-    }
-
-    </style>
 </head>
 <body>
 
@@ -72,136 +62,36 @@
         </div>
     </header>
 
-    <!-- Carrossel Swiper -->
-    <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-            <!-- Imagens do banner substituídas por placeholders -->
-            <div class="swiper-slide">
-                <img src="image/logo.jpeg" alt="Banner 1">
-            </div>
-            <div class="swiper-slide">
-                <img src="image/logo.jpeg" alt="Banner 2">
-            </div>
-            <div class="swiper-slide">
-                <img src="image/logo.jpeg" alt="Banner 3">
-            </div>
-        </div>
-        <div class="swiper-pagination"></div>
-    </div>
+    <section class="config-container">
+        <h1>Minha Conta</h1>
+            <button class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> SAIR</button>
 
-    <!-- Seção de Benefícios -->
-    <section class="benefits-section">
-        <div class="container">
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <i class="fa-solid fa-credit-card"></i>
-                    <h3>5X SEM JUROS</h3>
-                    <p>Parcelamento facilitado</p>
+            <section class="account-section">
+                <div class="account-flex">
+                <div class="box">
+                    <h2>Histórico de Pedidos</h2>
+                    <div class="empty-box">Carregando pedidos...</div>
                 </div>
-                <div class="benefit-item">
-                    <i class="fa-solid fa-truck-fast"></i>
-                    <h3>FRETE GRÁTIS</h3>
-                    <p>Acima de R$300 para todo Brasil</p>
+                <div class="box account-details">
+                    <h2>Detalhes da Conta</h2>
+                    <p><strong>Carregando...</strong></p>
+                    <p>Brasil</p>
+                    <button class="btn-secondary">VER ENDEREÇOS (1)</button>
                 </div>
-                <div class="benefit-item">
-                    <i class="fa-solid fa-gem"></i>
-                    <h3>GARANTIA ETERNA</h3>
-                    <p>Referente ao teor da Joia.</p>
                 </div>
-                <div class="benefit-item">
-                    <i class="fa-solid fa-gift"></i>
-                    <h3>BRINDE EXCLUSIVO</h3>
-                    <p>Para deixar sua joia sempre brilhando</p>
-                </div>
-            </div>
-        </div>
+            </section>
+
+            <section class="newsletter">
+                <h2>Receba todas as novidades</h2>
+                <p>Não perca nossas promoções, ofertas e lançamentos.</p>
+                <form>
+                <input type="number" placeholder="seuemail@exemplo.com" />
+                <button type="submit">INSCREVER</button>
+                </form>
+            </section>
     </section>
 
-    <section class="collections-section container">
-        <div class="divisor-de-secao">
-            <h2 class="section-title">COLEÇÕES</h2>
-        </div>
-        <div class="collections-grid">
-            <a href="produtos.html?category=correntes" class="collection-card">
-                <img src="image/Correntes.jpg" alt="Coleção de Correntes">
-                <span class="collection-card-title">Correntes</span>
-            </a>
-            <a href="produtos.html?category=pulseiras" class="collection-card">
-                <img src="image/Pulseiras.jpg" alt="Coleção de Pulseiras">
-                <span class="collection-card-title">Pulseiras</span>
-            </a>
-            <a href="produtos.html?category=aneis" class="collection-card">
-                <img src="image/Aneis.jpg" alt="Coleção de Anéis">
-                <span class="collection-card-title">Anéis</span>
-            </a>
-            <a href="produtos.html?category=pingentes" class="collection-card">
-                <img src="image/Pingentes.jpeg" alt="Coleção de Pingentes">
-                <span class="collection-card-title">Pingentes</span>
-            </a>
-            <a href="produtos.html?category=brincos" class="collection-card">
-                <img src="image/Brincos.jpg" alt="Coleção de Brincos">
-                <span class="collection-card-title">Brincos</span>
-            </a>
-            <a href="produtos.html?category=escapularios" class="collection-card">
-                <img src="image/Escapulario.jpg" alt="Coleção de Escapulários">
-                <span class="collection-card-title">Escapulários</span>
-            </a>
-        </div>
-    </section>
-
-    <!-- Seção de Produtos -->
-    <main id="produtos" class="products-section container">
-        <div class="divisor-de-secao">
-            <h2 class="section-title">OS MAIS VENDIDOS</h2>
-            <p class="section-subtitle">Fique por dentro das mais desejadas!</p>
-        </div>
-        <div class="swiper product-swiper">
-            <div id="product-list" class="swiper-wrapper">
-                <!-- Slides de produtos serão inseridos aqui -->
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-        </div>
-
-        <div class="mais-produtos">
-            <a>Ver mais produtos</a>
-        </div>
-
-    </main>
-        
-    <!-- NOVA SEÇÃO DE LANÇAMENTOS -->
-    <section id="lancamentos" class="products-section container">
-        <div class="divisor-de-secao">
-            <h2 class="section-title">LANÇAMENTOS</h2>
-            <p class="section-subtitle">As novidades que acabaram de chegar!</p>
-        </div>
-        <div class="swiper releases-swiper">
-            <div id="releases-list" class="swiper-wrapper"></div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-        </div>
-        <div class="mais-produtos"><a>Ver todos os produtos</a></div>
-    </section>
-
-    <section id="selecionados" class="products-section container">
-        <div class="divisor-de-secao">
-            <h2 class="section-title">SELECIONADOS DO CREMA PRATAS</h2>
-        </div>
-        <div id="selected-products-grid" class="selected-products-grid">
-            </div>
-    </section>
-
-    <section class="newsletter">
-        <h2>Receba todas as novidades</h2>
-        <p>Não perca nossas promoções, ofertas e lançamentos.</p>
-        <form>
-            <input type="number" placeholder="seuemail@exemplo.com" />
-            <button type="submit">INSCREVER</button>
-        </form>
-    </section>
-
-    <!-- Rodapé -->
-    <footer class="site-footer">
+  <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
                 <!-- Coluna de Contato -->
@@ -289,7 +179,6 @@
         </div>
     </div>
 
-    <script src="scripts/script.js" type="module"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="scripts/configuracoes.js" type="module"></script>
 </body>
 </html>

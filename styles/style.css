@@ -56,7 +56,7 @@
         }
 
         .site-header {
-            background-color: rgba(17, 17, 17, 0.8);
+            background-color: #1c1c1c;
             backdrop-filter: blur(4px);
             position: sticky; top: 0; z-index: 50;
             padding: 1rem;
@@ -181,7 +181,7 @@
         /* --- Seção de Benefícios --- */
         .benefits-section {
             padding: 3rem 0;
-            background-color: rgba(26, 26, 26, 0.5);
+            background-color: #1c1c1c;
         }
 
         .benefits-grid {
@@ -258,11 +258,13 @@
             height: 100%; /* Ocupar toda a altura do slide */
             min-height: 500px;;
             max-height: 500px;;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 0px 20px #ffffff9d;
         }
         
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.05);
+            box-shadow: 0px 0px 20px #fff;
         }
 
         .product-image-wrapper {
@@ -645,13 +647,15 @@
             display: block;
             width: 400px;
             height: 300px;
-            border: 2px solid var(--cor-primaria);
+            border: 0px solid var(--cor-primaria);
+            border: 2px solid #2a2a2a;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 0px 20px #ffffff9d;
         }
 
         .collection-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.05);
+            box-shadow: 0px 0px 20px #fff;
         }
 
         .collection-card::after {
@@ -660,6 +664,7 @@
             inset: 0;
             background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
             transition: background 0.4s ease;
+            box-shadow: 10px 10px 20px rgba(255, 255, 255, 0.2);
         }
         .collection-card:hover::after {
             background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.1) 60%);
@@ -794,3 +799,50 @@
                 padding-top: 0.5rem;
             }
         }
+
+        .swiper-wrapper {
+            min-height: 550px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .newsletter {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .newsletter h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .newsletter p {
+      color: #ccc;
+      margin-bottom: 1rem;
+    }
+
+    .newsletter form {
+      display: flex;
+      justify-content: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .newsletter input[type="number"] {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 50px 0 0 50px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .newsletter button {
+      padding: 0 1.5rem;
+      border: none;
+      background-color: #fff;
+      color: #000;
+      font-weight: bold;
+      border-radius: 0 50px 50px 0;
+      cursor: pointer;
+    }
