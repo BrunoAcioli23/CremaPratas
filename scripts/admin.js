@@ -51,12 +51,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
                     adminTabs.classList.remove('hidden');
                     showTab('dashboard');
 
-                    // Aguardar um pouco para garantir que o DOM esteja pronto
-                    setTimeout(() => {
-                        loadOrders();
-                        loadProducts();
-                        loadDashboard();
-                    }, 100);
+                    loadOrders();
+                    loadProducts();
+                    loadDashboard();
                 } else {
                     loginSection.classList.add('hidden');
                     adminPanel.classList.add('hidden');
@@ -333,20 +330,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
 
         async function loadDashboard() {
             try {
-                // Verificar se todos os elementos DOM existem
-                const requiredElements = [
-                    'total-orders', 'total-sales', 'total-products', 'total-outofstock',
-                    'total-stock-value', 'total-stock-sales', 'total-stock-profit',
-                    'sales-chart', 'category-chart'
-                ];
-                
-                for (const elementId of requiredElements) {
-                    if (!document.getElementById(elementId)) {
-                        console.error(`Elemento ${elementId} não encontrado`);
-                        throw new Error(`Elemento ${elementId} não encontrado no DOM`);
-                    }
-                }
-
                 const ordersSnapshot = await getDocs(collection(db, "orders"));
                 const orders = ordersSnapshot.docs.map(doc => doc.data());
 
@@ -364,12 +347,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
 
                 const dates = Object.keys(salesByDate).sort((a, b) => new Date(a) - new Date(b));
                 const totals = dates.map(date => salesByDate[date]);
-
-                // Limpar gráfico existente se houver
-                const existingChart = Chart.getChart('sales-chart');
-                if (existingChart) {
-                    existingChart.destroy();
-                }
 
                 const ctx = document.getElementById('sales-chart').getContext('2d');
                 new Chart(ctx, {
@@ -401,15 +378,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
                     }
                 });
 
-                // Atualizar elementos com verificação de existência
-                if (totalOrdersEl) totalOrdersEl.textContent = orders.length;
-                if (totalSalesEl) totalSalesEl.textContent = `R$ ${totalSales.toFixed(2).replace('.', ',')}`;
+                totalOrdersEl.textContent = orders.length;
+                totalSalesEl.textContent = `R$ ${totalSales.toFixed(2).replace('.', ',')}`;
 
                 const productsSnapshot = await getDocs(collection(db, "products"));
                 const products = productsSnapshot.docs.map(doc => doc.data());
 
-                if (totalProductsEl) totalProductsEl.textContent = products.length;
-                if (totalOutOfStockEl) totalOutOfStockEl.textContent = products.filter(p => (p.stock || 0) === 0).length;
+                totalProductsEl.textContent = products.length;
+                totalOutOfStockEl.textContent = products.filter(p => (p.stock || 0) === 0).length;
 
                 const totalStockValue = products.reduce((sum, p) => {
                     const stock = p.stock || 0;
@@ -417,8 +393,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
                     return sum + (stock * cost);
                 }, 0);
 
-                const stockValueEl = document.getElementById("total-stock-value");
-                if (stockValueEl) stockValueEl.textContent = `R$ ${totalStockValue.toFixed(2).replace('.', ',')}`;
+                document.getElementById("total-stock-value").textContent = `R$ ${totalStockValue.toFixed(2).replace('.', ',')}`;
 
                 // Total potencial de vendas (valor de venda * estoque)
                 const totalPotentialSales = products.reduce((sum, p) => {
@@ -426,26 +401,21 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
                     const price = p.price || 0;
                     return sum + (stock * price);
                 }, 0);
-                
-                const stockSalesEl = document.getElementById("total-stock-sales");
-                if (stockSalesEl) stockSalesEl.textContent = `R$ ${totalPotentialSales.toFixed(2).replace('.', ',')}`;
+                document.getElementById("total-stock-sales").textContent = `R$ ${totalPotentialSales.toFixed(2).replace('.', ',')}`;
 
                 // Lucro potencial (valor de venda - custo)
                 const totalProfit = totalPotentialSales - totalStockValue;
-                const stockProfitEl = document.getElementById("total-stock-profit");
-                if (stockProfitEl) stockProfitEl.textContent = `R$ ${totalProfit.toFixed(2).replace('.', ',')}`;
+                document.getElementById("total-stock-profit").textContent = `R$ ${totalProfit.toFixed(2).replace('.', ',')}`;
+
+
+                totalProductsEl.textContent = products.length;
+                totalOutOfStockEl.textContent = products.filter(p => (p.stock || 0) === 0).length;
 
                 const categoryCounts = {};
                 products.forEach(p => {
                     const cat = p.category || 'Indefinido';
                     categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
                 });
-
-                // Limpar gráfico de categoria existente se houver
-                const existingCategoryChart = Chart.getChart('category-chart');
-                if (existingCategoryChart) {
-                    existingCategoryChart.destroy();
-                }
 
                 const categoryChart = new Chart(document.getElementById('category-chart').getContext('2d'), {
                     type: 'pie',
@@ -469,12 +439,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
                     }
                 });
 
-                console.log("Dashboard carregado com sucesso");
 
             } catch (err) {
                 console.error("Erro ao carregar dashboard:", err);
-                showMessage('Erro ao carregar resumo: ' + err.message, 'error');
+                showMessage('Erro ao carregar resumo.', 'error');
             }
+
+            document.getElementById("total-stock-value").textContent = `R$ ${totalStockValue.toFixed(2).replace('.', ',')}`;
+
         }
 
         loginForm.addEventListener('submit', async (e) => {
@@ -625,15 +597,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
             tabButtons.forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.tab === tab);
             });
-
-            // Carregar dados específicos da aba quando necessário
-            if (tab === 'dashboard') {
-                setTimeout(() => loadDashboard(), 100);
-            } else if (tab === 'orders-panel') {
-                loadOrders();
-            } else if (tab === 'products-panel') {
-                loadProducts();
-            }
         }
 
         tabButtons.forEach(btn => {

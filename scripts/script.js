@@ -17,8 +17,9 @@ const firebaseConfig = {
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth();
 let currentUser = null;
+const auth = getAuth();
+
 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
@@ -71,7 +72,8 @@ async function fetchData(collectionName, options = {}) {
         }
 
         const dataSnapshot = await getDocs(q);
-        return dataSnapshot.docs.map(doc => ({ id: doc.id,...doc.data() }));
+        return dataSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
     } catch (error) {
         console.error(`Erro ao buscar dados da coleção ${collectionName}: `, error);
         if (error.code === 'failed-precondition') {
@@ -375,8 +377,23 @@ document.addEventListener('DOMContentLoaded', init);
 
 const hamburgerBtn = document.getElementById('hamburger-btn');
         const mainNav = document.getElementById('main-nav');
-        const categoriesBtn = document.querySelector('.categories-btn');
-        const submenu = document.getElementById('submenu');
+        const categoriesBtn = document.querySelector(".categories-btn");
+        const submenu = document.getElementById("submenu");
+
+        if (categoriesBtn && submenu) {
+          categoriesBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            submenu.classList.toggle("active");
+          });
+
+          window.addEventListener("click", (e) => {
+            if (!e.target.closest(".submenu-container")) {
+              submenu.classList.remove("active");
+            }
+          });
+        }
+
 
         hamburgerBtn.addEventListener('click', () => {
             mainNav.classList.toggle('active');
@@ -425,25 +442,25 @@ const hamburgerBtn = document.getElementById('hamburger-btn');
 if (window.location.pathname.includes("produtos.html")) {
   document.addEventListener("DOMContentLoaded", async () => {
     const produtosGrid = document.getElementById("produtos-grid");
-    const searchInput = document.getElementById("search-input");
+    const searchInput = document.getElementById("global-search") || document.getElementById("search-input") || document.getElementById("search-input-header");
+    const params = new URLSearchParams(window.location.search);
+    const categoriaUrl = params.get("category");
+    const filtros = { categorias: [], mm: [], cm: [], busca: "" };
+    if (categoriaUrl) {
+      filtros.categorias = [categoriaUrl];
+    }
+
     let produtos = [];
 
     try {
       const snapshot = await getDocs(collection(db, "products"));
       produtos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
       renderGrid("produtos-grid", produtos);
     } catch (err) {
       console.error("Erro ao carregar produtos:", err);
       produtosGrid.innerHTML = `<p style="color:white;">Erro ao carregar produtos.</p>`;
     }
-
-    // Filtro por categoria, milimetro, centimetro
-    const filtros = {
-      categorias: [],
-      mm: [],
-      cm: [],
-      busca: ""
-    };
 
     const aplicarFiltros = () => {
       let filtrados = [...produtos];
@@ -494,5 +511,18 @@ if (window.location.pathname.includes("produtos.html")) {
       filtros.busca = e.target.value;
       aplicarFiltros();
     });
+  });
+}
+
+const searchForm = document.getElementById("search-form");
+
+if (searchForm && searchInput) {
+  searchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const termo = searchInput.value.trim();
+    if (termo) {
+      const encoded = encodeURIComponent(termo);
+      window.location.href = `produtos.html?busca=${encoded}`;
+    }
   });
 }
