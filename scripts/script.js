@@ -293,13 +293,52 @@ function toggleFavorite(product) {
   salvarDadosDoUsuario();
 }
 
+function toggleModal(modalElement, show) {
+  if (!modalElement) return;
+  if (show) {
+    modalElement.classList.add('visible');
+  } else {
+    modalElement.classList.remove('visible');
+  }
+}
+
 // --- EVENT LISTENERS ---
-cartBtn.addEventListener('click', () => { renderCart(); toggleModal(cartModal, true); });
-favoritesBtn.addEventListener('click', () => { renderFavorites(); toggleModal(favoritesModal, true); });
-closeModalBtn.addEventListener('click', () => toggleModal(cartModal, false));
+document.addEventListener("DOMContentLoaded", () => {
+  const cartBtn = document.getElementById('cart-btn');
+  const cartModal = document.getElementById('cart-modal');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+
+  const favoritesBtn = document.getElementById('favorites-btn');
+  const favoritesModal = document.getElementById('favorites-modal');
+  const closeFavoritesModalBtn = document.getElementById('close-favorites-modal-btn');
+
+  if (cartBtn && cartModal && closeModalBtn) {
+    cartBtn.addEventListener('click', () => {
+      renderCart();
+      toggleModal(cartModal, true);
+    });
+
+    closeModalBtn.addEventListener('click', () => toggleModal(cartModal, false));
+    cartModal.addEventListener('click', (e) => {
+      if (e.target === cartModal) toggleModal(cartModal, false);
+    });
+  }
+
+  if (favoritesBtn && favoritesModal && closeFavoritesModalBtn) {
+    favoritesBtn.addEventListener('click', () => {
+      renderFavorites();
+      toggleModal(favoritesModal, true);
+    });
+
+    closeFavoritesModalBtn.addEventListener('click', () => toggleModal(favoritesModal, false));
+    favoritesModal.addEventListener('click', (e) => {
+      if (e.target === favoritesModal) toggleModal(favoritesModal, false);
+    });
+  }
+});
+
 closeFavoritesModalBtn.addEventListener('click', () => toggleModal(favoritesModal, false));
 cartModal.addEventListener('click', (e) => { if (e.target === cartModal) toggleModal(cartModal, false); });
-favoritesModal.addEventListener('click', (e) => { if (e.target === favoritesModal) toggleModal(favoritesModal, false); });
 
 document.getElementById('checkout-btn').addEventListener('click', async () => {
     if (cart.length === 0) {
@@ -444,10 +483,17 @@ if (window.location.pathname.includes("produtos.html")) {
     const produtosGrid = document.getElementById("produtos-grid");
     const searchInput = document.getElementById("global-search") || document.getElementById("search-input") || document.getElementById("search-input-header");
     const params = new URLSearchParams(window.location.search);
-    const categoriaUrl = params.get("category");
+    
     const filtros = { categorias: [], mm: [], cm: [], busca: "" };
-    if (categoriaUrl) {
-      filtros.categorias = [categoriaUrl];
+
+    // CAPTURAR BUSCA
+    const categoriaUrl = params.get("category");
+    const buscaUrl = params.get("busca");
+
+    if (categoriaUrl) filtros.categorias = [categoriaUrl];
+    if (buscaUrl) {
+      filtros.busca = decodeURIComponent(buscaUrl).toLowerCase();
+      if (searchInput) searchInput.value = filtros.busca;
     }
 
     let produtos = [];
@@ -455,11 +501,10 @@ if (window.location.pathname.includes("produtos.html")) {
     try {
       const snapshot = await getDocs(collection(db, "products"));
       produtos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-      renderGrid("produtos-grid", produtos);
     } catch (err) {
       console.error("Erro ao carregar produtos:", err);
       produtosGrid.innerHTML = `<p style="color:white;">Erro ao carregar produtos.</p>`;
+      return;
     }
 
     const aplicarFiltros = () => {
@@ -485,7 +530,9 @@ if (window.location.pathname.includes("produtos.html")) {
       renderGrid("produtos-grid", filtrados);
     };
 
-    // Listeners dos filtros
+    aplicarFiltros(); // <- aqui aplicamos os filtros assim que carregar
+
+    // LISTENERS DOS FILTROS
     document.querySelectorAll(".filtro-categoria").forEach(input => {
       input.addEventListener("change", () => {
         filtros.categorias = Array.from(document.querySelectorAll(".filtro-categoria:checked")).map(i => i.value);
@@ -507,12 +554,15 @@ if (window.location.pathname.includes("produtos.html")) {
       });
     });
 
-    searchInput.addEventListener("input", e => {
-      filtros.busca = e.target.value;
-      aplicarFiltros();
-    });
+    if (searchInput) {
+      searchInput.addEventListener("input", e => {
+        filtros.busca = e.target.value.toLowerCase();
+        aplicarFiltros();
+      });
+    }
   });
 }
+
 
 const searchForm = document.getElementById("search-form");
 
