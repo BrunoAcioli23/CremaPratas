@@ -17,6 +17,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #000;
@@ -135,7 +139,7 @@
         .submenu {
             display: none;
             position: absolute;
-            top: 120%;
+            top: 200%;
             left: 50%;
             transform: translateX(-50%);
             background-color: var(--cor-fundo-secundario);
@@ -144,6 +148,7 @@
             border-radius: 8px;
             width: 200px;
             border: 1px solid #333;
+            z-index: 999999;
         }
         .submenu.active { display: block; }
         .submenu li { margin-bottom: 0.5rem; }
@@ -649,7 +654,7 @@
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(1, 1fr);
-            gap: 2.5rem;
+            gap: 1.5rem;
             margin-bottom: 2.5rem;
         }
         .footer-column h4 {
@@ -693,7 +698,6 @@
         }
         .footer-bottom {
             border-top: 1px solid #333;
-            padding-top: 2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -949,55 +953,74 @@
         }
 
         .newsletter {
-            text-align: center;
-            margin: 5rem 0;
-            background-image: url('../image/Banner2.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            width: 100%;
-            height: 400px;
-            justify-content: center;
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-        }
+    position: relative; /* Essencial para o posicionamento do fundo */
+    z-index: 1; /* Garante que o conteúdo fique na frente */
+    text-align: center;
+    width: 100%;
+    height: 400px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Garante que o blur não vaze pelas bordas */
+}
 
-        .newsletter h2 {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-        }
+/* Nova camada para o fundo com blur */
+.newsletter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../image/FundoNewsletter.jpg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: repeat;
+    filter: opacity(0.03); /* <- AQUI ESTÁ O EFEITO DE BLUR! */
+    z-index: -1; /* Joga a camada do fundo para trás do conteúdo */
+}
 
-        .newsletter p {
-        color: #ccc;
-        margin-bottom: 1rem;
-        }
+.newsletter h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
 
-        .newsletter form {
-        display: flex;
-        justify-content: center;
-        max-width: 600px;
-        margin: 0 auto;
-        }
+.newsletter p {
+    color: #ccc;
+    font-size: 1.2rem;
 
-        .newsletter input[type="number"] {
-        flex: 1;
-        padding: 0.8rem;
-        border-radius: 50px 0 0 50px;
-        border: none;
-        font-size: 1rem;
-        }
+}
 
-        .newsletter button {
-        padding: 0 1.5rem;
-        border: none;
-        background-color: #fff;
-        color: #000;
-        font-weight: bold;
-        border-radius: 0 50px 50px 0;
-        cursor: pointer;
-        margin-right: 150px;
-        }
+.newsletter form {
+    display: flex;
+    justify-content: center;
+    width: 30%;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-left: 39%;
+}
+
+/* O resto do seu CSS para o input e button continua o mesmo... */
+
+.newsletter input[type="text"] {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 50px 0 0 50px;
+    border: none;
+    font-size: 1remw;
+}
+
+.newsletter button {
+    padding: 0 1.5rem;
+    border: none;
+    background-color: #fff;
+    color: #000;
+    font-weight: bold;
+    border-radius: 0 50px 50px 0;
+    cursor: pointer;
+    margin-right: 150px;
+}
 
         .search {
             text-align: center;
@@ -1027,7 +1050,6 @@
             gap: 2rem;
             border-top: 1px solid #333;
             padding: 0 2rem;
-            overflow-x: auto;
             white-space: nowrap;
         }
         
@@ -1042,4 +1064,92 @@
         
         .sub-nav a:hover {
             color: #fff;
+        }
+
+        /* --- SEÇÃO SOBRE NÓS --- */
+        .about-us-section {
+            padding: 5rem 0;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+        .about-us-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .text-column h4 {
+            font-size: 1rem;
+            color: var(--cor-texto-secundario);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .text-column h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+        .text-column p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--cor-texto-secundario);
+            margin-bottom: 1.5rem;
+        }
+        .btn {
+            display: inline-block;
+            background-color: var(--cor-primaria);
+            color: var(--cor-fundo);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #b0b0b0;
+        }
+
+        .image-column {
+            position: relative;
+            min-height: 450px;
+        }
+        .image-stack img {
+            position: absolute;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 2px solid #333;
+            transition: transform 0.4s ease-in-out;
+        }
+        /* CORREÇÃO AQUI */
+        .image-stack img:hover {
+            transform: scale(1.03); /* Remove o translateY para evitar que a imagem suba */
+            z-index: 10;
+        }
+        .img-1 {
+            width: 60%;
+            top: 10%;
+            left: 25%;
+            transform: translate(-10%, -10%) rotate(5deg);
+            z-index: 3;
+        }
+        .img-2 {
+            width: 45%;
+            top: 10%;
+            left: 0;
+            transform: rotate(-10deg);
+            z-index: 2;
+        }
+        .img-3 {
+            width: 40%;
+            top: 15%;
+            right: 0;
+            transform: rotate(15deg);
+            z-index: 1;
+        }
+
+        @media (min-width: 992px) {
+            .about-us-content {
+                grid-template-columns: 1fr 1fr;
+            }
         }

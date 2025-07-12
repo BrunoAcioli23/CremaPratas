@@ -50,11 +50,11 @@
             <div class="header-icons">
                 <button id="favorites-btn" class="icon-btn">
                     <i class="fa-solid fa-heart"></i>
-                    <span>Meus Desejos</span>
+                    <span>Meus Favoritos</span>
                     <span id="favorites-count" class="icon-count hidden">0</span>
                 </button>
 
-                <a href="login.html" class="icon-btn">
+                <a href="https://wa.me/5511942138664" target="_blank" class="icon-btn">
                     <i class="fa-solid fa-headset"></i>
                     <span>Atendimento</span>
                 </a>
@@ -79,15 +79,17 @@
                     <li><a href="produtos.html?category=anel">Anéis</a></li>
                     <li><a href="produtos.html?category=brinco">Brincos</a></li>
                     <li><a href="produtos.html?category=corrente">Correntes</a></li>
+                    <li><a href="produtos.html?category=corrente">Colares</a></li>
                     <li><a href="produtos.html?category=escapulario">Escapulários</a></li>
                     <li><a href="produtos.html?category=pingente">Pingentes</a></li>
                     <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
                 </ul>
             </div>
             <a href="produtos.html">PEÇAS FEMININAS</a>
-            <a href="produtos.html">LANÇAMENTOS</a>
+            <a href="index.html#lancamentos">LANÇAMENTOS</a>
             <a href="produtos.html">TODOS OS PRODUTOS</a>
-            <a href="produtos.html">SELECIONADAS DO CREMA</a>
+            <a href="index.html#selecionados">SELECIONADAS DO CREMA</a>
+            <a href="index.html#sobrenos">Sobre nós</a>
         </nav>
     </header>
 
@@ -146,7 +148,7 @@
                 <span class="collection-card-title">Correntes</span>
             </a>
             <a href="produtos.html?category=pulseiras" class="collection-card">
-                <img src="image/Pulseiras.jpg" alt="Coleção de Pulseiras">
+                <img src="image/Pulseiras.jpeg" alt="Coleção de Pulseiras">
                 <span class="collection-card-title">Pulseiras</span>
             </a>
             <a href="produtos.html?category=aneis" class="collection-card">
@@ -182,9 +184,7 @@
             <div class="swiper-button-prev"></div>
         </div>
 
-        <div class="mais-produtos">
-            <a>Ver mais produtos</a>
-        </div>
+        <a class="mais-produtos" href="produtos.html">Ver mais produtos</a>
 
     </main>
         
@@ -199,7 +199,7 @@
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
         </div>
-        <div class="mais-produtos"><a>Ver todos os produtos</a></div>
+            <a class="mais-produtos" href="produtos.html">Ver mais produtos</a>
     </section>
 
     <section id="selecionados" class="products-section container">
@@ -208,14 +208,39 @@
         </div>
         <div id="selected-products-grid" class="selected-products-grid">
             </div>
+
     </section>
+
+        <a class="mais-produtos" href="produtos.html">Ver mais produtos</a>
+
+    <section class="about-us-section" id="sobrenos">
+            <div class="container about-us-content">
+                <div class="text-column">
+                    <h4>SOBRE NÓS</h4>
+                    <h1>Real como você.</h1>
+                    <p>A Crema Pratas nasceu da rua, do corre, da vontade de fazer diferente. Aqui, a prata não é só brilho — é voz, é atitude, é quem você é de verdade.</p>
+                    <p>Nossas peças falam por você, mesmo quando você tá quieto. Cada corrente, anel ou pulseira tem peso, tem história, tem presença.</p>
+                    <p>A gente não vende joia de vitrine. A gente entrega estilo pra quem vive no mundo real. Pra quem não espera permissão pra ser o que é.</p>
+                    <p>Crema Pratas. Prata na pele. Verdade na alma.</p>
+                    <p><strong>Seja você. Seja foda.</strong></p>
+                    <a href="produtos.html" class="btn">VER PRODUTOS</a>
+                </div>
+                <div class="image-column">
+                    <div class="image-stack">
+                        <img src="image/Banner2.jpg" alt="Modelo com joias Crema Pratas" class="img-1">
+                        <img src="image/Prata4.jpg" alt="Detalhe de uma joia" class="img-2">
+                        <img src="image/Prata2.jpeg" alt="Outro detalhe de joia" class="img-3">
+                    </div>
+                </div>
+            </div>
+        </section>
 
     <section class="newsletter">
         <h2>Acesse nosso grupo de novidades!</h2>
         <p>Não perca nossas promoções, ofertas e lançamentos.</p>
         <form>
-            <input type="number" placeholder="seuemail@exemplo.com" />
-            <button type="submit">INSCREVER</button>
+            <input type="text" placeholder="Numero whatsapp!" />
+            <button type="button" onclick="window.location.href='https://chat.whatsapp.com/JS7qd8mUiUe1A1T05waYub'">ENTRAR</button>
         </form>
     </section>
 
@@ -228,26 +253,26 @@
                     <div class="footer-contact-card">
                         <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
                         <p>Horário de Atendimento: De seg à sex das 9h às 18h</p>
-                        <p><i class="fa-solid fa-phone"></i> (11) 97678-1660</p>
-                        <p><i class="fa-solid fa-envelope"></i> contato@cremapratas.com</p>
+                        <p><i class="fa-solid fa-phone"></i><a href="https://wa.me/5511942138664">(11) 97678-1660</a></p>
+                        <p><i class="fa-solid fa-envelope"></i><a href="mailto:cremapratas@gmail.com">cremapratas@gmail.com</a></p>
                     </div>
                 </div>
                 <!-- Coluna Loja -->
                 <div class="footer-column">
                     <h4>LOJA</h4>
                     <ul>
-                        <li><a href="#">Anéis</a></li>
-                        <li><a href="#">Brincos</a></li>
-                        <li><a href="#">Correntes</a></li>
-                        <li><a href="#">Escapulários</a></li>
-                        <li><a href="#">Pingentes</a></li>
+                        <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                        <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                        <li><a href="produtos.html?category=corrente">Correntes</a></li>
+                        <li><a href="produtos.html?category=escapularios">Escapulários</a></li>
+                        <li><a href="produtos.html?category=pingente">Pingentes</a></li>
                     </ul>
                 </div>
                 <!-- Coluna Ajuda -->
                 <div class="footer-column">
                     <h4>AJUDA</h4>
                     <ul>
-                        <li><a href="#">Contato</a></li>
+                        <li><a href="mailto:cremapratas@gmail.com">Contato</a></li>
                         <li><a href="#">Perguntas Frequentes</a></li>
                         <li><a href="#">Política de Entregas</a></li>
                     </ul>
@@ -256,7 +281,7 @@
                 <div class="footer-column">
                     <h4>INSTITUCIONAL</h4>
                     <ul>
-                        <li><a href="#">Quem Somos</a></li>
+                        <li><a href="index.html#sobrenos">Quem Somos</a></li>
                         <li><a href="#">Política de Privacidade</a></li>
                         <li><a href="#">Política de Trocas e Devoluções</a></li>
                         <li><a href="#">Política de Cupom de Descontos</a></li>
@@ -268,10 +293,10 @@
                     <p>&copy; 2025 Crema Pratas. Todos os direitos reservados.</p>
                 </div>
                 <div class="footer-bottom-section social-links">
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/crema_pratas/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://wa.me/5511942138664" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
         </div>

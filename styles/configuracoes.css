@@ -62,10 +62,10 @@ h1 {
 
     .config-container {
         margin: 6rem auto;
-        padding: 2rem;
+        padding: 2rem 0 0;
         font-family: 'Inter', sans-serif;
         color: #fff;
-        background: linear-gradient(305deg, #cccccc10, #ffffff1c);
+        background: #000;
         border: 2px solid #5c5c5c;
         border-radius: 30px;
         display: flex;
@@ -73,3 +73,179 @@ h1 {
         align-items: center;
         width: 80%;
     }
+
+    /* Adicione este código ao final de configuracoes.css */
+
+.order-card {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #444;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.order-id {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.order-status {
+  background-color: #f28e2c; /* Cor de destaque */
+  color: #111;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.order-body ul {
+  list-style-type: none;
+  padding-left: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+/* Adicione este código ao final de configuracoes.css */
+
+/* Estilos do Modal de Conta */
+.modal-tabs {
+  display: flex;
+  border-bottom: 1px solid #444;
+  margin-bottom: 1.5rem;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  color: #a0a0a0;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-button.active {
+  color: #fff;
+  border-bottom-color: #f28e2c; /* Cor de destaque */
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Estilos do Formulário no Modal */
+#account-details-form .form-group, #address-form .form-group {
+  margin-bottom: 1rem;
+}
+
+#account-details-form label, #address-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+#account-details-form input, #address-form input {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.btn-primary, .btn-danger {
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn-primary {
+  background-color: #f28e2c;
+  color: #111;
+  border: none;
+}
+.btn-danger {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+/* Lista de Endereços */
+#address-list {
+  margin-bottom: 1.5rem;
+}
+.address-card {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.address-card p {
+  margin: 0;
+  line-height: 1.4;
+}
+.address-actions button {
+    margin-left: 0.5rem;
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.address-actions button:hover {
+    color: #f28e2c;
+}
+
+#address-form.hidden {
+    display: none;
+}
+#address-form .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#modal-message-area {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 4px;
+    text-align: center;
+}
+#modal-message-area.success {
+    background-color: #25D366;
+    color: white;
+}
+#modal-message-area.error {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Adicione também esta media query para responsividade */
+@media (max-width: 768px) {
+  .account-flex {
+    flex-direction: column;
+    gap: 2rem; /* Reduz o espaçamento */
+  }
+}

@@ -31,35 +31,55 @@
 
         <div class="container header-content">
             <a href="index.html" class="logo-link"><img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas"></a>
-            
-            <nav class="main-nav" id="main-nav">
-                <a href="index.html">Início</a>
-                <a href="produtos.html">Nossos Produtos</a>
-                <div class="submenu-container">
-                    <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
-                    <ul class="submenu" id="submenu">
-                        <li><a href="produtos.html?category=anel">Anéis</a></li>
-                        <li><a href="produtos.html?category=brinco">Brincos</a></li>
-                        <li><a href="produtos.html?category=corrente">Correntes</a></li>
-                        <li><a href="produtos.html?category=escapulario">Escapulários</a></li>
-                        <li><a href="produtos.html?category=pingente">Pingentes</a></li>
-                        <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
-                    </ul>
-                </div>
-                <a href="sobrenos.html">Sobre nós</a>
-            </nav>
-
+            <form id="search-form-header" class="search-form">
+                <input type="text" id="search-input-header" class="search-input" placeholder="Buscar produto..." />
+                <button type="submit" class="icon-btn">
+                    <i class="fa-solid fa-search"></i>
+                </button>
+            </form>
             <div class="header-icons">
-                <button class="icon-btn"><i class="fa-solid fa-search"></i></button>
-                <a href="login.html" class="icon-btn"><i class="fa-solid fa-user"></i></a>
                 <button id="favorites-btn" class="icon-btn">
                     <i class="fa-solid fa-heart"></i>
+                    <span>Meus Favoritos</span>
                     <span id="favorites-count" class="icon-count hidden">0</span>
                 </button>
-                <button id="cart-btn" class="icon-btn"><i class="fa-solid fa-shopping-cart"></i><span id="cart-count" class="icon-count hidden">0</span></button>
+
+                <a href="https://wa.me/5511942138664" target="_blank" class="icon-btn">
+                    <i class="fa-solid fa-headset"></i>
+                    <span>Atendimento</span>
+                </a>
+                <a href="login.html" class="icon-btn">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Minha conta</span>
+                </a>
+                <button id="cart-btn" class="icon-btn">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span>Meu carrinho</span>
+                    <span id="cart-count" class="icon-count hidden">0</span>
+                </button>
                 <button class="icon-btn hamburger-btn" id="hamburger-btn"><i class="fa-solid fa-bars"></i></button>
             </div>
         </div>
+
+        <nav class="sub-nav">
+            <a href="index.html">PÁGINA INICIAL</a>
+            <div class="submenu-container">
+                <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+                <ul class="submenu" id="submenu">
+                    <li><a href="produtos.html?category=anel">Anéis</a></li>
+                    <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                    <li><a href="produtos.html?category=corrente">Correntes</a></li>
+                    <li><a href="produtos.html?category=corrente">Colares</a></li>
+                    <li><a href="produtos.html?category=escapulario">Escapulários</a></li>
+                    <li><a href="produtos.html?category=pingente">Pingentes</a></li>
+                    <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                </ul>
+            </div>
+            <a href="produtos.html">PEÇAS FEMININAS</a>
+            <a href="index.html#lancamentos">LANÇAMENTOS</a>
+            <a href="produtos.html">TODOS OS PRODUTOS</a>
+            <a href="index.html#selecionados">SELECIONADAS DO CREMA</a>
+        </nav>
     </header>
 
     <section class="config-container">
@@ -82,11 +102,11 @@
             </section>
 
             <section class="newsletter">
-                <h2>Receba todas as novidades</h2>
+                <h2>Acesse nosso grupo de novidades!</h2>
                 <p>Não perca nossas promoções, ofertas e lançamentos.</p>
                 <form>
-                <input type="number" placeholder="seuemail@exemplo.com" />
-                <button type="submit">INSCREVER</button>
+                    <input type="text" placeholder="Numero whatsapp!" />
+                    <button type="button" onclick="window.location.href='https://chat.whatsapp.com/JS7qd8mUiUe1A1T05waYub'" target="_blank">ENTRAR</button>
                 </form>
             </section>
     </section>
@@ -147,6 +167,76 @@
             </div>
         </div>
     </footer>
+
+    <div id="account-modal" class="modal">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2>Minhas Informações</h2>
+                <button id="close-account-modal-btn" class="close-modal-btn">&times;</button>
+            </header>
+            
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <button class="tab-button active" data-tab="account-details-tab">Detalhes da Conta</button>
+                    <button class="tab-button" data-tab="addresses-tab">Meus Endereços</button>
+                </div>
+
+                <div id="account-details-tab" class="tab-content active">
+                    <form id="account-details-form">
+                        <div class="form-group">
+                            <label for="display-name">Nome Completo</label>
+                            <input type="text" id="display-name" placeholder="Seu nome completo">
+                        </div>
+                        <div class="form-group">
+                            <label for="user-email">Email</label>
+                            <input type="email" id="user-email" placeholder="seu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="current-password">Senha Atual (preencha para alterar a senha)</label>
+                            <input type="password" id="current-password" placeholder="Sua senha atual">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password">Nova Senha (mínimo 6 caracteres)</label>
+                            <input type="password" id="new-password" placeholder="Sua nova senha">
+                        </div>
+                        <button type="submit" class="btn-primary">Salvar Alterações</button>
+                    </form>
+                </div>
+
+                <div id="addresses-tab" class="tab-content">
+                    <div id="address-list">
+                        </div>
+                    <button id="add-new-address-btn" class="btn-secondary">Adicionar Novo Endereço</button>
+                    
+                    <form id="address-form" class="hidden">
+                        <h3>Adicionar/Editar Endereço</h3>
+                        <input type="hidden" id="address-id">
+                        <div class="form-group">
+                            <label for="address-street">Endereço e Número</label>
+                            <input type="text" id="address-street" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address-city">Cidade</label>
+                            <input type="text" id="address-city" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="address-state">Estado</label>
+                            <input type="text" id="address-state" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address-zip">CEP</label>
+                            <input type="text" id="address-zip" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Salvar Endereço</button>
+                            <button type="button" id="cancel-address-edit" class="btn-danger">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="modal-message-area" class="hidden"></div>
+        </div>
+    </div>
 
     <!-- Modal do Carrinho -->
     <div id="cart-modal" class="modal">

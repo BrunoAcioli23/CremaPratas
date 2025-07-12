@@ -22,35 +22,55 @@
 
         <div class="container header-content">
             <a href="index.html" class="logo-link"><img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas"></a>
-            
-            <nav class="main-nav" id="main-nav">
-                <a href="index.html">Início</a>
-                <a href="produtos.html">Nossos Produtos</a>
-                <div class="submenu-container">
-                    <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
-                    <ul class="submenu" id="submenu">
-                        <li><a href="produtos.html?category=anel">Anéis</a></li>
-                        <li><a href="produtos.html?category=brinco">Brincos</a></li>
-                        <li><a href="produtos.html?category=corrente">Correntes</a></li>
-                        <li><a href="produtos.html?category=escapulario">Escapulários</a></li>
-                        <li><a href="produtos.html?category=pingente">Pingentes</a></li>
-                        <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
-                    </ul>
-                </div>
-                <a href="sobrenos.html">Sobre nós</a>
-            </nav>
-
+            <form id="search-form-header" class="search-form">
+                <input type="text" id="search-input-header" class="search-input" placeholder="Buscar produto..." />
+                <button type="submit" class="icon-btn">
+                    <i class="fa-solid fa-search"></i>
+                </button>
+            </form>
             <div class="header-icons">
-                <button class="icon-btn"><i class="fa-solid fa-search"></i></button>
-                <a href="login.html" class="icon-btn"><i class="fa-solid fa-user"></i></a>
                 <button id="favorites-btn" class="icon-btn">
                     <i class="fa-solid fa-heart"></i>
+                    <span>Meus Favoritos</span>
                     <span id="favorites-count" class="icon-count hidden">0</span>
                 </button>
-                <button id="cart-btn" class="icon-btn"><i class="fa-solid fa-shopping-cart"></i><span id="cart-count" class="icon-count hidden">0</span></button>
+
+                <a href="https://wa.me/5511942138664" target="_blank" class="icon-btn">
+                    <i class="fa-solid fa-headset"></i>
+                    <span>Atendimento</span>
+                </a>
+                <a href="login.html" class="icon-btn">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Minha conta</span>
+                </a>
+                <button id="cart-btn" class="icon-btn">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span>Meu carrinho</span>
+                    <span id="cart-count" class="icon-count hidden">0</span>
+                </button>
                 <button class="icon-btn hamburger-btn" id="hamburger-btn"><i class="fa-solid fa-bars"></i></button>
             </div>
         </div>
+
+        <nav class="sub-nav">
+            <a href="index.html">PÁGINA INICIAL</a>
+            <div class="submenu-container">
+                <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
+                <ul class="submenu" id="submenu">
+                    <li><a href="produtos.html?category=anel">Anéis</a></li>
+                    <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                    <li><a href="produtos.html?category=corrente">Correntes</a></li>
+                    <li><a href="produtos.html?category=corrente">Colares</a></li>
+                    <li><a href="produtos.html?category=escapulario">Escapulários</a></li>
+                    <li><a href="produtos.html?category=pingente">Pingentes</a></li>
+                    <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                </ul>
+            </div>
+            <a href="produtos.html">PEÇAS FEMININAS</a>
+            <a href="index.html#lancamentos">LANÇAMENTOS</a>
+            <a href="produtos.html">TODOS OS PRODUTOS</a>
+            <a href="index.html#selecionados">SELECIONADAS DO CREMA</a>
+        </nav>
     </header>
 
     <div class="container-admin">

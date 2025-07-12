@@ -279,18 +279,32 @@ function updateQuantity(productId, change) {
 }
 
 function toggleFavorite(product) {
-  const existingIndex = favorites.findIndex(item => item.id === product.id);
-  if (existingIndex > -1) {
-    favorites.splice(existingIndex, 1);
-  } else {
-    favorites.push(product);
-  }
+    const existingIndex = favorites.findIndex(item => item.id === product.id);
+    if (existingIndex > -1) {
+        favorites.splice(existingIndex, 1);
+    } else {
+        favorites.push(product);
+    }
 
-  renderProducts(allProducts);
-  renderReleases(allReleases);
-  renderGrid('selected-products-grid', allSelected);
-  renderFavorites();
-  salvarDadosDoUsuario();
+    // 1. Recria os carrosséis para atualizar os ícones de coração na página
+    const productSwiperConfig = { container: '.product-swiper', options: { slidesPerView: 1, spaceBetween: 30, navigation: { nextEl: ".product-swiper .swiper-button-next", prevEl: ".product-swiper .swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
+    const releasesSwiperConfig = { container: '.releases-swiper', options: { slidesPerView: 1, spaceBetween: 30, navigation: { nextEl: ".releases-swiper .swiper-button-next", prevEl: ".releases-swiper .swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
+    
+    if (document.getElementById('product-list')) {
+        renderCarousel('product-list', allProducts, productSwiperConfig);
+    }
+    if (document.getElementById('releases-list')) {
+        renderCarousel('releases-list', allLaunches, releasesSwiperConfig);
+    }
+    if (document.getElementById('selected-products-grid')) {
+        renderGrid('selected-products-grid', allSelected);
+    }
+
+    // 2. Garante que o modal de favoritos seja sempre atualizado
+    renderFavorites();
+
+    // 3. Salva os dados no Firestore
+    salvarDadosDoUsuario();
 }
 
 function toggleModal(modalElement, show) {
@@ -366,13 +380,15 @@ document.getElementById('checkout-btn').addEventListener('click', async () => {
 
     // 📥 Salvar pedido no Firestore
     try {
+        // Objeto que será salvo no banco de dados
         await addDoc(collection(db, 'orders'), {
+            userId: currentUser.uid, // <<-- ADICIONE ESTA LINHA
             items: orderItems,
             total,
             status: 'aberto',
             createdAt: serverTimestamp()
         });
-        console.log('Pedido salvo no Firestore');
+        console.log('Pedido salvo no Firestore com ID do usuário');
     } catch (error) {
         console.error('Erro ao salvar pedido:', error);
     }
@@ -414,42 +430,51 @@ async function init() {
 // Inicia o site
 document.addEventListener('DOMContentLoaded', init);
 
+  // ADICIONE ESTE NOVO BLOCO NO LUGAR DO ANTIGO
+
+// Lógica para o menu Hambúrguer (Mobile)
 const hamburgerBtn = document.getElementById('hamburger-btn');
-        const mainNav = document.getElementById('main-nav');
-        const categoriesBtn = document.querySelector(".categories-btn");
-        const submenu = document.getElementById("submenu");
+const mainNav = document.getElementById('main-nav');
 
-        if (categoriesBtn && submenu) {
-          categoriesBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            submenu.classList.toggle("active");
-          });
+hamburgerBtn.addEventListener('click', () => {
+    mainNav.classList.toggle('active');
+});
 
-          window.addEventListener("click", (e) => {
-            if (!e.target.closest(".submenu-container")) {
-              submenu.classList.remove("active");
-            }
-          });
-        }
+// Lógica para AMBOS os submenus de Categoria (Desktop e Mobile)
+const allCategoryBtns = document.querySelectorAll(".categories-btn");
+const allSubmenus = document.querySelectorAll('.submenu');
 
+allCategoryBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // Impede que o clique se propague para o 'window'
 
-        hamburgerBtn.addEventListener('click', () => {
-            mainNav.classList.toggle('active');
-        });
+        // Encontra o submenu específico deste botão
+        const targetSubmenu = btn.nextElementSibling;
 
-        categoriesBtn.addEventListener('click', (e) => {
-            e.preventDefault(); // Impede que o link navegue
-            e.stopPropagation(); // Impede que o clique feche o menu imediatamente
-            submenu.classList.toggle('active');
-        });
-
-        // Fecha o submenu se clicar fora dele
-        window.addEventListener('click', (e) => {
-            if (!e.target.closest('.submenu-container')) {
+        // Fecha outros submenus que possam estar abertos
+        allSubmenus.forEach(submenu => {
+            if (submenu !== targetSubmenu) {
                 submenu.classList.remove('active');
             }
         });
+
+        // Abre ou fecha o submenu clicado
+        if (targetSubmenu && targetSubmenu.classList.contains('submenu')) {
+            targetSubmenu.classList.toggle('active');
+        }
+    });
+});
+
+// Fecha os submenus se o usuário clicar fora deles
+window.addEventListener('click', (e) => {
+    // Verifica se o clique não foi dentro de um .submenu-container
+    if (!e.target.closest('.submenu-container')) {
+        allSubmenus.forEach(submenu => {
+            submenu.classList.remove('active');
+        });
+    }
+});
 
         // Lógica de envio do formulário de cadastro de produtos
         const productForm = document.getElementById('product-form');
@@ -486,7 +511,7 @@ if (window.location.pathname.includes("produtos.html")) {
     
     const filtros = { categorias: [], mm: [], cm: [], busca: "" };
 
-    // CAPTURAR BUSCA
+    // CAPTURAR BUSCA DA URL
     const categoriaUrl = params.get("category");
     const buscaUrl = params.get("busca");
 
@@ -510,18 +535,30 @@ if (window.location.pathname.includes("produtos.html")) {
     const aplicarFiltros = () => {
       let filtrados = [...produtos];
 
+      // Filtro de Categoria (continua igual)
       if (filtros.categorias.length > 0) {
         filtrados = filtrados.filter(p => filtros.categorias.includes(p.category));
       }
 
+      // --- LÓGICA CORRIGIDA ABAIXO ---
+
+      // Filtro de Espessura (mm) - Buscando no nome do produto
       if (filtros.mm.length > 0) {
-        filtrados = filtrados.filter(p => filtros.mm.includes(p.milimetro));
+        filtrados = filtrados.filter(p => 
+          filtros.mm.some(val => p.name.toLowerCase().includes(val.toLowerCase()))
+        );
       }
 
+      // Filtro de Comprimento (cm) - Buscando no nome do produto
       if (filtros.cm.length > 0) {
-        filtrados = filtrados.filter(p => filtros.cm.includes(p.centimetro));
+        filtrados = filtrados.filter(p => 
+          filtros.cm.some(val => p.name.toLowerCase().includes(val.toLowerCase()))
+        );
       }
+      
+      // --- FIM DA LÓGICA CORRIGIDA ---
 
+      // Filtro de Busca (continua igual)
       if (filtros.busca) {
         const termo = filtros.busca.toLowerCase();
         filtrados = filtrados.filter(p => p.name?.toLowerCase().includes(termo));
@@ -530,14 +567,28 @@ if (window.location.pathname.includes("produtos.html")) {
       renderGrid("produtos-grid", filtrados);
     };
 
-    aplicarFiltros(); // <- aqui aplicamos os filtros assim que carregar
+    aplicarFiltros(); 
 
-    // LISTENERS DOS FILTROS
+    // Event Listeners dos Filtros (o resto do código continua igual)
     document.querySelectorAll(".filtro-categoria").forEach(input => {
       input.addEventListener("change", () => {
-        filtros.categorias = Array.from(document.querySelectorAll(".filtro-categoria:checked")).map(i => i.value);
+        const categoriasSelecionadas = Array.from(document.querySelectorAll(".filtro-categoria:checked")).map(i => i.value);
+        // Atualiza a URL sem recarregar a página
+        const url = new URL(window.location);
+        if (categoriasSelecionadas.length > 0) {
+            url.searchParams.set('category', categoriasSelecionadas.join(','));
+        } else {
+            url.searchParams.delete('category');
+        }
+        history.pushState({}, '', url);
+
+        filtros.categorias = categoriasSelecionadas;
         aplicarFiltros();
       });
+      // Marca os checkboxes com base na URL inicial
+      if (filtros.categorias.includes(input.value)) {
+        input.checked = true;
+      }
     });
 
     document.querySelectorAll(".filtro-mm").forEach(input => {
@@ -562,7 +613,6 @@ if (window.location.pathname.includes("produtos.html")) {
     }
   });
 }
-
 
 const searchForm = document.getElementById("search-form");
 
