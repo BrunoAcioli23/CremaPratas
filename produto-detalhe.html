@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Cadastro - Crema Pratas</title>
+    <title>Crema pratas</title>
     <!-- Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="styles/login.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/produto-detalhe.css">
+    <link rel="icon" href="image/logo-redonda.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 <body>
 
-    <!-- Cabeçalho do seu site -->
+    <!-- Copie seu header do index.html e cole aqui -->
     <header class="site-header">
 
         <div class="container header-content">
@@ -68,51 +70,52 @@
             <a href="index.html#lancamentos">LANÇAMENTOS</a>
             <a href="produtos.html">TODOS OS PRODUTOS</a>
             <a href="index.html#selecionados">SELECIONADAS DO CREMA</a>
+            <a href="index.html#sobrenos">Sobre nós</a>
         </nav>
     </header>
 
-    <!-- Conteúdo principal da página -->
-    <main class="login-main">
-        <div class="login-container">
-            
-            <!-- FORMULÁRIO DE LOGIN -->
-            <div id="login-form" class="form-container active">
-                <h1 class="form-title">Iniciar sessão</h1>
-                <form>
-                    <div class="form-group">
-                        <label for="login-email">E-mail</label>
-                        <input type="email" id="login-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="login-password">Senha</label>
-                        <input type="password" id="login-password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">INICIAR SESSÃO</button>
-                </form>
-                <p class="form-link">Não possui uma conta? <a id="show-register">Criar uma conta</a></p>
+    <main class="container">
+        <div id="product-detail-content" class="product-detail-grid">
+            <!-- Coluna da Esquerda: Imagens -->
+            <div class="product-gallery">
+                <img id="main-product-image" src="https://placehold.co/600x600/1a1a1a/ffffff?text=Carregando..." alt="Imagem do Produto" class="main-image">
             </div>
 
-            <!-- FORMULÁRIO DE CADASTRO -->
-            <div id="register-form" class="form-container">
-                <h1 class="form-title">Criar conta</h1>
-                <form id="register-form-form" class="form-group">
-                    <label for="login-email">Nome</label>
-                    <input style="margin-bottom: 10px;" type="text" id="register-name" placeholder="Nome" required />
-                    <label for="login-email">E-mail</label>
-                    <input style="margin-bottom: 10px;" type="email" id="register-email" placeholder="Email" required />
-                    <label for="login-email">Senha</label>
-                    <input style="margin-bottom: 10px;" type="password" id="register-password" placeholder="Senha" required />
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                </form>
+            <!-- Coluna da Direita: Informações e Ações -->
+            <div class="product-info-details">
+                <p id="breadcrumbs">Início / Carregando...</p>
+                <h1 id="product-name">Carregando nome do produto...</h1>
+                <div class="price-section">
+                    <span id="product-old-price" class="old-price"></span>
+                    <span id="product-price" class="current-price">R$ 0,00</span>
+                </div>
+                
+                <p class="installments-info">Ou em até 5x sem juros</p>
 
-                <p class="form-link">Já possui uma conta? <a id="show-login">Iniciar sessão</a></p>
+                <div class="actions">
+                    <button id="add-to-cart-detail-btn" class="btn-primary">COMPRAR</button>
+                    <button id="add-to-favorites-detail-btn" class="btn-secondary"><i class="fa-regular fa-heart"></i> Adicionar à Lista de Desejos</button>
+                </div>
+
+                 <div class="description-section">
+                    <h4>Descrição</h4>
+                    <div id="product-description">
+                        <p>Carregando descrição...</p>
+                    </div>
+                </div>
             </div>
-            
-            <div id="message-area"></div>
         </div>
+        
+        <!-- Seção de Produtos Relacionados -->
+        <section class="related-products-section">
+            <h2 class="section-title">Produtos Relacionados</h2>
+            <div id="related-products-grid" class="selected-products-grid">
+                <!-- Produtos relacionados serão inseridos aqui pelo JS -->
+            </div>
+        </section>
     </main>
-
-    <!-- Rodapé do seu site -->
+    
+    <!-- Copie seu footer do index.html e cole aqui -->
     <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
@@ -121,26 +124,26 @@
                     <div class="footer-contact-card">
                         <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
                         <p>Horário de Atendimento: De seg à sex das 9h às 18h</p>
-                        <p><i class="fa-solid fa-phone"></i> (55) 11 97678-1660</p>
-                        <p><i class="fa-solid fa-envelope"></i> contato@cremapratas.com</p>
+                        <p><i class="fa-solid fa-phone"></i><a href="https://wa.me/5511942138664">(11) 97678-1660</a></p>
+                        <p><i class="fa-solid fa-envelope"></i><a href="mailto:cremapratas@gmail.com">cremapratas@gmail.com</a></p>
                     </div>
                 </div>
                 <!-- Coluna Loja -->
                 <div class="footer-column">
                     <h4>LOJA</h4>
                     <ul>
-                        <li><a href="#">Anéis</a></li>
-                        <li><a href="#">Brincos</a></li>
-                        <li><a href="#">Correntes</a></li>
-                        <li><a href="#">Escapulários</a></li>
-                        <li><a href="#">Pingentes</a></li>
+                        <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                        <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                        <li><a href="produtos.html?category=corrente">Correntes</a></li>
+                        <li><a href="produtos.html?category=escapularios">Escapulários</a></li>
+                        <li><a href="produtos.html?category=pingente">Pingentes</a></li>
                     </ul>
                 </div>
                 <!-- Coluna Ajuda -->
                 <div class="footer-column">
                     <h4>AJUDA</h4>
                     <ul>
-                        <li><a href="#">Contato</a></li>
+                        <li><a href="mailto:cremapratas@gmail.com">Contato</a></li>
                         <li><a href="#">Perguntas Frequentes</a></li>
                         <li><a href="#">Política de Entregas</a></li>
                     </ul>
@@ -149,7 +152,7 @@
                 <div class="footer-column">
                     <h4>INSTITUCIONAL</h4>
                     <ul>
-                        <li><a href="#">Quem Somos</a></li>
+                        <li><a href="index.html#sobrenos">Quem Somos</a></li>
                         <li><a href="#">Política de Privacidade</a></li>
                         <li><a href="#">Política de Trocas e Devoluções</a></li>
                         <li><a href="#">Política de Cupom de Descontos</a></li>
@@ -161,16 +164,47 @@
                     <p>&copy; 2025 Crema Pratas. Todos os direitos reservados.</p>
                 </div>
                 <div class="footer-bottom-section social-links">
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/crema_pratas/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://wa.me/5511942138664" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script src="scripts/login.js" type="module"></script>
-    <script src="scripts/script.js" type="module"></script>
+    <!-- Modais (copie do seu index.html) -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2>Meu Carrinho</h2>
+                <button id="close-modal-btn" class="close-modal-btn">&times;</button>
+            </header>
+            <div id="cart-items" class="modal-body"></div>
+            <footer class="modal-footer">
+                <div class="total-section">
+                    <span>Total:</span>
+                    <span id="cart-total">R$ 0,00</span>
+                </div>
+                <button id="checkout-btn" class="whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> Finalizar Compra no WhatsApp
+                </button>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- Modal de Favoritos -->
+    <div id="favorites-modal" class="modal">
+        <div class="modal-content">
+            <header class="modal-header">
+            <h2>Meus Favoritos</h2>
+            <button id="close-favorites-modal-btn" class="close-modal-btn">&times;</button>
+            </header>
+            <div id="favorite-items" class="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="scripts/script.js" type="module"></script> <!-- Script principal -->
+    <script src="scripts/produto-detalhe.js" type="module"></script> <!-- Novo JS -->
 </body>
 </html>

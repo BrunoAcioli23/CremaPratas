@@ -13,71 +13,21 @@
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/admin.css">
     <link rel="icon" href="image/logo-redonda.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
     <header class="site-header">
-
         <div class="container header-content">
             <a href="index.html" class="logo-link"><img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas"></a>
-            <form id="search-form-header" class="search-form">
-                <input type="text" id="search-input-header" class="search-input" placeholder="Buscar produto..." />
-                <button type="submit" class="icon-btn">
-                    <i class="fa-solid fa-search"></i>
-                </button>
-            </form>
-            <div class="header-icons">
-                <button id="favorites-btn" class="icon-btn">
-                    <i class="fa-solid fa-heart"></i>
-                    <span>Meus Favoritos</span>
-                    <span id="favorites-count" class="icon-count hidden">0</span>
-                </button>
-
-                <a href="https://wa.me/5511942138664" target="_blank" class="icon-btn">
-                    <i class="fa-solid fa-headset"></i>
-                    <span>Atendimento</span>
-                </a>
-                <a href="login.html" class="icon-btn">
-                    <i class="fa-solid fa-user"></i>
-                    <span>Minha conta</span>
-                </a>
-                <button id="cart-btn" class="icon-btn">
-                    <i class="fa-solid fa-shopping-cart"></i>
-                    <span>Meu carrinho</span>
-                    <span id="cart-count" class="icon-count hidden">0</span>
-                </button>
-                <button class="icon-btn hamburger-btn" id="hamburger-btn"><i class="fa-solid fa-bars"></i></button>
-            </div>
         </div>
-
-        <nav class="sub-nav">
-            <a href="index.html">PÁGINA INICIAL</a>
-            <div class="submenu-container">
-                <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
-                <ul class="submenu" id="submenu">
-                    <li><a href="produtos.html?category=anel">Anéis</a></li>
-                    <li><a href="produtos.html?category=brinco">Brincos</a></li>
-                    <li><a href="produtos.html?category=corrente">Correntes</a></li>
-                    <li><a href="produtos.html?category=corrente">Colares</a></li>
-                    <li><a href="produtos.html?category=escapulario">Escapulários</a></li>
-                    <li><a href="produtos.html?category=pingente">Pingentes</a></li>
-                    <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
-                </ul>
-            </div>
-            <a href="produtos.html">PEÇAS FEMININAS</a>
-            <a href="index.html#lancamentos">LANÇAMENTOS</a>
-            <a href="produtos.html">TODOS OS PRODUTOS</a>
-            <a href="index.html#selecionados">SELECIONADAS DO CREMA</a>
-        </nav>
     </header>
 
     <div class="container-admin">
 
         <div id="admin-tabs" class="hidden" style="margin-bottom: 2rem;">
-            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                <button class="tab-btn" data-tab="dashboard">📊 Dashboard</button>
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
                 <button class="tab-btn" data-tab="admin-panel">🧾 Cadastro</button>
                 <button class="tab-btn" data-tab="products-panel">📦 Produtos</button>
                 <button class="tab-btn" data-tab="orders-panel">🛒 Pedidos</button>
@@ -101,8 +51,8 @@
         </div>
 
         <!-- PAINEL DE CADASTRO DE PRODUTO -->
-        <div id="admin-panel" class="hidden">
-            <h2>Cadastrar Novo Produto</h2>
+        <div id="admin-panel" class="tab-content hidden">
+            <h2>Cadastrar/Editar Produto</h2>
             <form id="product-form">
                 <div class="form-group">
                     <label for="product-name">Nome do Produto</label>
@@ -113,7 +63,7 @@
                     <input type="number" step="0.01" id="product-cost" required>
                 </div>
                 <div class="form-group">
-                    <label for="product-price">Preço (ex: 159.90)</label>
+                    <label for="product-price">Preço de Venda (ex: 159.90)</label>
                     <input type="number" step="0.01" id="product-price" required>
                 </div>
                 <div class="form-group">
@@ -126,229 +76,82 @@
                 </div>
                 <div class="form-group">
                     <label for="product-image">Imagem do Produto</label>
-                    <input type="file" id="product-image" accept="image/*" required>
+                    <input type="file" id="product-image" accept="image/*">
                 </div>
                 <div class="form-group">
                     <label for="product-category">Categoria</label>
                     <select id="product-category" required>
                         <option value="">Selecione...</option>
                         <option value="anel">Anel</option>
+                        <option value="bracelete">Bracelete</option>
                         <option value="brinco">Brinco</option>
+                        <option value="colar">Colar</option>
                         <option value="corrente">Corrente</option>
                         <option value="escapulario">Escapulário</option>
                         <option value="pingente">Pingente</option>
                         <option value="pulseira">Pulseira</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>Gênero</label>
+                    <div class="radio-group">
+                        <input type="radio" id="gender-masculino" name="gender" value="masculino">
+                        <label for="gender-masculino">Masculino</label>
+                        <input type="radio" id="gender-feminino" name="gender" value="feminino">
+                        <label for="gender-feminino">Feminino</label>
+                        <input type="radio" id="gender-unissex" name="gender" value="unissex" checked>
+                        <label for="gender-unissex">Unissex</label>
+                    </div>
+                </div>
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="product-is-selected">
                     <label for="product-is-selected">Marcar como "Seleção do Crema"</label>
                 </div>
-                <div class="form-group">
-                    <label for="product-terms">Termos Associados</label>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="term-lancamento" name="terms" value="Lançamento">
-                        <label for="term-lancamento">Lançamento</label>
-                        <input type="checkbox" id="term-selecao" name="terms" value="Seleção do Crema">
-                        <label for="term-selecao">Seleção do Crema</label>
-                        <input type="checkbox" id="term-mais-vendidos" name="terms" value="Mais Vendidos">
-                        <label for="term-mais-vendidos">Mais Vendidos</label>
-                    </div>
-                </div>
                 <button type="submit" class="btn btn-primary" id="submit-btn">Cadastrar Produto</button>
             </form>
-
-            <button id="logout-btn" class="btn btn-danger">Sair</button>
+            <button id="logout-btn" class="btn btn-danger" style="margin-top: 2rem;">Sair</button>
         </div>
         
         <!-- DASHBOARD DE RESUMO -->
-        <div id="dashboard" class="hidden" style="margin-bottom: 2rem;">
+        <div id="dashboard" class="tab-content hidden">
             <h2>Resumo do Painel</h2>
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
-                <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
-                    <h3>Total de Pedidos</h3>
-                    <p id="total-orders" style="font-size: 2rem; font-weight: bold;"></p>
-                </div>
-                <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
-                    <h3>Total Vendido</h3>
-                    <p id="total-sales" style="font-size: 2rem; font-weight: bold;"></p>
-                </div>
-                <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
-                    <h3>Produtos Cadastrados</h3>
-                    <p id="total-products" style="font-size: 2rem; font-weight: bold;"></p>
-                </div>
-                <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
-                    <h3>Valor do Estoque</h3>
-                    <p id="total-stock-value" style="font-size: 2rem; font-weight: bold;"></p>
-                </div>
-                <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
-                    <h3>Valor Potencial de Vendas</h3>
-                    <p id="total-stock-sales" style="font-size: 2rem; font-weight: bold;"></p>
-                </div>
-                <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
-                    <h3>Lucro Potencial</h3>
-                    <p id="total-stock-profit" style="font-size: 2rem; font-weight: bold;"></p>
-                </div>
-                <div class="card" style="flex: 1; min-width: 200px; background:#1a1a1a; padding: 1rem; border-radius: 8px;">
-                    <h3>Produtos Esgotados</h3>
-                    <p id="total-outofstock" style="font-size: 2rem; font-weight: bold;"></p>
-                </div>
-                
-                <h3 style="margin-top: 2rem;">Vendas por Período</h3>
-                <select class="graphic-filter" id="chart-filter">
-                    <option value="all">Desde Sempre</option>
-                    <option value="year">Este Ano</option>
-                    <option value="month">Este Mês</option>
-                    <option value="week">Esta Semana</option>
-                    <option value="today">Hoje</option>
-                </select>
-                <canvas id="sales-chart" height="200px"></canvas>
-
-                <h3 style="margin-top: 2rem;">Distribuição por Categoria</h3>
-                <canvas id="category-chart"></canvas>
+            <div class="dashboard-grid">
+                <div class="card"><h3>Total de Produtos</h3><p id="total-products">0</p></div>
+                <div class="card"><h3>Produtos Esgotados</h3><p id="total-outofstock">0</p></div>
+                <div class="card"><h3>Valor do Estoque (Custo)</h3><p id="total-stock-value">R$ 0,00</p></div>
+                <!-- Gráficos -->
+                <div class="card chart-card"><h3>Vendas (Exemplo)</h3><canvas id="sales-chart"></canvas></div>
+                <div class="card chart-card"><h3>Categorias</h3><canvas id="category-chart"></canvas></div>
             </div>
         </div>
 
-
         <!-- PAINEL DE PEDIDOS -->
-        <div id="orders-panel" class="hidden">
+        <div id="orders-panel" class="tab-content hidden">
             <h2>Pedidos Recebidos</h2>
-            <table style="width: 100%; color: white; border-collapse: collapse; margin-top: 1rem;">
-                <thead>
-                    <tr style="border-bottom: 1px solid #555;">
-                        <th style="text-align: left;">Data</th>
-                        <th style="text-align: left;">Itens</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="orders-table-body"></tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Data</th><th>Itens</th><th>Total</th><th>Status</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody id="orders-table-body"></tbody>
+                </table>
+            </div>
         </div>
 
         <!-- PAINEL DE PRODUTOS -->
-        <div id="products-panel" class="hidden">
+        <div id="products-panel" class="tab-content hidden">
             <h2>Produtos Cadastrados</h2>
-            <table style="width: 100%; color: white; border-collapse: collapse;">
-                <thead>
-                    <tr style="border-bottom: 1px solid #555;">
-                        <th>Imagem</th>
-                        <th>Nome</th>
-                        <th>Preço</th>
-                        <th>Estoque</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="products-table-body"></tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Imagem</th><th>Nome</th><th>Preço</th><th>Estoque</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody id="products-table-body"></tbody>
+                </table>
+            </div>
         </div>
-
 
         <div id="message-area" class="hidden"></div>
-    </div>
-
-    <footer class="site-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <!-- Coluna de Contato -->
-                <div class="footer-column">
-                    <div class="footer-contact-card">
-                        <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
-                        <p>Horário de Atendimento: De seg à sex das 9h às 18h</p>
-                        <p><i class="fa-solid fa-phone"></i> (11) 97678-1660</p>
-                        <p><i class="fa-solid fa-envelope"></i> contato@cremapratas.com</p>
-                    </div>
-                </div>
-                <!-- Coluna Loja -->
-                <div class="footer-column">
-                    <h4>LOJA</h4>
-                    <ul>
-                        <li><a href="#">Anéis</a></li>
-                        <li><a href="#">Brincos</a></li>
-                        <li><a href="#">Correntes</a></li>
-                        <li><a href="#">Escapulários</a></li>
-                        <li><a href="#">Pingentes</a></li>
-                    </ul>
-                </div>
-                <!-- Coluna Ajuda -->
-                <div class="footer-column">
-                    <h4>AJUDA</h4>
-                    <ul>
-                        <li><a href="#">Contato</a></li>
-                        <li><a href="#">Perguntas Frequentes</a></li>
-                        <li><a href="#">Política de Entregas</a></li>
-                    </ul>
-                </div>
-                <!-- Coluna Institucional -->
-                <div class="footer-column">
-                    <h4>INSTITUCIONAL</h4>
-                    <ul>
-                        <li><a href="#">Quem Somos</a></li>
-                        <li><a href="#">Política de Privacidade</a></li>
-                        <li><a href="#">Política de Trocas e Devoluções</a></li>
-                        <li><a href="#">Política de Cupom de Descontos</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <div class="footer-bottom-section">
-                    <p>&copy; 2025 Crema Pratas. Todos os direitos reservados.</p>
-                </div>
-                <div class="footer-bottom-section social-links">
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-    <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <header class="modal-header">
-                <h2>Meu Carrinho</h2>
-                <button id="close-modal-btn" class="close-modal-btn">&times;</button>
-            </header>
-            <div id="cart-items" class="modal-body"></div>
-            <footer class="modal-footer">
-                <div class="total-section">
-                    <span>Total:</span>
-                    <span id="cart-total">R$ 0,00</span>
-                </div>
-                <button id="checkout-btn" class="whatsapp-btn">
-                    <i class="fab fa-whatsapp"></i> Finalizar Compra no WhatsApp
-                </button>
-            </footer>
-        </div>
-    </div>
-    
-    <!-- Modal de Favoritos -->
-    <div id="favorites-modal" class="modal">
-        <div class="modal-content">
-            <header class="modal-header">
-                <h2>Meus Favoritos</h2>
-                <button id="close-favorites-modal-btn" class="close-modal-btn">&times;</button>
-            </header>
-            <div id="favorite-items" class="modal-body"></div>
-        </div>
-    </div>
-
-    <!-- Modal de Editar Pedidos -->
-    <div id="edit-order-modal" class="modal-orders hidden">
-        <div class="modal-content">
-            <h2>Editar Pedido</h2>
-            <div id="edit-order-items"></div>
-
-            <label for="edit-order-total">Total:</label>
-            <input type="number" id="edit-order-total" step="0.01" />
-
-            <div style="margin-top: 1rem;">
-                <button id="save-edit-order" class="btn btn-primary">Salvar</button>
-                <button id="cancel-edit-order" class="btn btn-danger">Cancelar</button>
-            </div>
-        </div>
     </div>
     
     <script src="scripts/admin.js" type="module"></script>

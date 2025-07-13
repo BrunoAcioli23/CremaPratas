@@ -1,6 +1,5 @@
 body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--cor-fundo);
             color: var(--cor-texto-principal);
             display: flex;
             flex-direction: column;
@@ -13,6 +12,11 @@ body {
             justify-content: center;
             align-items: center;
             padding: 2rem 0;
+            margin: 5rem auto;
+            border: 1px solid #fff;
+            border-radius: 30px;
+            width: 500px;
+            max-height: 800px;
         }
         .login-container {
             width: 100%;

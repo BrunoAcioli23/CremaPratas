@@ -1,7 +1,7 @@
 // Importar todas as funções necessárias do Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-
-import { getFirestore, collection, getDocs, query, where, orderBy, limit, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, where, orderBy, limit, addDoc, serverTimestamp, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 // Sua configuração do Firebase
 const firebaseConfig = {
@@ -11,17 +11,13 @@ const firebaseConfig = {
     storageBucket: "cremapratas-e70b9.appspot.com",
     messagingSenderId: "601950880055",
     appId: "1:601950880055:web:9660320d933ec2468adab2",
-    measurementId: "G-V31HKENBBY"
 };
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 let currentUser = null;
-const auth = getAuth();
-
-
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
 // Variáveis globais
 let cart = [];
@@ -30,140 +26,105 @@ let allProducts = [];
 let allLaunches = [];
 let allSelected = [];
 
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    currentUser = user;
-    await carregarCarrinhoEFavoritos();
+// --- FUNÇÕES GLOBAIS (disponíveis para outros scripts) ---
+window.addToCart = (product) => {
+  const existingItem = cart.find(item => item.id === product.id);
+  if (existingItem) {
+    existingItem.quantity++;
+  } else {
+    cart.push({ ...product, quantity: 1 });
   }
-});
+  renderCart();
+  salvarDadosDoUsuario();
+};
 
-// Elementos do DOM
-const cartBtn = document.getElementById('cart-btn');
-const favoritesBtn = document.getElementById('favorites-btn');
-const cartModal = document.getElementById('cart-modal');
-const favoritesModal = document.getElementById('favorites-modal');
-const closeModalBtn = document.getElementById('close-modal-btn');
-const closeFavoritesModalBtn = document.getElementById('close-favorites-modal-btn');
-const whatsappNumber = '5511942138664';
+window.toggleFavorite = (product) => {
+    const existingIndex = favorites.findIndex(item => item.id === product.id);
+    if (existingIndex > -1) {
+        favorites.splice(existingIndex, 1);
+    } else {
+        favorites.push(product);
+    }
+    initProductSections();
+    renderFavorites();
+    salvarDadosDoUsuario();
+};
 
-// Inicialização do Swiper de Banners
-const bannerSwiper = new Swiper(".mySwiper", {
-    pagination: { el: ".swiper-pagination", dynamicBullets: true },
-    loop: true,
-    autoplay: { delay: 3000, disableOnInteraction: false },
-});
-
-// --- FUNÇÕES PRINCIPAIS ---
-
-// Função genérica e otimizada para buscar dados no Firestore
-async function fetchData(collectionName, options = {}) {
-    try {
-        const { sortBy, sortDirection = 'desc', limitNumber, filterField, filterValue } = options;
-        let q = collection(db, collectionName);
-        
-        if (filterField && filterValue!== undefined) {
-            q = query(q, where(filterField, "==", filterValue));
-        }
-        if (sortBy) {
-            q = query(q, orderBy(sortBy, sortDirection));
-        }
-        if (limitNumber) {
-            q = query(q, limit(limitNumber));
-        }
-
-        const dataSnapshot = await getDocs(q);
-        return dataSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-    } catch (error) {
-        console.error(`Erro ao buscar dados da coleção ${collectionName}: `, error);
-        if (error.code === 'failed-precondition') {
-            console.error("ERRO IMPORTANTE: Esta consulta requer um índice no Firestore. O Firebase geralmente fornece um link no erro para criá-lo com um clique. Verifique o console do navegador.");
-        }
+window.renderGrid = (containerId, productsData) => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    if (!productsData || productsData.length === 0) {
+        container.innerHTML = `<p style="color: white; text-align: center; width: 100%;">Nenhum item encontrado.</p>`;
         return;
     }
-}
+    productsData.forEach(product => {
+        const gridItem = document.createElement('div');
+        gridItem.innerHTML = createProductCardHTML(product);
+        addCardEventListeners(gridItem, product);
+        container.appendChild(gridItem);
+    });
+};
 
-// Função para criar o HTML de um card de produto (agora com tags de promoção)
+// --- FUNÇÕES INTERNAS DO SCRIPT ---
 function createProductCardHTML(product) {
     const isFavorite = favorites.some(fav => fav.id === product.id);
     let tagsHTML = '';
     if (product.stock === 0) {
         tagsHTML += `<span class="tag" style="background-color:#f44336;color:white;">ESGOTADO</span>`;
     }
-    if (product.discountPercentage) {
-        tagsHTML += `<span class="tag">${product.discountPercentage}% OFF</span>`;
-    }
-    if (product.hasFreeShipping) {
-        tagsHTML += `<span class="tag">FRETE GRÁTIS</span>`;
-    }
-
     return `
-        <div class="product-card">
-            <div class="product-image-wrapper">
-                <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.onerror=null;this.src='https://placehold.co/400x400/1a1a1a/ffffff?text=Imagem+Inválida';">
-                <div class="promo-tags">${tagsHTML}</div>
-                <button class="favorite-btn" data-product-id="${product.id}"><i class="fa-${isFavorite? 'solid' : 'regular'} fa-heart"></i></button>
-            </div>
-            <div class="product-info">
-<h3>${product.name || 'Nome indisponível'}</h3>
-                <div class="product-pricing">
-                    <span class="old-price">R$ ${(product.oldPrice || 0).toFixed(2).replace('.', ',')}</span>
-                    <span class="current-price">R$ ${(product.price || 0).toFixed(2).replace('.', ',')}</span>
+        <a href="produto-detalhe.html?id=${product.id}" class="product-card-link">
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.onerror=null;this.src='https://placehold.co/400x400/1a1a1a/ffffff?text=Imagem+Inválida';">
+                    <div class="promo-tags">${tagsHTML}</div>
+                    <button class="favorite-btn" data-product-id="${product.id}"><i class="fa-${isFavorite ? 'solid' : 'regular'} fa-heart"></i></button>
                 </div>
-                ${product.stock > 0 
-                ? `<button class="add-to-cart-btn">COMPRAR</button>` 
-                : `<button class="add-to-cart-btn" disabled style="background-color:#555; cursor:not-allowed; opacity:0.6;">ESGOTADO</button>`}
+                <div class="product-info">
+                    <h3>${product.name || 'Nome indisponível'}</h3>
+                    <div class="product-pricing">
+                        ${product.oldPrice > 0 ? `<span class="old-price">R$ ${product.oldPrice.toFixed(2).replace('.', ',')}</span>` : ''}
+                        <span class="current-price">R$ ${(product.price || 0).toFixed(2).replace('.', ',')}</span>
+                    </div>
+                    <button class="add-to-cart-btn" data-product-id="${product.id}" ${product.stock === 0 ? 'disabled' : ''}>
+                        ${product.stock > 0 ? 'COMPRAR' : 'ESGOTADO'}
+                    </button>
+                </div>
             </div>
-        </div>`;
+        </a>`;
 }
 
-// Função para renderizar produtos em um carrossel (Swiper)
+function addCardEventListeners(cardElement, product) {
+    cardElement.querySelector('.add-to-cart-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.addToCart(product);
+    });
+    cardElement.querySelector('.favorite-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.toggleFavorite(product);
+    });
+}
+
 function renderCarousel(containerId, productsData, swiperConfig) {
     const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = '';
-
     if (!productsData || productsData.length === 0) {
         container.innerHTML = `<p style="color: white; text-align: center; width: 100%;">Nenhum item encontrado.</p>`;
         return;
     }
-
     productsData.forEach(product => {
         const swiperSlide = document.createElement('div');
         swiperSlide.className = 'swiper-slide';
         swiperSlide.innerHTML = createProductCardHTML(product);
-        
-        swiperSlide.querySelector('.add-to-cart-btn').addEventListener('click', () => addToCart(product));
-        swiperSlide.querySelector('.favorite-btn').addEventListener('click', () => toggleFavorite(product));
+        addCardEventListeners(swiperSlide, product);
         container.appendChild(swiperSlide);
     });
-    
     new Swiper(swiperConfig.container, swiperConfig.options);
 }
-
-// Nova função para renderizar produtos em uma grade (Grid)
-function renderGrid(containerId, productsData) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = '';
-
-    if (!productsData || productsData.length === 0) {
-        container.innerHTML = `<p style="color: white; text-align: center; width: 100%;">Nenhum item selecionado encontrado.</p>`;
-        return;
-    }
-
-    productsData.forEach(product => {
-        const gridItem = document.createElement('div');
-        gridItem.innerHTML = createProductCardHTML(product);
-
-        gridItem.querySelector('.add-to-cart-btn').addEventListener('click', () => addToCart(product));
-        gridItem.querySelector('.favorite-btn').addEventListener('click', () => toggleFavorite(product));
-        container.appendChild(gridItem);
-    });
-}
-
-
-// --- FUNÇÕES AUXILIARES (Carrinho, Favoritos, etc.) ---
 
 function renderCart() {
     const cartItemsContainer = document.getElementById('cart-items');
@@ -171,6 +132,7 @@ function renderCart() {
     const cartCount = document.getElementById('cart-count');
     cartItemsContainer.innerHTML = cart.length === 0? '<p>Seu carrinho está vazio.</p>' : '';
     if (cart.length > 0) {
+        cartItemsContainer.innerHTML = '';
         cart.forEach(item => {
             const cartItem = document.createElement('div');
             cartItem.className = 'cart-item';
@@ -192,6 +154,7 @@ function renderFavorites() {
     const favoritesCount = document.getElementById('favorites-count');
     favoriteItemsContainer.innerHTML = favorites.length === 0? '<p>Você ainda não favoritou nenhum item.</p>' : '';
     if (favorites.length > 0) {
+        favoriteItemsContainer.innerHTML = '';
         favorites.forEach(item => {
             const favoriteItem = document.createElement('div');
             favoriteItem.className = 'favorite-item';
@@ -203,60 +166,35 @@ function renderFavorites() {
     favoritesCount.classList.toggle('hidden', favorites.length === 0);
     document.querySelectorAll('.remove-from-favorites-btn').forEach(btn => btn.addEventListener('click', (e) => {
         const product = favorites.find(p => p.id === e.currentTarget.dataset.productId);
-        toggleFavorite(product);
+        window.toggleFavorite(product);
     }));
     document.querySelectorAll('.add-fav-to-cart-btn').forEach(btn => btn.addEventListener('click', (e) => {
         const product = favorites.find(p => p.id === e.currentTarget.dataset.productId);
-        addToCart(product);
-        toggleModal(favoritesModal, false);
-        toggleModal(cartModal, true);
+        window.addToCart(product);
+        toggleModal(document.getElementById('favorites-modal'), false);
+        toggleModal(document.getElementById('cart-modal'), true);
     }));
 }
 
-import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
 async function carregarCarrinhoEFavoritos() {
   if (!currentUser) return;
-
   try {
     const userDocRef = doc(db, "users", currentUser.uid);
     const userSnap = await getDoc(userDocRef);
     const userData = userSnap.exists() ? userSnap.data() : {};
-
     cart = userData.cart || [];
     favorites = userData.favorites || [];
-
     renderCart();
     renderFavorites();
-  } catch (err) {
-    console.error("Erro ao carregar dados do usuário:", err);
-  }
+  } catch (err) { console.error("Erro ao carregar dados do usuário:", err); }
 }
 
 async function salvarDadosDoUsuario() {
   if (!currentUser) return;
-
   try {
     const userDocRef = doc(db, "users", currentUser.uid);
-    await setDoc(userDocRef, {
-      cart,
-      favorites
-    }, { merge: true });
-  } catch (err) {
-    console.error("Erro ao salvar dados do usuário:", err);
-  }
-}
-
-
-function addToCart(product) {
-  const existingItem = cart.find(item => item.id === product.id);
-  if (existingItem) {
-    existingItem.quantity++;
-  } else {
-    cart.push({ ...product, quantity: 1 });
-  }
-  renderCart();
-  salvarDadosDoUsuario();
+    await setDoc(userDocRef, { cart, favorites }, { merge: true });
+  } catch (err) { console.error("Erro ao salvar dados do usuário:", err); }
 }
 
 function removeFromCart(productId) {
@@ -278,351 +216,161 @@ function updateQuantity(productId, change) {
   }
 }
 
-function toggleFavorite(product) {
-    const existingIndex = favorites.findIndex(item => item.id === product.id);
-    if (existingIndex > -1) {
-        favorites.splice(existingIndex, 1);
-    } else {
-        favorites.push(product);
-    }
-
-    // 1. Recria os carrosséis para atualizar os ícones de coração na página
-    const productSwiperConfig = { container: '.product-swiper', options: { slidesPerView: 1, spaceBetween: 30, navigation: { nextEl: ".product-swiper .swiper-button-next", prevEl: ".product-swiper .swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
-    const releasesSwiperConfig = { container: '.releases-swiper', options: { slidesPerView: 1, spaceBetween: 30, navigation: { nextEl: ".releases-swiper .swiper-button-next", prevEl: ".releases-swiper .swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
-    
-    if (document.getElementById('product-list')) {
-        renderCarousel('product-list', allProducts, productSwiperConfig);
-    }
-    if (document.getElementById('releases-list')) {
-        renderCarousel('releases-list', allLaunches, releasesSwiperConfig);
-    }
-    if (document.getElementById('selected-products-grid')) {
-        renderGrid('selected-products-grid', allSelected);
-    }
-
-    // 2. Garante que o modal de favoritos seja sempre atualizado
-    renderFavorites();
-
-    // 3. Salva os dados no Firestore
-    salvarDadosDoUsuario();
-}
-
 function toggleModal(modalElement, show) {
   if (!modalElement) return;
-  if (show) {
-    modalElement.classList.add('visible');
-  } else {
-    modalElement.classList.remove('visible');
-  }
+  modalElement.classList.toggle('visible', show);
 }
 
 // --- EVENT LISTENERS ---
 document.addEventListener("DOMContentLoaded", () => {
-  const cartBtn = document.getElementById('cart-btn');
-  const cartModal = document.getElementById('cart-modal');
-  const closeModalBtn = document.getElementById('close-modal-btn');
+    // Listeners dos Modais
+    const cartBtn = document.getElementById('cart-btn');
+    const cartModal = document.getElementById('cart-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const favoritesBtn = document.getElementById('favorites-btn');
+    const favoritesModal = document.getElementById('favorites-modal');
+    const closeFavoritesModalBtn = document.getElementById('close-favorites-modal-btn');
 
-  const favoritesBtn = document.getElementById('favorites-btn');
-  const favoritesModal = document.getElementById('favorites-modal');
-  const closeFavoritesModalBtn = document.getElementById('close-favorites-modal-btn');
+    if (cartBtn) cartBtn.addEventListener('click', () => { renderCart(); toggleModal(cartModal, true); });
+    if (closeModalBtn) closeModalBtn.addEventListener('click', () => toggleModal(cartModal, false));
+    if (cartModal) cartModal.addEventListener('click', (e) => { if (e.target === cartModal) toggleModal(cartModal, false); });
+    
+    if (favoritesBtn) favoritesBtn.addEventListener('click', () => { renderFavorites(); toggleModal(favoritesModal, true); });
+    if (closeFavoritesModalBtn) closeFavoritesModalBtn.addEventListener('click', () => toggleModal(favoritesModal, false));
+    if (favoritesModal) favoritesModal.addEventListener('click', (e) => { if (e.target === favoritesModal) toggleModal(favoritesModal, false); });
 
-  if (cartBtn && cartModal && closeModalBtn) {
-    cartBtn.addEventListener('click', () => {
-      renderCart();
-      toggleModal(cartModal, true);
+    // --- NOVO BLOCO: INTERAÇÕES DO HEADER ---
+    const allCategoryBtns = document.querySelectorAll(".categories-btn");
+    allCategoryBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const submenu = btn.nextElementSibling;
+            if (submenu && submenu.classList.contains('submenu')) {
+                submenu.classList.toggle('active');
+            }
+        });
     });
 
-    closeModalBtn.addEventListener('click', () => toggleModal(cartModal, false));
-    cartModal.addEventListener('click', (e) => {
-      if (e.target === cartModal) toggleModal(cartModal, false);
+    // Fecha o submenu se clicar fora
+    window.addEventListener('click', (e) => {
+        if (!e.target.closest('.submenu-container')) {
+            document.querySelectorAll('.submenu').forEach(submenu => {
+                submenu.classList.remove('active');
+            });
+        }
     });
-  }
-
-  if (favoritesBtn && favoritesModal && closeFavoritesModalBtn) {
-    favoritesBtn.addEventListener('click', () => {
-      renderFavorites();
-      toggleModal(favoritesModal, true);
-    });
-
-    closeFavoritesModalBtn.addEventListener('click', () => toggleModal(favoritesModal, false));
-    favoritesModal.addEventListener('click', (e) => {
-      if (e.target === favoritesModal) toggleModal(favoritesModal, false);
-    });
-  }
 });
 
-closeFavoritesModalBtn.addEventListener('click', () => toggleModal(favoritesModal, false));
-cartModal.addEventListener('click', (e) => { if (e.target === cartModal) toggleModal(cartModal, false); });
-
-document.getElementById('checkout-btn').addEventListener('click', async () => {
-    if (cart.length === 0) {
-        console.log('Carrinho vazio!');
-        return;
-    }
-
+document.getElementById('checkout-btn')?.addEventListener('click', async () => {
+    if (cart.length === 0) return;
     let message = 'Olá! Gostaria de fazer um pedido com os seguintes itens:\n\n';
     let total = 0;
-
     const orderItems = cart.map(item => {
         const subtotal = item.price * item.quantity;
         total += subtotal;
         message += `*${item.name}* (${item.quantity}x) - R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
-        return {
-            productId: item.id,
-            name: item.name,
-            quantity: item.quantity,
-            price: item.price
-        };
+        return { productId: item.id, name: item.name, quantity: item.quantity, price: item.price };
     });
-
-
     message += `\n*Total do Pedido: R$ ${total.toFixed(2).replace('.', ',')}*`;
-
-    // 📥 Salvar pedido no Firestore
     try {
-        // Objeto que será salvo no banco de dados
-        await addDoc(collection(db, 'orders'), {
-            userId: currentUser.uid, // <<-- ADICIONE ESTA LINHA
-            items: orderItems,
-            total,
-            status: 'aberto',
-            createdAt: serverTimestamp()
-        });
-        console.log('Pedido salvo no Firestore com ID do usuário');
-    } catch (error) {
-        console.error('Erro ao salvar pedido:', error);
-    }
-
-    // Enviar para o WhatsApp
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
+        await addDoc(collection(db, 'orders'), { userId: currentUser?.uid, items: orderItems, total, status: 'aberto', createdAt: serverTimestamp() });
+    } catch (error) { console.error('Erro ao salvar pedido:', error); }
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=5511942138664&text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
-
-    // Limpar o carrinho local
     cart = [];
     renderCart();
+    salvarDadosDoUsuario();
 });
 
+// --- LÓGICA DE INICIALIZAÇÃO E PÁGINAS ESPECÍFICAS ---
+async function fetchData(collectionName, options = {}) {
+    try {
+        const { sortBy, sortDirection = 'desc', limitNumber, filterField, filterValue } = options;
+        let q = collection(db, collectionName);
+        if (filterField && filterValue !== undefined) q = query(q, where(filterField, "==", filterValue));
+        if (sortBy) q = query(q, orderBy(sortBy, sortDirection));
+        if (limitNumber) q = query(q, limit(limitNumber));
+        const dataSnapshot = await getDocs(q);
+        return dataSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error(`Erro ao buscar ${collectionName}: `, error);
+        return [];
+    }
+}
 
-// --- INICIALIZAÇÃO DO SITE ---
-async function init() {
-    // Configurações dos carrosséis
-    const productSwiperConfig = { container: '.product-swiper', options: { slidesPerView: 1, spaceBetween: 30, navigation: { nextEl: ".product-swiper.swiper-button-next", prevEl: ".product-swiper.swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
-    const releasesSwiperConfig = { container: '.releases-swiper', options: { slidesPerView: 1, spaceBetween: 30, navigation: { nextEl: ".releases-swiper.swiper-button-next", prevEl: ".releases-swiper.swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
+async function initProductSections() {
+    const productSwiperConfig = { container: '.product-swiper', options: { slidesPerView: 1, spaceBetween: 30, navigation: { nextEl: ".product-swiper .swiper-button-next", prevEl: ".product-swiper .swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
+    const releasesSwiperConfig = { container: '.releases-swiper', options: { slidesPerView: 1, spaceBetween: 30, navigation: { nextEl: ".releases-swiper .swiper-button-next", prevEl: ".releases-swiper .swiper-button-prev" }, breakpoints: { 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } } } };
 
-    // Busca todos os dados em paralelo para otimizar o carregamento
     const [productsData, launchesData, selectedData] = await Promise.all([
-    fetchData('products', { sortBy: 'sold', sortDirection: 'desc', limitNumber: 10 }),
-    fetchData('products', { sortBy: 'createdAt', sortDirection: 'desc', limitNumber: 10 }),
-    fetchData('products', { filterField: 'isSelected', filterValue: true })
+        fetchData('products', { sortBy: 'sold', sortDirection: 'desc', limitNumber: 10 }),
+        fetchData('products', { sortBy: 'createdAt', sortDirection: 'desc', limitNumber: 10 }),
+        fetchData('products', { filterField: 'isSelected', filterValue: true })
     ]);
 
     allProducts = productsData;
     allLaunches = launchesData;
     allSelected = selectedData;
 
-    // Renderiza cada seção com seus respectivos dados
-    renderCarousel('product-list', allProducts, productSwiperConfig);
-    renderCarousel('releases-list', allLaunches, releasesSwiperConfig);
-    renderGrid('selected-products-grid', allSelected);
+    if(document.getElementById('product-list')) renderCarousel('product-list', allProducts, productSwiperConfig);
+    if(document.getElementById('releases-list')) renderCarousel('releases-list', allLaunches, releasesSwiperConfig);
+    if(document.getElementById('selected-products-grid')) window.renderGrid('selected-products-grid', allSelected);
 }
 
-// Inicia o site
-document.addEventListener('DOMContentLoaded', init);
-
-  // ADICIONE ESTE NOVO BLOCO NO LUGAR DO ANTIGO
-
-// Lógica para o menu Hambúrguer (Mobile)
-const hamburgerBtn = document.getElementById('hamburger-btn');
-const mainNav = document.getElementById('main-nav');
-
-hamburgerBtn.addEventListener('click', () => {
-    mainNav.classList.toggle('active');
-});
-
-// Lógica para AMBOS os submenus de Categoria (Desktop e Mobile)
-const allCategoryBtns = document.querySelectorAll(".categories-btn");
-const allSubmenus = document.querySelectorAll('.submenu');
-
-allCategoryBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation(); // Impede que o clique se propague para o 'window'
-
-        // Encontra o submenu específico deste botão
-        const targetSubmenu = btn.nextElementSibling;
-
-        // Fecha outros submenus que possam estar abertos
-        allSubmenus.forEach(submenu => {
-            if (submenu !== targetSubmenu) {
-                submenu.classList.remove('active');
-            }
-        });
-
-        // Abre ou fecha o submenu clicado
-        if (targetSubmenu && targetSubmenu.classList.contains('submenu')) {
-            targetSubmenu.classList.toggle('active');
-        }
-    });
-});
-
-// Fecha os submenus se o usuário clicar fora deles
-window.addEventListener('click', (e) => {
-    // Verifica se o clique não foi dentro de um .submenu-container
-    if (!e.target.closest('.submenu-container')) {
-        allSubmenus.forEach(submenu => {
-            submenu.classList.remove('active');
-        });
-    }
-});
-
-        // Lógica de envio do formulário de cadastro de produtos
-        const productForm = document.getElementById('product-form');
-        if (productForm) {
-            productForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(productForm);
-            const productData = {
-                name: formData.get('name'),
-                price: parseFloat(formData.get('price')),
-                oldPrice: parseFloat(formData.get('oldPrice')),
-                image: formData.get('image'),
-                terms: formData.getAll('terms'),
-                timestamp: serverTimestamp()
-            };
-
-            try {
-                await addDoc(collection(db, 'products'), productData);
-                showMessage('Produto cadastrado com sucesso!', 'success');
-                productForm.reset();
-            } catch (error) {
-                showMessage('Erro ao cadastrar produto: ' + error.message, 'error');
-            }
-        });
-        }
-
-        // Página de produtos.html
 if (window.location.pathname.includes("produtos.html")) {
-  document.addEventListener("DOMContentLoaded", async () => {
-    const produtosGrid = document.getElementById("produtos-grid");
-    const searchInput = document.getElementById("global-search") || document.getElementById("search-input") || document.getElementById("search-input-header");
-    const params = new URLSearchParams(window.location.search);
-    
-    const filtros = { categorias: [], mm: [], cm: [], busca: "" };
-
-    // CAPTURAR BUSCA DA URL
-    const categoriaUrl = params.get("category");
-    const buscaUrl = params.get("busca");
-
-    if (categoriaUrl) filtros.categorias = [categoriaUrl];
-    if (buscaUrl) {
-      filtros.busca = decodeURIComponent(buscaUrl).toLowerCase();
-      if (searchInput) searchInput.value = filtros.busca;
-    }
-
-    let produtos = [];
-
-    try {
-      const snapshot = await getDocs(collection(db, "products"));
-      produtos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    } catch (err) {
-      console.error("Erro ao carregar produtos:", err);
-      produtosGrid.innerHTML = `<p style="color:white;">Erro ao carregar produtos.</p>`;
-      return;
-    }
-
-    const aplicarFiltros = () => {
-      let filtrados = [...produtos];
-
-      // Filtro de Categoria (continua igual)
-      if (filtros.categorias.length > 0) {
-        filtrados = filtrados.filter(p => filtros.categorias.includes(p.category));
-      }
-
-      // --- LÓGICA CORRIGIDA ABAIXO ---
-
-      // Filtro de Espessura (mm) - Buscando no nome do produto
-      if (filtros.mm.length > 0) {
-        filtrados = filtrados.filter(p => 
-          filtros.mm.some(val => p.name.toLowerCase().includes(val.toLowerCase()))
-        );
-      }
-
-      // Filtro de Comprimento (cm) - Buscando no nome do produto
-      if (filtros.cm.length > 0) {
-        filtrados = filtrados.filter(p => 
-          filtros.cm.some(val => p.name.toLowerCase().includes(val.toLowerCase()))
-        );
-      }
-      
-      // --- FIM DA LÓGICA CORRIGIDA ---
-
-      // Filtro de Busca (continua igual)
-      if (filtros.busca) {
-        const termo = filtros.busca.toLowerCase();
-        filtrados = filtrados.filter(p => p.name?.toLowerCase().includes(termo));
-      }
-
-      renderGrid("produtos-grid", filtrados);
+    const aplicarFiltros = (produtos, filtros) => {
+        let filtrados = [...produtos];
+        if (filtros.categorias.length > 0) filtrados = filtrados.filter(p => filtros.categorias.includes(p.category));
+        if (filtros.mm.length > 0) filtrados = filtrados.filter(p => filtros.mm.some(val => p.name.toLowerCase().includes(val.toLowerCase())));
+        if (filtros.cm.length > 0) filtrados = filtrados.filter(p => filtros.cm.some(val => p.name.toLowerCase().includes(val.toLowerCase())));
+        if (filtros.busca) filtrados = filtrados.filter(p => p.name?.toLowerCase().includes(filtros.busca));
+        window.renderGrid("produtos-grid", filtrados);
     };
 
-    aplicarFiltros(); 
+    document.addEventListener("DOMContentLoaded", async () => {
+        const params = new URLSearchParams(window.location.search);
+        const filtros = {
+            categorias: params.get("category") ? [params.get("category")] : [],
+            mm: [],
+            cm: [],
+            busca: params.get("busca") ? decodeURIComponent(params.get("busca")).toLowerCase() : ""
+        };
 
-    // Event Listeners dos Filtros (o resto do código continua igual)
-    document.querySelectorAll(".filtro-categoria").forEach(input => {
-      input.addEventListener("change", () => {
-        const categoriasSelecionadas = Array.from(document.querySelectorAll(".filtro-categoria:checked")).map(i => i.value);
-        // Atualiza a URL sem recarregar a página
-        const url = new URL(window.location);
-        if (categoriasSelecionadas.length > 0) {
-            url.searchParams.set('category', categoriasSelecionadas.join(','));
-        } else {
-            url.searchParams.delete('category');
-        }
-        history.pushState({}, '', url);
+        const searchInput = document.getElementById('search-input-header');
+        if (searchInput && filtros.busca) searchInput.value = filtros.busca;
 
-        filtros.categorias = categoriasSelecionadas;
-        aplicarFiltros();
-      });
-      // Marca os checkboxes com base na URL inicial
-      if (filtros.categorias.includes(input.value)) {
-        input.checked = true;
-      }
+        const todosOsProdutos = await fetchData('products', {});
+        aplicarFiltros(todosOsProdutos, filtros);
+
+        document.querySelectorAll(".filtro-categoria, .filtro-mm, .filtro-cm").forEach(input => {
+            if (input.classList.contains('filtro-categoria') && filtros.categorias.includes(input.value)) input.checked = true;
+            input.addEventListener("change", () => {
+                filtros.categorias = Array.from(document.querySelectorAll(".filtro-categoria:checked")).map(i => i.value);
+                filtros.mm = Array.from(document.querySelectorAll(".filtro-mm:checked")).map(i => i.value);
+                filtros.cm = Array.from(document.querySelectorAll(".filtro-cm:checked")).map(i => i.value);
+                aplicarFiltros(todosOsProdutos, filtros);
+            });
+        });
+        if(searchInput) searchInput.addEventListener("input", e => {
+            filtros.busca = e.target.value.toLowerCase();
+            aplicarFiltros(todosOsProdutos, filtros);
+        });
     });
-
-    document.querySelectorAll(".filtro-mm").forEach(input => {
-      input.addEventListener("change", () => {
-        filtros.mm = Array.from(document.querySelectorAll(".filtro-mm:checked")).map(i => i.value);
-        aplicarFiltros();
-      });
-    });
-
-    document.querySelectorAll(".filtro-cm").forEach(input => {
-      input.addEventListener("change", () => {
-        filtros.cm = Array.from(document.querySelectorAll(".filtro-cm:checked")).map(i => i.value);
-        aplicarFiltros();
-      });
-    });
-
-    if (searchInput) {
-      searchInput.addEventListener("input", e => {
-        filtros.busca = e.target.value.toLowerCase();
-        aplicarFiltros();
-      });
-    }
-  });
 }
 
-const searchForm = document.getElementById("search-form");
+// --- INICIALIZAÇÃO GERAL ---
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  await carregarCarrinhoEFavoritos();
+  if (!window.location.pathname.includes("produtos.html")) {
+    initProductSections();
+  }
+});
 
-if (searchForm && searchInput) {
-  searchForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const termo = searchInput.value.trim();
-    if (termo) {
-      const encoded = encodeURIComponent(termo);
-      window.location.href = `produtos.html?busca=${encoded}`;
-    }
-  });
-}
+var swiper = new Swiper(".mySwiper", {
+      pagination: {
+        el: ".swiper-pagination",
+        dynamicBullets: true,
+      },
+    });
