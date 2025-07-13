@@ -72,6 +72,7 @@
         </div>
 
         <nav class="sub-nav">
+            <button id="close-mobile-nav" class="close-mobile-nav-btn">&times;</button>
             <a href="index.html">PÁGINA INICIAL</a>
             <div class="submenu-container">
                 <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
@@ -88,7 +89,6 @@
             <a href="produtos.html?gender=feminino">PEÇAS FEMININAS</a>
             <a href="index.html#lancamentos">LANÇAMENTOS</a>
             <a href="produtos.html">TODOS OS PRODUTOS</a>
-            <a href="index.html#selecionados">SELECIONADAS DO CREMA</a>
             <a href="index.html#sobrenos">Sobre nós</a>
         </nav>
     </header>
@@ -138,35 +138,53 @@
         </div>
     </section>
 
+    <!-- Seção de Coleções com Swiper -->
     <section class="collections-section container">
         <div class="divisor-de-secao">
             <h2 class="section-title">COLEÇÕES</h2>
         </div>
-        <div class="collections-grid">
-            <a href="produtos.html?category=correntes" class="collection-card">
-                <img src="image/Correntes.jpg" alt="Coleção de Correntes">
-                <span class="collection-card-title">Correntes</span>
-            </a>
-            <a href="produtos.html?category=pulseiras" class="collection-card">
-                <img src="image/Pulseiras.jpeg" alt="Coleção de Pulseiras">
-                <span class="collection-card-title">Pulseiras</span>
-            </a>
-            <a href="produtos.html?category=aneis" class="collection-card">
-                <img src="image/Aneis.jpg" alt="Coleção de Anéis">
-                <span class="collection-card-title">Anéis</span>
-            </a>
-            <a href="produtos.html?category=pingentes" class="collection-card">
-                <img src="image/Pingentes.jpeg" alt="Coleção de Pingentes">
-                <span class="collection-card-title">Pingentes</span>
-            </a>
-            <a href="produtos.html?category=brincos" class="collection-card">
-                <img src="image/Brincos.jpg" alt="Coleção de Brincos">
-                <span class="collection-card-title">Brincos</span>
-            </a>
-            <a href="produtos.html?category=escapularios" class="collection-card">
-                <img src="image/Escapulario.jpg" alt="Coleção de Escapulários">
-                <span class="collection-card-title">Escapulários</span>
-            </a>
+        <div class="swiper collections-swiper">
+            <div class="swiper-wrapper swiper-collections-wrapper">
+                <div class="swiper-slide">
+                    <a href="produtos.html?category=correntes" class="collection-card">
+                        <img src="image/Correntes.jpg" alt="Coleção de Correntes">
+                        <span class="collection-card-title">Correntes</span>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="produtos.html?category=pulseiras" class="collection-card">
+                        <img src="image/Pulseiras.jpeg" alt="Coleção de Pulseiras">
+                        <span class="collection-card-title">Pulseiras</span>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="produtos.html?category=aneis" class="collection-card">
+                        <img src="image/Aneis.jpg" alt="Coleção de Anéis">
+                        <span class="collection-card-title">Anéis</span>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="produtos.html?category=pingentes" class="collection-card">
+                        <img src="image/Pingentes.jpeg" alt="Coleção de Pingentes">
+                        <span class="collection-card-title">Pingentes</span>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="produtos.html?category=brincos" class="collection-card">
+                        <img src="image/Brincos.jpg" alt="Coleção de Brincos">
+                        <span class="collection-card-title">Brincos</span>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="produtos.html?category=escapularios" class="collection-card">
+                        <img src="image/Escapulario.jpg" alt="Coleção de Escapulários">
+                        <span class="collection-card-title">Escapulários</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Botões de Navegação -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
         </div>
     </section>
 
