@@ -445,3 +445,14 @@ var swiper = new Swiper(".mySwiper", {
         dynamicBullets: true,
       },
     });
+
+new Swiper(".benefits-swiper", {
+        loop: true,
+        spaceBetween: 10,
+        pagination: { el: ".benefits-swiper .swiper-pagination", clickable: true },
+        breakpoints: {
+            480: { slidesPerView: 2, spaceBetween: 15 },
+            768: { slidesPerView: 3, spaceBetween: 20 },
+            1024: { slidesPerView: 4, spaceBetween: 30 }
+        }
+    });

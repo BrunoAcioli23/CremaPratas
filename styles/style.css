@@ -214,7 +214,6 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.6);
             z-index: 99;
@@ -1088,13 +1087,41 @@
         
         /* ESTILOS PARA TELAS MENORES (MOBILE) */
         @media (max-width: 991px) {
+
+            .logo {
+                height: 30px;
+            }
+
             .site-header {
                 padding: 0.5rem 1rem;
             }
 
-            .header-content form {
-                display: none;
-            }
+    .header-content form {
+        display: flex;
+        margin: 0 1rem;
+        flex: 1;
+        max-width: 100%;
+    }
+
+    .header-content {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .search-input {
+        font-size: 0.9rem;
+        padding: 10px 45px 10px 15px;
+    }
+
+    .header-icons {
+        gap: 0.75rem;
+        flex-wrap: nowrap;
+    }
+
+    .header-content .logo-link {
+        flex-shrink: 0;
+    }
+
             .header-icons .icon-btn span,
             .header-icons a[href*="wa.me"],
             .header-icons a[href="login.html"] {
@@ -1192,17 +1219,20 @@
             padding: 0 10px;
         }
 
+        .swiper-beneficts-wrapper {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
         @media (max-width: 640px) {
             .swiper-collections-wrapper {
                 min-height: 300px;
             }
         }
 
-        @media (max-width: 768px) {
-            .product-card {
-                max-height: 100px;
-            }
-        }
+        
 
         @media (max-width: 563px) {
             .product-card {
@@ -1213,7 +1243,7 @@
             }
 
             .selected-products-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             }
         }
 
@@ -1232,3 +1262,75 @@
                 align-items: center;
             }
         }
+
+        @media (max-width: 768px) {
+            .product-card {
+                max-height: 100px;
+            }
+
+        }
+        
+
+        /* --- Seção de Benefícios (Swiper) --- */
+        .benefits-section {
+            padding: 3rem 1rem;
+            background-color: #1c1c1c;
+        }
+        
+        .benefits-swiper {
+            padding-bottom: 2.5rem;
+        }
+
+        .benefits-swiper .swiper-slide {
+            height: auto;
+            align-items: stretch;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 1rem;
+            height: 100%;
+        }
+
+        .benefit-item i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--cor-primaria);
+        }
+        .benefit-item h3 {
+            font-weight: 700;
+        }
+        .benefit-item p {
+            font-size: 0.875rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        .benefits-swiper .swiper-pagination-bullet-active {
+            background-color: var(--cor-primaria);
+        }
+
+        
+
+        .banner-container {
+    width: 100%;
+    position: relative;
+    top: 0;
+    z-index: 10;
+}
+
+.banner-swiper {
+    width: 100%;
+    aspect-ratio: 16 / 9; /* mantém a proporção da imagem */
+    max-height: 500px;
+    background-color: #000; /* opcional */
+}
+
+
+.banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background-color: #000;
+    object-position: center;
+}
