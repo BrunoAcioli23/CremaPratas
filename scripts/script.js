@@ -448,6 +448,10 @@ var swiper = new Swiper(".mySwiper", {
 
 new Swiper(".benefits-swiper", {
         loop: true,
+        autoplay: {
+            delay: 1000,
+            disableOnInteraction: false,
+        },
         spaceBetween: 10,
         pagination: { el: ".benefits-swiper .swiper-pagination", clickable: true },
         breakpoints: {
