@@ -208,8 +208,16 @@
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 0.5rem;
   }
+
+
 }
 
+@media (max-width: 480px) {
+      .newsletter {
+        height: 200px;
+        padding: 1rem;
+      }
+}
 
 @media (max-width: 339px) {
     .produtos-grid {

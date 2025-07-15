@@ -1474,6 +1474,7 @@
     gap: 0.75rem;
   }
 
+<<<<<<< HEAD
           .newsletter {
             position: relative;
             z-index: 1;
@@ -1487,6 +1488,12 @@
             overflow: hidden;
         }
 
+=======
+
+    .newsletter {
+    height: 800px;
+  }
+>>>>>>> 483df07c0cb62c9901c3944030fe789868127f73
 }
 
 @media (max-width: 576px) {
