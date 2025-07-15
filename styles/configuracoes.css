@@ -65,7 +65,7 @@ h1 {
         padding: 2rem 0 0;
         font-family: 'Inter', sans-serif;
         color: #fff;
-        background: #000;
+        background-color: #000000;
         border: 2px solid #5c5c5c;
         border-radius: 30px;
         display: flex;
@@ -247,5 +247,35 @@ h1 {
   .account-flex {
     flex-direction: column;
     gap: 2rem; /* Reduz o espaçamento */
+  }
+}
+
+@media (max-width: 992px) {
+  .config-container {
+    width: 90%;
+  }
+  .account-flex {
+    flex-direction: column;
+    gap: 1.5rem; /* Reduz o espaçamento */
+  }
+
+  .empty-box {
+    border: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .config-container {
+    width: 95%;
+    padding: 1rem;
+  }
+  .account-flex {
+    flex-direction: column;
+    gap: 1rem; /* Reduz o espaçamento */
+  }
+
+  .empty-box {
+    padding: 20px;
+    border: none;
   }
 }

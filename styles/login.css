@@ -13,6 +13,7 @@ body {
             align-items: center;
             padding: 2rem 0;
             margin: 5rem auto;
+            background-color: #131313;
             border: 1px solid #fff;
             border-radius: 30px;
             width: 500px;
@@ -69,7 +70,14 @@ body {
             text-align: center;
             margin-top: 2rem;
             color: var(--cor-texto-secundario);
+            transition: color 0.3s, transform 0.3s;
         }
+
+        .form-link:hover {
+            color: var(--cor-primaria);
+            transform: translateY(-3px);
+        }
+
         .form-link a {
             color: var(--cor-primaria);
             font-weight: 600;
@@ -86,3 +94,20 @@ body {
         }
         #message-area.success { background-color: var(--cor-sucesso); color: var(--cor-fundo); }
         #message-area.error { background-color: var(--cor-erro); color: white; }
+
+        @media (max-width: 600px) {
+            .login-main {
+                width: 90%;
+                margin: 2rem auto;
+                padding: 1rem;
+            }
+            .form-title { font-size: 2rem; }
+            .form-container { padding: 1.5rem; }
+            .btn { font-size: 0.9rem; }
+            
+            .login-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+            }
+        }

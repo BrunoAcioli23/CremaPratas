@@ -4,20 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crema pratas</title>
-    <!-- Font Awesome para ícones -->
+    <link rel="icon" href="image/logo-redonda.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/produto-detalhe.css">
-    <link rel="icon" href="image/logo-redonda.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 <body>
 
-    <!-- Copie seu header do index.html e cole aqui -->
+    <nav class="nav-oculto">
+        <div class="swiper nav-oculto-swiper">
+            <div class="swiper-wrapper swiper-oculto-wrapper">
+                <div class="swiper-slide">Frete Grátis acima de R$ 200</div>
+                <div class="swiper-slide">Brinde na primeira compra</div>
+                <div class="swiper-slide">Entrega em 2 dias para campinas e região</div>
+            </div>
+        </div>
+    </nav>
+
     <header class="site-header">
 
         <div class="container header-content">
@@ -48,29 +56,60 @@
                     <span>Meu carrinho</span>
                     <span id="cart-count" class="icon-count hidden">0</span>
                 </button>
-                <button class="icon-btn hamburger-btn" id="hamburger-btn"><i class="fa-solid fa-bars"></i></button>
+                <button class="icon-btn hamburger-btn" id="hamburger-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </div>
         </div>
 
+        <div class="body-overlay" id="body-overlay"></div>
         <nav class="sub-nav">
-            <a href="index.html">PÁGINA INICIAL</a>
+            <button id="close-mobile-nav" class="close-mobile-nav-btn"><i class="fa-solid fa-xmark"></i></button>
+            <a href="index.html"><i class="fa-solid fa-house"></i> Página Inicial</a>
             <div class="submenu-container">
-                <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
-                <ul class="submenu" id="submenu">
-                    <li><a href="produtos.html?category=anel">Anéis</a></li>
+            <a href="#" class="categories-btn"><i class="fa-solid fa-bars-staggered"></i> Categorias</a>
+                <ul class="submenu">
+                    <li><a href="produtos.html?category=colar">Colares</a></li>
+                    <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
                     <li><a href="produtos.html?category=brinco">Brincos</a></li>
                     <li><a href="produtos.html?category=corrente">Correntes</a></li>
-                    <li><a href="produtos.html?category=corrente">Colares</a></li>
-                    <li><a href="produtos.html?category=escapulario">Escapulários</a></li>
+                    <li><a href="produtos.html?category=escapularios">Escapulários</a></li>
                     <li><a href="produtos.html?category=pingente">Pingentes</a></li>
+                </ul>
+                </div>
+            <a href="produtos.html?gender=feminino"><i class="fa-solid fa-venus"></i> Peças Femininas</a>
+            <a href="index.html#lancamentos"><i class="fa-solid fa-bolt"></i> Lançamentos</a>
+            <a href="produtos.html"><i class="fa-solid fa-layer-group"></i> Todos os Produtos</a>
+            <a href="index.html#sobrenos"><i class="fa-solid fa-users"></i> Sobre Nós</a>
+
+            <div class="mobile-account-section">
+                <i class="fa-regular fa-user"></i>
+                <div class="mobile-account-links">
+                    <a href="login.html">Iniciar sessão</a>
+                </div>
+            </div>
+        </nav>
+
+        <nav class="desktop-nav">
+            <div class="container">
+                <ul class="desktop-menu">
+                <li><a href="index.html">Página Inicial</a></li>
+                <li class="has-submenu">
+                    <a href="#">Categorias</a>
+                    <ul class="submenu-desktop">
+                    <li><a href="produtos.html?category=colar">Colares</a></li>
                     <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                    <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                    <li><a href="produtos.html?category=anel">Anéis</a></li>
+                    </ul>
+                </li>
+                <li><a href="produtos.html?gender=feminino">Peças Femininas</a></li>
+                <li><a href="index.html#lancamentos">Lançamentos</a></li>
+                <li><a href="produtos.html">Todos os Produtos</a></li>
+                <li><a href="index.html#selecionados">Selecionadas do Crema</a></li>
+                <li><a href="index.html#sobrenos">Sobre Nós</a></li>
                 </ul>
             </div>
-            <a href="produtos.html">PEÇAS FEMININAS</a>
-            <a href="index.html#lancamentos">LANÇAMENTOS</a>
-            <a href="produtos.html">TODOS OS PRODUTOS</a>
-            <a href="index.html#selecionados">SELECIONADAS DO CREMA</a>
-            <a href="index.html#sobrenos">Sobre nós</a>
         </nav>
     </header>
 
@@ -97,7 +136,7 @@
                     <button id="add-to-favorites-detail-btn" class="btn-secondary"><i class="fa-regular fa-heart"></i> Adicionar à Lista de Desejos</button>
                 </div>
 
-                 <div class="description-section">
+                <div class="description-section">
                     <h4>Descrição</h4>
                     <div id="product-description">
                         <p>Carregando descrição...</p>
@@ -115,7 +154,7 @@
         </section>
     </main>
     
-    <!-- Copie seu footer do index.html e cole aqui -->
+    <!-- Rodapé -->
     <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
@@ -129,9 +168,9 @@
                     </div>
                 </div>
                 <!-- Coluna Loja -->
-                <div class="footer-column">
-                    <h4>LOJA</h4>
-                    <ul>
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">LOJA</button>
+                    <ul class="footer-links">
                         <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
                         <li><a href="produtos.html?category=brinco">Brincos</a></li>
                         <li><a href="produtos.html?category=corrente">Correntes</a></li>
@@ -140,18 +179,18 @@
                     </ul>
                 </div>
                 <!-- Coluna Ajuda -->
-                <div class="footer-column">
-                    <h4>AJUDA</h4>
-                    <ul>
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">AJUDA</button>
+                    <ul class="footer-links">
                         <li><a href="mailto:cremapratas@gmail.com">Contato</a></li>
                         <li><a href="#">Perguntas Frequentes</a></li>
                         <li><a href="#">Política de Entregas</a></li>
                     </ul>
                 </div>
                 <!-- Coluna Institucional -->
-                <div class="footer-column">
-                    <h4>INSTITUCIONAL</h4>
-                    <ul>
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">INSTITUCIONAL</button>
+                    <ul class="footer-links">
                         <li><a href="index.html#sobrenos">Quem Somos</a></li>
                         <li><a href="#">Política de Privacidade</a></li>
                         <li><a href="#">Política de Trocas e Devoluções</a></li>
@@ -165,15 +204,13 @@
                 </div>
                 <div class="footer-bottom-section social-links">
                     <a href="https://www.instagram.com/crema_pratas/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
                     <a href="https://wa.me/5511942138664" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Modais (copie do seu index.html) -->
+    <!-- Modal do Carrinho -->
     <div id="cart-modal" class="modal">
         <div class="modal-content">
             <header class="modal-header">
@@ -204,7 +241,8 @@
         </div>
     </div>
 
-    <script src="scripts/script.js" type="module"></script> <!-- Script principal -->
-    <script src="scripts/produto-detalhe.js" type="module"></script> <!-- Novo JS -->
+    <script src="scripts/script.js" type="module"></script>
+    <script src="scripts/produto-detalhe.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html>

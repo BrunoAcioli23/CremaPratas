@@ -516,3 +516,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+const searchFormHeader = document.getElementById('search-form-header');
+  const searchInputHeader = document.getElementById('search-input-header');
+
+  searchFormHeader.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const searchTerm = searchInputHeader.value.trim();
+    if (searchTerm) {
+      window.location.href = `produtos.html?busca=${encodeURIComponent(searchTerm)}`;
+    } else {
+      window.location.href = 'produtos.html';
+    }
+  });
+
+  const carousel = document.querySelector('#carouselExampleIndicators');
+    let startX = 0;
+    let endX = 0;
+
+    carousel.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+    });
+
+    carousel.addEventListener('touchend', function(e) {
+        endX = e.changedTouches[0].clientX;
+        if (startX - endX > 50) {
+        bootstrap.Carousel.getInstance(carousel).next();
+        } else if (endX - startX > 50) {
+        bootstrap.Carousel.getInstance(carousel).prev();
+        }
+    });

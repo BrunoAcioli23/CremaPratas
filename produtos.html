@@ -4,19 +4,28 @@
   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crema pratas</title>
-    <!-- Font Awesome para ícones -->
+    <link rel="icon" href="image/logo-redonda.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/produtos.css">
-    <link rel="icon" href="image/logo-redonda.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 <body>
-  <header class="site-header">
+  <nav class="nav-oculto">
+        <div class="swiper nav-oculto-swiper">
+            <div class="swiper-wrapper swiper-oculto-wrapper">
+                <div class="swiper-slide">Frete Grátis acima de R$ 200</div>
+                <div class="swiper-slide">Brinde na primeira compra</div>
+                <div class="swiper-slide">Entrega em 2 dias para campinas e região</div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="site-header">
 
         <div class="container header-content">
             <a href="index.html" class="logo-link"><img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas"></a>
@@ -46,30 +55,128 @@
                     <span>Meu carrinho</span>
                     <span id="cart-count" class="icon-count hidden">0</span>
                 </button>
-                <button class="icon-btn hamburger-btn" id="hamburger-btn"><i class="fa-solid fa-bars"></i></button>
+                <button class="icon-btn hamburger-btn" id="hamburger-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </div>
         </div>
 
+        <div class="body-overlay" id="body-overlay"></div>
         <nav class="sub-nav">
-            <a href="index.html">PÁGINA INICIAL</a>
+            <button id="close-mobile-nav" class="close-mobile-nav-btn"><i class="fa-solid fa-xmark"></i></button>
+            <a href="index.html"><i class="fa-solid fa-house"></i> Página Inicial</a>
             <div class="submenu-container">
-                <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
-                <ul class="submenu" id="submenu">
-                    <li><a href="produtos.html?category=anel">Anéis</a></li>
+            <a href="#" class="categories-btn"><i class="fa-solid fa-bars-staggered"></i> Categorias</a>
+                <ul class="submenu">
+                    <li><a href="produtos.html?category=colar">Colares</a></li>
+                    <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
                     <li><a href="produtos.html?category=brinco">Brincos</a></li>
                     <li><a href="produtos.html?category=corrente">Correntes</a></li>
-                    <li><a href="produtos.html?category=corrente">Colares</a></li>
-                    <li><a href="produtos.html?category=escapulario">Escapulários</a></li>
+                    <li><a href="produtos.html?category=escapularios">Escapulários</a></li>
                     <li><a href="produtos.html?category=pingente">Pingentes</a></li>
+                </ul>
+                </div>
+            <a href="produtos.html?gender=feminino"><i class="fa-solid fa-venus"></i> Peças Femininas</a>
+            <a href="index.html#lancamentos"><i class="fa-solid fa-bolt"></i> Lançamentos</a>
+            <a href="produtos.html"><i class="fa-solid fa-layer-group"></i> Todos os Produtos</a>
+            <a href="index.html#sobrenos"><i class="fa-solid fa-users"></i> Sobre Nós</a>
+
+            <div class="mobile-account-section">
+                <i class="fa-regular fa-user"></i>
+                <div class="mobile-account-links">
+                    <a href="login.html">Iniciar sessão</a>
+                </div>
+            </div>
+        </nav>
+
+        <nav class="desktop-nav">
+            <div class="container">
+                <ul class="desktop-menu">
+                <li><a href="index.html">Página Inicial</a></li>
+                <li class="has-submenu">
+                    <a href="#">Categorias</a>
+                    <ul class="submenu-desktop">
+                    <li><a href="produtos.html?category=colar">Colares</a></li>
                     <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                    <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                    <li><a href="produtos.html?category=anel">Anéis</a></li>
+                    </ul>
+                </li>
+                <li><a href="produtos.html?gender=feminino">Peças Femininas</a></li>
+                <li><a href="index.html#lancamentos">Lançamentos</a></li>
+                <li><a href="produtos.html">Todos os Produtos</a></li>
+                <li><a href="index.html#selecionados">Selecionadas do Crema</a></li>
+                <li><a href="index.html#sobrenos">Sobre Nós</a></li>
                 </ul>
             </div>
-            <a href="produtos.html">PEÇAS FEMININAS</a>
-            <a href="index.html#lancamentos">LANÇAMENTOS</a>
-            <a href="produtos.html">TODOS OS PRODUTOS</a>
-            <a href="index.html#selecionados">SELECIONADAS DO CREMA</a>
         </nav>
     </header>
+
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+        <img src="image/BannerCanva1.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+        <img src="image/BannerCanva2.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+        <img src="image/BannerCanva3.png" class="d-block w-100" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+    </div>
+
+
+    <!-- Seção de Benefícios -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="swiper benefits-swiper">
+                <div class="swiper-wrapper swiper-beneficts-wrapper">
+                    <div class="swiper-slide">
+                        <div class="benefit-item">
+                            <i class="fa-solid fa-credit-card"></i>
+                            <h3>5X SEM JUROS</h3>
+                            <p>Parcelamento facilitado</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="benefit-item">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            <h3>FRETE GRÁTIS</h3>
+                            <p>Acima de R$300 para todo Brasil</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="benefit-item">
+                            <i class="fa-solid fa-gem"></i>
+                            <h3>GARANTIA ETERNA</h3>
+                            <p>Referente ao teor da Joia.</p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="benefit-item">
+                            <i class="fa-solid fa-gift"></i>
+                            <h3>BRINDE EXCLUSIVO</h3>
+                            <p>Para deixar sua joia sempre brilhando</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
   <div class="produtos-page-container">
     <div class="filtros-mobile-header">
@@ -123,7 +230,8 @@
     </div>
 </div>
 
-  <footer class="site-footer">
+  <!-- Rodapé -->
+    <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
                 <!-- Coluna de Contato -->
@@ -131,35 +239,35 @@
                     <div class="footer-contact-card">
                         <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
                         <p>Horário de Atendimento: De seg à sex das 9h às 18h</p>
-                        <p><i class="fa-solid fa-phone"></i> (11) 97678-1660</p>
-                        <p><i class="fa-solid fa-envelope"></i> contato@cremapratas.com</p>
+                        <p><i class="fa-solid fa-phone"></i><a href="https://wa.me/5511942138664">(11) 97678-1660</a></p>
+                        <p><i class="fa-solid fa-envelope"></i><a href="mailto:cremapratas@gmail.com">cremapratas@gmail.com</a></p>
                     </div>
                 </div>
                 <!-- Coluna Loja -->
-                <div class="footer-column">
-                    <h4>LOJA</h4>
-                    <ul>
-                        <li><a href="#">Anéis</a></li>
-                        <li><a href="#">Brincos</a></li>
-                        <li><a href="#">Correntes</a></li>
-                        <li><a href="#">Escapulários</a></li>
-                        <li><a href="#">Pingentes</a></li>
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">LOJA</button>
+                    <ul class="footer-links">
+                        <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                        <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                        <li><a href="produtos.html?category=corrente">Correntes</a></li>
+                        <li><a href="produtos.html?category=escapularios">Escapulários</a></li>
+                        <li><a href="produtos.html?category=pingente">Pingentes</a></li>
                     </ul>
                 </div>
                 <!-- Coluna Ajuda -->
-                <div class="footer-column">
-                    <h4>AJUDA</h4>
-                    <ul>
-                        <li><a href="#">Contato</a></li>
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">AJUDA</button>
+                    <ul class="footer-links">
+                        <li><a href="mailto:cremapratas@gmail.com">Contato</a></li>
                         <li><a href="#">Perguntas Frequentes</a></li>
                         <li><a href="#">Política de Entregas</a></li>
                     </ul>
                 </div>
                 <!-- Coluna Institucional -->
-                <div class="footer-column">
-                    <h4>INSTITUCIONAL</h4>
-                    <ul>
-                        <li><a href="#">Quem Somos</a></li>
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">INSTITUCIONAL</button>
+                    <ul class="footer-links">
+                        <li><a href="index.html#sobrenos">Quem Somos</a></li>
                         <li><a href="#">Política de Privacidade</a></li>
                         <li><a href="#">Política de Trocas e Devoluções</a></li>
                         <li><a href="#">Política de Cupom de Descontos</a></li>
@@ -171,10 +279,8 @@
                     <p>&copy; 2025 Crema Pratas. Todos os direitos reservados.</p>
                 </div>
                 <div class="footer-bottom-section social-links">
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/crema_pratas/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/5511942138664" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
         </div>
@@ -204,14 +310,16 @@
     <div id="favorites-modal" class="modal">
         <div class="modal-content">
             <header class="modal-header">
-                <h2>Meus Favoritos</h2>
-                <button id="close-favorites-modal-btn" class="close-modal-btn">&times;</button>
+            <h2>Meus Favoritos</h2>
+            <button id="close-favorites-modal-btn" class="close-modal-btn">&times;</button>
             </header>
             <div id="favorite-items" class="modal-body"></div>
         </div>
     </div>
 
     <script src="scripts/script.js" type="module"></script>
+    <script src="scripts/produto.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 </body>
 </html>
