@@ -68,16 +68,26 @@
         <nav class="sub-nav">
   <button id="close-mobile-nav" class="close-mobile-nav-btn"><i class="fa-solid fa-xmark"></i></button>
   <a href="index.html"><i class="fa-solid fa-house"></i> Página Inicial</a>
-  <a href="#"><i class="fa-solid fa-bars-staggered"></i> Categorias</a>
-  <a href="#"><i class="fa-solid fa-venus"></i> Peças Femininas</a>
-  <a href="#"><i class="fa-solid fa-bolt"></i> Lançamentos</a>
-  <a href="#"><i class="fa-solid fa-layer-group"></i> Todos os Produtos</a>
-  <a href="#"><i class="fa-solid fa-users"></i> Sobre Nós</a>
+  <div class="submenu-container">
+  <a href="#" class="categories-btn"><i class="fa-solid fa-bars-staggered"></i> Categorias</a>
+    <ul class="submenu">
+        <li><a href="produtos.html?category=colar">Colares</a></li>
+        <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+        <li><a href="produtos.html?category=brinco">Brincos</a></li>
+        <li><a href="produtos.html?category=corrente">Correntes</a></li>
+        <li><a href="produtos.html?category=escapularios">Escapulários</a></li>
+        <li><a href="produtos.html?category=pingente">Pingentes</a></li>
+    </ul>
+    </div>
+  <a href="produtos.html?gender=feminino"><i class="fa-solid fa-venus"></i> Peças Femininas</a>
+  <a href="index.html#lancamentos"><i class="fa-solid fa-bolt"></i> Lançamentos</a>
+  <a href="produtos.html"><i class="fa-solid fa-layer-group"></i> Todos os Produtos</a>
+  <a href="index.html#sobrenos"><i class="fa-solid fa-users"></i> Sobre Nós</a>
 </nav>
     </header>
 
     <!-- Carrossel Swiper -->
-    <div id="carouselExampleIndicators" class="carousel slide">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -158,7 +168,7 @@
                 </div>
                 <div class="swiper-slide">
                     <a href="produtos.html?category=colar" class="collection-card">
-                        <img src="image/Colares.jpg" alt="Coleção de Colares">
+                        <img src="image/Colares.png" alt="Coleção de Colares">
                         <span class="collection-card-title">Coláres</span>
                     </a>
                 </div>
@@ -170,19 +180,19 @@
                 </div>
                 <div class="swiper-slide">
                     <a href="produtos.html?category=pingentes" class="collection-card">
-                        <img src="image/Pingentes.jpeg" alt="Coleção de Pingentes">
+                        <img src="image/Pingentes.png" alt="Coleção de Pingentes">
                         <span class="collection-card-title">Pingentes</span>
                     </a>
                 </div>
                 <div class="swiper-slide">
                     <a href="produtos.html?category=brincos" class="collection-card">
-                        <img src="image/Brincos.jpeg" alt="Coleção de Brincos">
+                        <img src="image/Brincos.png" alt="Coleção de Brincos">
                         <span class="collection-card-title">Brincos</span>
                     </a>
                 </div>
                 <div class="swiper-slide">
                     <a href="produtos.html?category=escapularios" class="collection-card">
-                        <img src="image/Escapularios.jpeg" alt="Coleção de Escapulários">
+                        <img src="image/Escapularios.png" alt="Coleção de Escapulários">
                         <span class="collection-card-title">Escapulários</span>
                     </a>
                 </div>
@@ -281,9 +291,9 @@
                     </div>
                 </div>
                 <!-- Coluna Loja -->
-                <div class="footer-column">
-                    <h4>LOJA</h4>
-                    <ul>
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">LOJA</button>
+                    <ul class="footer-links">
                         <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
                         <li><a href="produtos.html?category=brinco">Brincos</a></li>
                         <li><a href="produtos.html?category=corrente">Correntes</a></li>
@@ -292,18 +302,18 @@
                     </ul>
                 </div>
                 <!-- Coluna Ajuda -->
-                <div class="footer-column">
-                    <h4>AJUDA</h4>
-                    <ul>
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">AJUDA</button>
+                    <ul class="footer-links">
                         <li><a href="mailto:cremapratas@gmail.com">Contato</a></li>
                         <li><a href="#">Perguntas Frequentes</a></li>
                         <li><a href="#">Política de Entregas</a></li>
                     </ul>
                 </div>
                 <!-- Coluna Institucional -->
-                <div class="footer-column">
-                    <h4>INSTITUCIONAL</h4>
-                    <ul>
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">INSTITUCIONAL</button>
+                    <ul class="footer-links">
                         <li><a href="index.html#sobrenos">Quem Somos</a></li>
                         <li><a href="#">Política de Privacidade</a></li>
                         <li><a href="#">Política de Trocas e Devoluções</a></li>
@@ -360,6 +370,24 @@
     <script src="scripts/script.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <script>
+    const carousel = document.querySelector('#carouselExampleIndicators');
+    let startX = 0;
+    let endX = 0;
+
+    carousel.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+    });
+
+    carousel.addEventListener('touchend', function(e) {
+        endX = e.changedTouches[0].clientX;
+        if (startX - endX > 50) {
+        bootstrap.Carousel.getInstance(carousel).next();
+        } else if (endX - startX > 50) {
+        bootstrap.Carousel.getInstance(carousel).prev();
+        }
+    });
+    </script>
     <script>
   const searchFormHeader = document.getElementById('search-form-header');
   const searchInputHeader = document.getElementById('search-input-header');

@@ -505,3 +505,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const toggles = document.querySelectorAll(".footer-toggle");
+
+  toggles.forEach(toggle => {
+    toggle.addEventListener("click", () => {
+      toggle.classList.toggle("active");
+      const links = toggle.nextElementSibling;
+      links.classList.toggle("expanded");
+    });
+  });
+});
