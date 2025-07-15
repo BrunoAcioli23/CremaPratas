@@ -1,157 +1,240 @@
+/* --- GERAL DA PÁGINA DE PRODUTOS --- */
+.produtos-page-container {
+    padding: 1rem;
+    color: white;
+}
+
 .produtos-container {
-      display: flex;
-      gap: 2rem;
-      padding: 2rem;
-      color: white;
-    }
+    display: flex;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
 
-    .filtros {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border: solid 1px #ccc;
-      border-radius: 10px;
-      padding: 1rem;
-      height: 700px;
-      width: 10%;
-      min-width: 10%;
-    }
+/* --- FILTROS (DESKTOP) --- */
+.filtros {
+    flex: 0 0 250px; /* Base de 250px, não cresce nem encolhe */
+    background-color: var(--cor-fundo-secundario);
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 1.5rem;
+    height: fit-content; /* Altura se ajusta ao conteúdo */
+    position: sticky; /* Fica fixo ao rolar a página */
+    top: 140px; /* Distância do topo (ajuste conforme a altura do seu header) */
+}
 
-    .filtros h3 {
-      margin-bottom: 0.5rem;
-    }
+.filtro-grupo {
+    margin-bottom: 2rem;
+    border-top: 1px solid #333;
+    padding-top: 1rem;
+}
 
-    .filtros label {
-      display: block;
-      margin: 0.25rem 0;
-    }
+.filtro-grupo:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
 
-    .produtos-grid {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-    }
+.filtro-grupo h4 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: var(--cor-primaria);
+}
 
-    .search-bar {
-      margin: 1rem 2rem;
-      width: calc(100% - 4rem);
-    }
+.filtro-grupo label {
+    display: block;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
 
-    .search-bar input {
-      width: 50%;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      border: none;
-      font-size: 1rem;
-      margin: 20px 30%;
-    }
+.filtro-grupo label:hover {
+    color: var(--cor-primaria);
+}
 
-    /* Estilos para cards de produtos */
-    .produto-card {
-      background-color: var(--cor-fundo-secundario);
-      border: 1px solid #2a2a2a;
-      border-radius: 0.5rem;
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
-    }
+.filtro-grupo input {
+    margin-right: 0.5rem;
+    accent-color: var(--cor-primaria);
+}
 
-    .produto-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
-    }
+/* --- GRADE DE PRODUTOS --- */
+.produtos-grid {
+    flex: 1; /* Ocupa o espaço restante */
+    display: grid;
+    /* Colunas responsivas: auto-fit para preencher o espaço, minmax para definir o tamanho mínimo e máximo do card */
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
 
-    .produto-imagem {
-      position: relative;
-      overflow: hidden;
-    }
+/* O card de produto já está bem estilizado no seu style.css global, não precisamos mexer aqui */
 
-    .produto-imagem img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
 
-    .produto-card:hover .produto-imagem img {
-      transform: scale(1.05);
-    }
+/* --- BOTÕES DE CONTROLE DOS FILTROS (VISÍVEIS APENAS NO MOBILE) --- */
+.filtros-mobile-header {
+    display: none; /* Escondido no desktop */
+    margin-bottom: 1.5rem;
+}
 
-    .favorite-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(0, 0, 0, 0.7);
-      border: none;
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
-      color: white;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s ease;
-    }
+.toggle-filtros-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--cor-fundo-secundario);
+    border: 1px solid #333;
+    color: var(--cor-texto-principal);
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
 
-    .favorite-btn:hover {
-      background: rgba(0, 0, 0, 0.9);
-    }
+.toggle-filtros-btn i {
+    margin-right: 0.5rem;
+}
 
-    .produto-info {
-      padding: 1rem;
-    }
+.filtros-header {
+    display: none; /* Escondido no desktop */
+}
 
-    .produto-info h4 {
-      margin-bottom: 0.5rem;
-      color: var(--cor-texto-principal);
-      font-size: 1rem;
-      font-weight: 600;
-    }
 
-    .produto-preco {
-      color: var(--cor-primaria);
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .add-to-cart-btn {
-      width: 100%;
-      background-color: var(--cor-primaria);
-      color: var(--cor-fundo);
-      border: none;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .add-to-cart-btn:hover {
-      background-color: #b8b8b8;
-    }
-
-    /* Responsividade */
-    @media (max-width: 768px) {
-      .produtos-container {
+/* --- RESPONSIVIDADE (MOBILE) --- */
+@media (max-width: 991px) {
+    .produtos-container {
         flex-direction: column;
-        padding: 1rem;
-      }
-      
-      .filtros {
-        width: 100%;
-        height: auto;
-      }
-      
-      .produtos-grid {
+    }
+
+    /* Esconde o botão de abrir e o cabeçalho dos filtros */
+    .filtros-mobile-header {
+        display: block;
+    }
+    .filtros-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+    }
+    .filtros-header h3 {
+        font-size: 1.5rem;
+    }
+    .close-filtros-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+
+    /* Transforma a sidebar de filtros em um menu lateral */
+    .filtros {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 85%;
+        max-width: 320px;
+        height: 100%;
+        z-index: 1000;
+        transform: translateX(-100%); /* Começa escondido à esquerda */
+        transition: transform 0.35s ease-in-out;
+        overflow-y: auto;
+        border-radius: 0;
+        top: 0 !important; /* Remove o 'sticky' */
+    }
+
+    .filtros.active {
+        transform: translateX(0); /* Mostra o menu */
+    }
+    
+    .produtos-grid {
+        /* Ajuste fino para o tamanho dos cards no mobile */
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 1rem;
-      }
-      
-      .search-bar input {
-        width: 100%;
-        margin: 10px 0;
-      }
     }
+}
+
+@media (max-width: 768px) {
+  .product-card {
+    min-height: 400px;
+    min-width: 170px;
+    max-height: 400px;
+  }
+
+  .product-image {
+    height: 180px;
+    
+  }
+
+  .product-info h3 {
+    font-size: 0.95rem;
+  }
+
+  .product-pricing .current-price {
+    font-size: 1rem;
+  }
+
+  .add-to-cart-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+
+  .produtos-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .product-card {
+    min-height: 350px;
+    min-width: 150px;
+    max-height: 350px;
+  }
+
+  .product-image {
+    height: 160px;
+  }
+
+  .product-info h3 {
+    font-size: 0.9rem;
+  }
+
+  .product-pricing .current-price {
+    font-size: 0.95rem;
+  }
+
+  .add-to-cart-btn {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+
+  .produtos-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.5rem;
+  }
+}
+
+
+@media (max-width: 339px) {
+    .produtos-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-card {
+        width: 100%;
+        max-width: 250px;
+        min-width: 250px;
+        max-height: 370px;
+        min-height: 370px;
+        margin-bottom: 1rem;
+    }
+
+    .product-image {
+        height: 200px;
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .header-icons {
+        margin: 10px auto;
+    }
+}

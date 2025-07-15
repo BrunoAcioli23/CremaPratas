@@ -14,23 +14,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/style.css">
-    <style>
-
-    .swiper-pagination-bullet {
-        background-color: #a0a0a0;
-    }
-
-    .swiper-pagination-bullet-active {
-        background-color: #dfdfdf;
-    }
-
-    </style>
 </head>
 <body>
 
     <nav class="nav-oculto">
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
+        <div class="swiper nav-oculto-swiper">
+            <div class="swiper-wrapper swiper-oculto-wrapper">
                 <div class="swiper-slide">Frete Grátis acima de R$ 200</div>
                 <div class="swiper-slide">Brinde na primeira compra</div>
                 <div class="swiper-slide">Entrega em 2 dias para campinas e região</div>
@@ -68,30 +57,23 @@
                     <span>Meu carrinho</span>
                     <span id="cart-count" class="icon-count hidden">0</span>
                 </button>
-                <button class="icon-btn hamburger-btn" id="hamburger-btn"><i class="fa-solid fa-bars"></i></button>
+                <button class="icon-btn hamburger-btn" id="hamburger-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </div>
         </div>
 
+        <div class="body-overlay" id="body-overlay"></div>
+
         <nav class="sub-nav">
-            <button id="close-mobile-nav" class="close-mobile-nav-btn">&times;</button>
-            <a href="index.html">PÁGINA INICIAL</a>
-            <div class="submenu-container">
-                <a href="#" class="categories-btn">Categorias <i class="fa-solid fa-chevron-down fa-xs"></i></a>
-                <ul class="submenu" id="submenu">
-                    <li><a href="produtos.html?category=anel">Anéis</a></li>
-                    <li><a href="produtos.html?category=brinco">Brincos</a></li>
-                    <li><a href="produtos.html?category=corrente">Correntes</a></li>
-                    <li><a href="produtos.html?category=corrente">Colares</a></li>
-                    <li><a href="produtos.html?category=escapulario">Escapulários</a></li>
-                    <li><a href="produtos.html?category=pingente">Pingentes</a></li>
-                    <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
-                </ul>
-            </div>
-            <a href="produtos.html?gender=feminino">PEÇAS FEMININAS</a>
-            <a href="index.html#lancamentos">LANÇAMENTOS</a>
-            <a href="produtos.html">TODOS OS PRODUTOS</a>
-            <a href="index.html#sobrenos">Sobre nós</a>
-        </nav>
+  <button id="close-mobile-nav" class="close-mobile-nav-btn"><i class="fa-solid fa-xmark"></i></button>
+  <a href="index.html"><i class="fa-solid fa-house"></i> Página Inicial</a>
+  <a href="#"><i class="fa-solid fa-bars-staggered"></i> Categorias</a>
+  <a href="#"><i class="fa-solid fa-venus"></i> Peças Femininas</a>
+  <a href="#"><i class="fa-solid fa-bolt"></i> Lançamentos</a>
+  <a href="#"><i class="fa-solid fa-layer-group"></i> Todos os Produtos</a>
+  <a href="#"><i class="fa-solid fa-users"></i> Sobre Nós</a>
+</nav>
     </header>
 
     <!-- Carrossel Swiper -->
@@ -164,7 +146,7 @@
     <!-- Seção de Coleções com Swiper -->
     <section class="collections-section container">
         <div class="divisor-de-secao">
-            <h2 class="section-title">COLEÇÕES</h2>
+            <h2 class="section-title">COLEÇÕES <i class="fa-solid fa-box" style="color: #ececec;"></i></h2>
         </div>
         <div class="swiper collections-swiper">
             <div class="swiper-wrapper swiper-collections-wrapper">

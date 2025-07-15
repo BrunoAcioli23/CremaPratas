@@ -71,40 +71,57 @@
         </nav>
     </header>
 
-  <div class="produtos-container">
-    <!-- FILTROS -->
-    <aside class="filtros">
-      <h3>Categoria</h3>
-      <label><input type="checkbox" class="filtro-categoria" value="anel"> Anel</label>
-      <label><input type="checkbox" class="filtro-categoria" value="brinco"> Brinco</label>
-      <label><input type="checkbox" class="filtro-categoria" value="corrente"> Corrente</label>
-      <label><input type="checkbox" class="filtro-categoria" value="escapulario"> Escapulário</label>
-      <label><input type="checkbox" class="filtro-categoria" value="pingente"> Pingente</label>
-      <label><input type="checkbox" class="filtro-categoria" value="pulseira"> Pulseira</label>
+  <div class="produtos-page-container">
+    <div class="filtros-mobile-header">
+        <button id="toggle-filtros-btn" class="toggle-filtros-btn">
+            <i class="fa-solid fa-filter"></i>
+            Filtrar e Ordenar
+        </button>
+    </div>
 
-      <h3 style="margin-top:1rem;">Espessura</h3>
-      <label><input type="checkbox" class="filtro-mm" value="1mm"> 1mm</label>
-      <label><input type="checkbox" class="filtro-mm" value="2mm"> 2mm</label>
-      <label><input type="checkbox" class="filtro-mm" value="2,3mm"> 2,3mm</label>
-      <label><input type="checkbox" class="filtro-mm" value="2,7mm"> 2,7mm</label>
-      <label><input type="checkbox" class="filtro-mm" value="3mm"> 3mm</label>
-      <label><input type="checkbox" class="filtro-mm" value="4,5mm"> 4,5mm</label>
-      <label><input type="checkbox" class="filtro-mm" value="6,5mm"> 6,5mm</label>
-      <label><input type="checkbox" class="filtro-mm" value="20mm"> 20mm</label>
+    <div class="produtos-container">
+        <aside id="filtros-sidebar" class="filtros">
+            <div class="filtros-header">
+                <h3>Filtros</h3>
+                <button id="close-filtros-btn" class="close-filtros-btn">&times;</button>
+            </div>
 
-      <h3 style="margin-top:1rem;">Comprimento</h3>
-      <label><input type="checkbox" class="filtro-cm" value="20cm"> 20cm</label>
-      <label><input type="checkbox" class="filtro-cm" value="45cm"> 45cm</label>
-      <label><input type="checkbox" class="filtro-cm" value="50cm"> 50cm</label>
-      <label><input type="checkbox" class="filtro-cm" value="60cm"> 60cm</label>
-      <label><input type="checkbox" class="filtro-cm" value="70cm"> 70cm</label>
-    </aside>
+            <div class="filtro-grupo">
+                <h4>Categoria</h4>
+                <label><input type="checkbox" class="filtro-categoria" value="anel"> Anel</label>
+                <label><input type="checkbox" class="filtro-categoria" value="brinco"> Brinco</label>
+                <label><input type="checkbox" class="filtro-categoria" value="corrente"> Corrente</label>
+                <label><input type="checkbox" class="filtro-categoria" value="escapulario"> Escapulário</label>
+                <label><input type="checkbox" class="filtro-categoria" value="pingente"> Pingente</label>
+                <label><input type="checkbox" class="filtro-categoria" value="pulseira"> Pulseira</label>
+            </div>
 
-    <!-- GRADE DE PRODUTOS -->
-    <main id="produtos-grid" class="produtos-grid">
-      <!-- JS irá preencher aqui os produtos -->
-    </main>
-  </div>
+            <div class="filtro-grupo">
+                <h4>Espessura</h4>
+                <label><input type="checkbox" class="filtro-mm" value="1mm"> 1mm</label>
+                <label><input type="checkbox" class="filtro-mm" value="2mm"> 2mm</label>
+                <label><input type="checkbox" class="filtro-mm" value="2,3mm"> 2,3mm</label>
+                <label><input type="checkbox" class="filtro-mm" value="2,7mm"> 2,7mm</label>
+                <label><input type="checkbox" class="filtro-mm" value="3mm"> 3mm</label>
+                <label><input type="checkbox" class="filtro-mm" value="4,5mm"> 4,5mm</label>
+                <label><input type="checkbox" class="filtro-mm" value="6,5mm"> 6,5mm</label>
+                <label><input type="checkbox" class="filtro-mm" value="20mm"> 20mm</label>
+            </div>
+
+            <div class="filtro-grupo">
+                <h4>Comprimento</h4>
+                <label><input type="checkbox" class="filtro-cm" value="20cm"> 20cm</label>
+                <label><input type="checkbox" class="filtro-cm" value="45cm"> 45cm</label>
+                <label><input type="checkbox" class="filtro-cm" value="50cm"> 50cm</label>
+                <label><input type="checkbox" class="filtro-cm" value="60cm"> 60cm</label>
+                <label><input type="checkbox" class="filtro-cm" value="70cm"> 70cm</label>
+            </div>
+        </aside>
+
+        <main id="produtos-grid" class="produtos-grid">
+            </main>
+    </div>
+</div>
 
   <footer class="site-footer">
         <div class="container">
@@ -195,7 +212,6 @@
     </div>
 
     <script src="scripts/script.js" type="module"></script>
-    <script src="scripts/produto.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html>

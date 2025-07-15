@@ -58,7 +58,7 @@ window.renderGrid = (containerId, productsData) => {
         container.innerHTML = `<p style="color: white; text-align: center; width: 100%;">Nenhum item encontrado.</p>`;
         return;
     }
-    productsData.forEach(product => {
+    productsData.forEach((product) => {
         const gridItem = document.createElement('div');
         gridItem.innerHTML = createProductCardHTML(product);
         addCardEventListeners(gridItem, product);
@@ -116,7 +116,7 @@ function renderCarousel(containerId, productsData, swiperConfig) {
         container.innerHTML = `<p style="color: white; text-align: center; width: 100%;">Nenhum item encontrado.</p>`;
         return;
     }
-    productsData.forEach(product => {
+    productsData.forEach((product) => {
         const swiperSlide = document.createElement('div');
         swiperSlide.className = 'swiper-slide';
         swiperSlide.innerHTML = createProductCardHTML(product);
@@ -272,7 +272,13 @@ document.addEventListener("DOMContentLoaded", () => {
         subNav.classList.toggle('active', show);
         bodyOverlay.classList.toggle('active', show);
         document.body.style.overflow = show ? 'hidden' : '';
+
+        // Oculta o botão hambúrguer quando o menu está aberto
+        if (hamburgerBtn) {
+            hamburgerBtn.style.display = show ? 'none' : 'flex';
+        }
     };
+
 
     if (hamburgerBtn) hamburgerBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -330,6 +336,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 spaceBetween: 30
             }
         }
+    });
+
+    new Swiper('.nav-oculto-swiper', {
+        loop: true,
+        spaceBetween: 10,
+        pagination: {
+            el: '.nav-oculto-swiper .swiper-pagination',
+            clickable: true,
+        },
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
     });
 });
 
@@ -439,17 +458,10 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-var swiper = new Swiper(".mySwiper", {
-      pagination: {
-        el: ".swiper-pagination",
-        dynamicBullets: true,
-      },
-    });
-
 new Swiper(".benefits-swiper", {
         loop: true,
         autoplay: {
-            delay: 1000,
+            delay: 2000,
             disableOnInteraction: false,
         },
         spaceBetween: 10,
@@ -460,3 +472,36 @@ new Swiper(".benefits-swiper", {
             1024: { slidesPerView: 4, spaceBetween: 30 }
         }
     });
+
+new Swiper(".nav-oculto-swiper", {
+        loop: true,
+        spaceBetween: 10,
+        pagination: {
+            el: '.nav-oculto-swiper .swiper-pagination',
+            clickable: true,
+        },
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+    });
+
+    // --- ABRIR E FECHAR FILTROS NO MOBILE ---
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('toggle-filtros-btn');
+  const closeBtn = document.getElementById('close-filtros-btn');
+  const sidebar = document.getElementById('filtros-sidebar');
+
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.add('active');
+    });
+  }
+
+  if (closeBtn && sidebar) {
+    closeBtn.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+    });
+  }
+});
+
