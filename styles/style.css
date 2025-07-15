@@ -918,7 +918,6 @@
             width: 30%;
             margin: 0 auto;
             margin-top: 20px;
-            margin-left: 39%;
         }
 
         .newsletter input[type="text"] {
@@ -1449,6 +1448,11 @@
   .produtos-grid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 0.75rem;
+  }
+
+
+    .newsletter {
+    height: 800px;
   }
 }
 
