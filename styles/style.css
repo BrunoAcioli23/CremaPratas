@@ -77,7 +77,7 @@
             background-color: #fff;
             max-height: 30px;
             color: #000;
-            font-size: 0.575rem;
+            font-size: 1.175rem;
             font-weight: 500;
             text-align: center;
             display: flex;
@@ -258,7 +258,6 @@
 
         .swiper-slide {
             text-align: center;
-            font-size: 18px;
             background: transparent; /* Fundo do slide transparente */
             display: flex;
             justify-content: center;
@@ -1111,7 +1110,8 @@
         /* --- Media Queries para Responsividade do Header --- */
         @media (min-width: 992px) {
             .site-header { 
-                padding: 0rem 2rem; 
+                padding: 0rem 2rem;
+                padding-top: 1px;
             }
             .hamburger-btn { 
                 display: none; 
@@ -1310,7 +1310,7 @@
 
         /* --- Seção de Benefícios (Swiper) --- */
         .benefits-section {
-            background-color: #1c1c1c;
+            background-color: #111111;
         }
 
 
@@ -1328,15 +1328,16 @@
         .benefit-item i {
             font-size: 1.6rem;
             margin-bottom: 0.5rem;
-            color: var(--cor-primaria);
+            color: #fff;
         }
         .benefit-item h3 {
             font-weight: 400;
             font-size: 1.125rem;
+            color: #fff;
         }
         .benefit-item p {
             font-size: 0.875rem;
-            color: var(--cor-texto-secundario);
+            color: #fff;
         }
 
         .benefits-swiper .swiper-pagination-bullet-active {
@@ -1460,6 +1461,21 @@
 }
 
 @media (max-width: 768px) {
+
+.nav-oculto {
+            min-width: 100%;
+            background-color: #fff;
+            max-height: 30px;
+            color: #000;
+            font-size: 0.8rem;
+            font-weight: 100;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 25px;
+        }
+
 
 .swiper-wrapper {
     min-height: 400px;
@@ -1775,3 +1791,67 @@
   flex-direction: column;
 }
 
+/* --- Menu Desktop --- */
+.desktop-nav {
+  display: none;
+  background-color: #000;
+  border-top: 1px solid #333;
+}
+
+.desktop-nav .container {
+  display: flex;
+  justify-content: center;
+}
+
+.desktop-menu {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 0;
+  list-style: none;
+}
+
+.desktop-menu li {
+  position: relative;
+}
+
+.desktop-menu a {
+  color: #ccc;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.desktop-menu a:hover {
+  color: var(--cor-primaria);
+}
+
+.submenu-desktop {
+  display: none;
+  position: absolute;
+  top: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #111;
+  padding: 1rem;
+  border-radius: 8px;
+  list-style: none;
+  border: 1px solid #333;
+  z-index: 999;
+}
+
+.has-submenu:hover .submenu-desktop {
+  display: block;
+}
+
+.submenu-desktop li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+}
+
+@media (min-width: 992px) {
+  .desktop-nav {
+    display: block;
+  }
+}
