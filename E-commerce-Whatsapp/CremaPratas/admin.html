@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrador</title>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/admin.css">
+    <link rel="icon" href="image/logo-redonda.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav class="nav-oculto">
+        <div class="swiper nav-oculto-swiper">
+            <div class="swiper-wrapper swiper-oculto-wrapper">
+                <div class="swiper-slide">Frete Grátis acima de R$ 200</div>
+                <div class="swiper-slide">Brinde na primeira compra</div>
+                <div class="swiper-slide">Entrega em 2 dias para campinas e região</div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="site-header">
+
+        <div class="container header-content">
+            <a href="index.html" class="logo-link"><img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas"></a>
+            <form id="search-form-header" class="search-form">
+                <input type="text" id="search-input-header" class="search-input" placeholder="Buscar produto..." />
+                <button type="submit" class="icon-btn">
+                    <i class="fa-solid fa-search"></i>
+                </button>
+            </form>
+            <div class="header-icons">
+                <button id="favorites-btn" class="icon-btn">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Meus Favoritos</span>
+                    <span id="favorites-count" class="icon-count hidden">0</span>
+                </button>
+
+                <a href="https://wa.me/5511976781660" target="_blank" class="icon-btn">
+                    <i class="fa-solid fa-headset"></i>
+                    <span>Atendimento</span>
+                </a>
+                <a href="login.html" class="icon-btn">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Minha conta</span>
+                </a>
+                <button id="cart-btn" class="icon-btn">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span>Meu carrinho</span>
+                    <span id="cart-count" class="icon-count hidden">0</span>
+                </button>
+                <button class="icon-btn hamburger-btn" id="hamburger-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="body-overlay" id="body-overlay"></div>
+        <nav class="sub-nav">
+            <button id="close-mobile-nav" class="close-mobile-nav-btn"><i class="fa-solid fa-xmark"></i></button>
+            <a href="index.html"><i class="fa-solid fa-house"></i> Página Inicial</a>
+            <div class="submenu-container">
+            <a href="#" class="categories-btn"><i class="fa-solid fa-bars-staggered"></i> Categorias</a>
+                <ul class="submenu">
+                    <li><a href="produtos.html?category=colar">Colares</a></li>
+                    <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                    <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                    <li><a href="produtos.html?category=corrente">Correntes</a></li>
+                    <li><a href="produtos.html?category=escapularios">Escapulários</a></li>
+                    <li><a href="produtos.html?category=pingente">Pingentes</a></li>
+                </ul>
+                </div>
+            <a href="produtos.html?gender=feminino"><i class="fa-solid fa-venus"></i> Peças Femininas</a>
+            <a href="index.html#lancamentos"><i class="fa-solid fa-bolt"></i> Lançamentos</a>
+            <a href="produtos.html"><i class="fa-solid fa-layer-group"></i> Todos os Produtos</a>
+            <a href="index.html#sobrenos"><i class="fa-solid fa-users"></i> Sobre Nós</a>
+
+            <div class="mobile-account-section">
+                <i class="fa-regular fa-user"></i>
+                <div class="mobile-account-links">
+                    <a href="login.html">Iniciar sessão</a>
+                </div>
+            </div>
+        </nav>
+
+        <nav class="desktop-nav">
+            <div class="container">
+                <ul class="desktop-menu">
+                <li><a href="index.html">Página Inicial</a></li>
+                <li class="has-submenu">
+                    <a href="#">Categorias</a>
+                    <ul class="submenu-desktop">
+                    <li><a href="produtos.html?category=colar">Colares</a></li>
+                    <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                    <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                    <li><a href="produtos.html?category=anel">Anéis</a></li>
+                    </ul>
+                </li>
+                <li><a href="produtos.html?gender=feminino">Peças Femininas</a></li>
+                <li><a href="index.html#lancamentos">Lançamentos</a></li>
+                <li><a href="produtos.html">Todos os Produtos</a></li>
+                <li><a href="index.html#selecionados">Selecionadas do Crema</a></li>
+                <li><a href="index.html#sobrenos">Sobre Nós</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-admin">
+
+        <div id="admin-tabs" class="hidden" style="margin-bottom: 2rem;">
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+                <button class="tab-btn" data-tab="admin-panel">🧾 Cadastro</button>
+                <button class="tab-btn" data-tab="products-panel">📦 Produtos</button>
+                <button class="tab-btn" data-tab="orders-panel">🛒 Pedidos</button>
+            </div>
+        </div>
+
+        <!-- TELA DE LOGIN -->
+        <div id="login-section">
+            <h1>Login do Administrador</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+        </div>
+
+        <!-- PAINEL DE CADASTRO DE PRODUTO -->
+        <div id="admin-panel" class="tab-content hidden">
+            <h2>Cadastrar/Editar Produto</h2>
+            <form id="product-form">
+                <div class="form-group">
+                    <label for="product-name">Nome do Produto</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-cost">Valor de Compra (ex: 79.90)</label>
+                    <input type="number" step="0.01" id="product-cost" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Preço de Venda (ex: 159.90)</label>
+                    <input type="number" step="0.01" id="product-price" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-old-price">Preço Antigo (Opcional)</label>
+                    <input type="number" step="0.01" id="product-old-price">
+                </div>
+                <div class="form-group">
+                    <label for="product-stock">Quantidade em Estoque</label>
+                    <input type="number" id="product-stock" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-image">Imagem do Produto</label>
+                    <input type="file" id="product-image" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="product-category">Categoria</label>
+                    <select id="product-category" required>
+                        <option value="">Selecione...</option>
+                        <option value="anel">Anel</option>
+                        <option value="bracelete">Bracelete</option>
+                        <option value="brinco">Brinco</option>
+                        <option value="colar">Colar</option>
+                        <option value="corrente">Corrente</option>
+                        <option value="escapulario">Escapulário</option>
+                        <option value="pingente">Pingente</option>
+                        <option value="pulseira">Pulseira</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Gênero</label>
+                    <div class="radio-group">
+                        <input type="radio" id="gender-masculino" name="gender" value="masculino">
+                        <label for="gender-masculino">Masculino</label>
+                        <input type="radio" id="gender-feminino" name="gender" value="feminino">
+                        <label for="gender-feminino">Feminino</label>
+                        <input type="radio" id="gender-unissex" name="gender" value="unissex" checked>
+                        <label for="gender-unissex">Unissex</label>
+                    </div>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="product-is-selected">
+                    <label for="product-is-selected">Marcar como "Seleção do Crema"</label>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Cadastrar Produto</button>
+            </form>
+            <button id="logout-btn" class="btn btn-danger" style="margin-top: 2rem;">Sair</button>
+        </div>
+        
+        <!-- DASHBOARD DE RESUMO -->
+        <div id="dashboard" class="tab-content hidden">
+            <h2>Resumo do Painel</h2>
+            <div class="dashboard-grid">
+                <div class="card"><h3>Total de Produtos</h3><p id="total-products">0</p></div>
+                <div class="card"><h3>Produtos Esgotados</h3><p id="total-outofstock">0</p></div>
+                <div class="card"><h3>Valor do Estoque (Custo)</h3><p id="total-stock-value">R$ 0,00</p></div>
+                <!-- CARDS ADICIONADOS -->
+                <div class="card"><h3>Valor Potencial de Venda</h3><p id="total-stock-sales">R$ 0,00</p></div>
+                <div class="card"><h3>Lucro Potencial do Estoque</h3><p id="total-stock-profit">R$ 0,00</p></div>
+                <!-- FIM DOS CARDS ADICIONADOS -->
+                <!-- Gráficos -->
+                <div class="card chart-card"><h3>Vendas (Exemplo)</h3><canvas id="sales-chart"></canvas></div>
+                <div class="card chart-card"><h3>Categorias</h3><canvas id="category-chart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- PAINEL DE PEDIDOS -->
+        <div id="orders-panel" class="tab-content hidden">
+            <h2>Pedidos Recebidos</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Data</th><th>Itens</th><th>Total</th><th>Status</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody id="orders-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PAINEL DE PRODUTOS -->
+        <div id="products-panel" class="tab-content hidden">
+            <h2>Produtos Cadastrados</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Imagem</th><th>Nome</th><th>Preço</th><th>Estoque</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody id="products-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="message-area" class="hidden"></div>
+    </div>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Coluna de Contato -->
+                <div class="footer-column">
+                    <div class="footer-contact-card">
+                        <img class="logo" src="image/logo-transparente.png" alt="Logo Crema Pratas">
+                        <p>Horário de Atendimento: De seg à sex das 9h às 18h</p>
+                        <p><i class="fa-solid fa-phone"></i><a href="https://wa.me/5511976781660">(11) 97678-1660</a></p>
+                        <p><i class="fa-solid fa-envelope"></i><a href="mailto:cremapratas@gmail.com">cremapratas@gmail.com</a></p>
+                    </div>
+                </div>
+                <!-- Coluna Loja -->
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">LOJA</button>
+                    <ul class="footer-links">
+                        <li><a href="produtos.html?category=pulseira">Pulseiras</a></li>
+                        <li><a href="produtos.html?category=brinco">Brincos</a></li>
+                        <li><a href="produtos.html?category=corrente">Correntes</a></li>
+                        <li><a href="produtos.html?category=escapularios">Escapulários</a></li>
+                        <li><a href="produtos.html?category=pingente">Pingentes</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna Ajuda -->
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">AJUDA</button>
+                    <ul class="footer-links">
+                        <li><a href="mailto:cremapratas@gmail.com">Contato</a></li>
+                        <li><a href="#">Perguntas Frequentes</a></li>
+                        <li><a href="#">Política de Entregas</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna Institucional -->
+                <div class="footer-column collapsible">
+                    <button class="footer-toggle">INSTITUCIONAL</button>
+                    <ul class="footer-links">
+                        <li><a href="index.html#sobrenos">Quem Somos</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Política de Trocas e Devoluções</a></li>
+                        <li><a href="#">Política de Cupom de Descontos</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-section">
+                    <p>&copy; 2025 Crema Pratas. Todos os direitos reservados.</p>
+                </div>
+                <div class="footer-bottom-section social-links">
+                    <a href="https://www.instagram.com/crema_pratas/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/5511976781660" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="scripts/admin.js" type="module"></script>
+</body>
+</html>
