@@ -706,6 +706,7 @@
         }
         .footer-column ul {
             list-style: none;
+            text-align: left;
         }
         .footer-column li {
             margin-bottom: 0.8rem;
