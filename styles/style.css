@@ -1842,7 +1842,7 @@
   z-index: 999;
 }
 
-.has-submenu:hover .submenu-desktop {
+.submenu-desktop.active {
   display: block;
 }
 

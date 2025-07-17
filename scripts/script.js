@@ -546,3 +546,22 @@ const searchFormHeader = document.getElementById('search-form-header');
         bootstrap.Carousel.getInstance(carousel).prev();
         }
     });
+
+// --- CÓDIGO PARA O MENU DESKTOP (SUBMENU DE CATEGORIAS) ---
+const desktopCategoryBtn = document.querySelector('.has-submenu > a');
+const desktopSubmenu = document.querySelector('.submenu-desktop');
+
+if (desktopCategoryBtn && desktopSubmenu) {
+    desktopCategoryBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        desktopSubmenu.classList.toggle('active');
+    });
+
+    // Fecha o submenu quando clica fora dele
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.has-submenu')) {
+            desktopSubmenu.classList.remove('active');
+        }
+    });
+}
