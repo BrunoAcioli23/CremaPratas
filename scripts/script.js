@@ -139,6 +139,26 @@ function renderCart() {
             cartItem.innerHTML = `<div class="item-details"><img src="${item.image}" alt="${item.name}"><div class="item-info"><h4>${item.name}</h4><p>R$ ${item.price.toFixed(2).replace('.', ',')}</p></div></div><div class="item-actions"><div class="quantity-control"><button class="quantity-change" data-product-id="${item.id}" data-change="-1">-</button><span>${item.quantity}</span><button class="quantity-change" data-product-id="${item.id}" data-change="1">+</button></div><button class="remove-btn remove-from-cart-btn" data-product-id="${item.id}"><i class="fa-solid fa-trash"></i></button></div>`;
             cartItemsContainer.appendChild(cartItem);
         });
+        // Exibir sugestões da categoria 'outros'
+        const sugestoesContainer = document.createElement('div');
+        sugestoesContainer.className = 'cart-suggestions';
+
+        fetchData('products', { filterField: 'category', filterValue: 'outros', limitNumber: 2 }).then(produtosOutros => {
+            if (produtosOutros.length > 0) {
+                sugestoesContainer.innerHTML = `
+                    <h4 style="margin-top: 20px;">Você pode precisar também:</h4>
+                    <div class="suggested-products">
+                        ${produtosOutros.map(p => `
+                            <div class="suggested-item">
+                                <img src="${p.image}" alt="${p.name}" />
+                                <span>${p.name}</span>
+                                <button onclick='addToCart(${JSON.stringify(p)})'>Adicionar</button>
+                            </div>`).join('')}
+                    </div>
+                `;
+                cartItemsContainer.appendChild(sugestoesContainer);
+            }
+        });
     }
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     cartTotalEl.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;

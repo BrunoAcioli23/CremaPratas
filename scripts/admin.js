@@ -74,6 +74,11 @@ async function loadDashboard() {
         const ordersSnapshot = await getDocs(ordersQuery);
         const finalizedOrders = ordersSnapshot.docs.map(doc => doc.data());
 
+        const totalSoldValue = finalizedOrders.reduce((sum, order) => sum + (order.total || 0), 0);
+        const soldElement = document.getElementById("total-sold-value");
+        if (soldElement) soldElement.textContent = `R$ ${totalSoldValue.toFixed(2).replace('.', ',')}`;
+
+
         const salesByDate = finalizedOrders.reduce((acc, order) => {
             if (order.createdAt?.toDate) {
                 const date = order.createdAt.toDate().toLocaleDateString('pt-BR');
