@@ -464,16 +464,3 @@ onAuthStateChanged(auth, async (user) => {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
     }
 });
-
-new Swiper('.nav-oculto-swiper', {
-        loop: true,
-        spaceBetween: 10,
-        pagination: {
-            el: '.nav-oculto-swiper .swiper-pagination',
-            clickable: true,
-        },
-        autoplay: {
-            delay: 3000,
-            disableOnInteraction: false,
-        },
-    });
