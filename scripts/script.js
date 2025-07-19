@@ -152,6 +152,7 @@ function renderCart() {
                             <div class="suggested-item">
                                 <img src="${p.image}" alt="${p.name}" />
                                 <span>${p.name}</span>
+                                <span style="display: block; margin-top: 5px;">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
                                 <button onclick='addToCart(${JSON.stringify(p)})'>Adicionar</button>
                             </div>`).join('')}
                     </div>
