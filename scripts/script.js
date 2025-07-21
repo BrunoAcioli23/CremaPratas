@@ -387,7 +387,7 @@ document.getElementById('checkout-btn')?.addEventListener('click', async () => {
     try {
         await addDoc(collection(db, 'orders'), { userId: currentUser?.uid, items: orderItems, total, status: 'aberto', createdAt: serverTimestamp() });
     } catch (error) { console.error('Erro ao salvar pedido:', error); }
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=5511942138664&text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=5511976781660&text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
     cart = [];
     renderCart();
