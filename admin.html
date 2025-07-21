@@ -9,22 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/admin.css">
 </head>
 <body>
-
-    <nav class="nav-oculto">
-        <div class="swiper nav-oculto-swiper">
-            <div class="swiper-wrapper swiper-oculto-wrapper">
-                <div class="swiper-slide">Frete Grátis acima de R$ 200</div>
-                <div class="swiper-slide">Brinde na primeira compra</div>
-                <div class="swiper-slide">Entrega em 2 dias para campinas e região</div>
-            </div>
-        </div>
-    </nav>
-
     <header class="site-header">
 
         <div class="container header-content">
@@ -226,6 +215,46 @@
 
         <!-- PAINEL DE PEDIDOS -->
         <div id="orders-panel" class="tab-content hidden">
+
+            <!-- Botão para abrir o modal -->
+            <button class="btn btn-primary" id="launch-order-btn">Lançar Novo Pedido</button>
+
+            <!-- Modal para criação do pedido -->
+            <div id="launch-order-modal" class="modal">
+            <div class="modal-content">
+                <h2>Novo Pedido</h2>
+
+                <div class="form-group">
+                <label for="product-select">Produto:</label>
+                <select id="product-select"></select>
+                </div>
+
+                <div class="form-group">
+                <label for="product-qty">Quantidade:</label>
+                <input type="number" id="product-qty" min="1" value="1">
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-product-price">Preço unitário:</label>
+                    <input type="number" id="modal-product-price" step="0.01">
+                </div>
+
+                <button class="btn btn-success" id="add-item-btn">Adicionar Produto</button>
+
+                <div id="order-items-list" class="form-group" style="margin-top: 1rem;"></div>
+
+                <div class="form-group">
+                <label for="order-total">Total do Pedido:</label>
+                <input type="number" id="order-total" readonly>
+                </div>
+
+                <div class="form-group" style="display: flex; gap: 10px;">
+                <button class="btn btn-primary" id="save-order-btn">Salvar Pedido</button>
+                <button class="btn btn-danger" id="cancel-order-btn">Cancelar</button>
+                </div>
+            </div>
+            </div>
+
             <h2>Pedidos Recebidos</h2>
             <div class="table-wrapper">
                 <table>
@@ -235,6 +264,7 @@
                     <tbody id="orders-table-body"></tbody>
                 </table>
             </div>
+
         </div>
 
         <!-- PAINEL DE PRODUTOS -->

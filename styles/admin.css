@@ -110,32 +110,6 @@ h1, h2 {
     width: auto;
 }
 
-/* --- BOTÕES --- */
-.btn {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: opacity 0.3s;
-}
-
-.btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.btn-primary {
-    background-color: var(--admin-primary);
-    color: white;
-}
-
-.btn-danger {
-    background-color: var(--admin-danger);
-    color: white;
-}
-
 /* --- DASHBOARD --- */
 .dashboard-grid {
     display: grid;
@@ -238,3 +212,24 @@ tbody tr:hover {
     }
 }
 
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--admin-bg-secondary);
+    padding: 2rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 0 10px black;
+}

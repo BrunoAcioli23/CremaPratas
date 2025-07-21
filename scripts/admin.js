@@ -44,11 +44,11 @@ function showMessage(msg, type) {
 
 function showTab(tab) {
     document.querySelectorAll('.tab-content').forEach(section => {
-        if(section) section.classList.add('hidden');
+        if (section) section.classList.add('hidden');
     });
     const activeTab = document.getElementById(tab);
     if (activeTab) activeTab.classList.remove('hidden');
-    
+
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tab);
     });
@@ -60,15 +60,15 @@ async function loadDashboard() {
         const products = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
         // Cálculos dos Cards
-        if(document.getElementById("total-products")) document.getElementById("total-products").textContent = products.length;
-        if(document.getElementById("total-outofstock")) document.getElementById("total-outofstock").textContent = products.filter(p => (p.stock || 0) === 0).length;
+        if (document.getElementById("total-products")) document.getElementById("total-products").textContent = products.length;
+        if (document.getElementById("total-outofstock")) document.getElementById("total-outofstock").textContent = products.filter(p => (p.stock || 0) === 0).length;
         const totalStockValue = products.reduce((sum, p) => sum + ((p.stock || 0) * (p.cost || 0)), 0);
-        if(document.getElementById("total-stock-value")) document.getElementById("total-stock-value").textContent = `R$ ${totalStockValue.toFixed(2).replace('.', ',')}`;
+        if (document.getElementById("total-stock-value")) document.getElementById("total-stock-value").textContent = `R$ ${totalStockValue.toFixed(2).replace('.', ',')}`;
         const totalPotentialSales = products.reduce((sum, p) => sum + ((p.stock || 0) * (p.price || 0)), 0);
-        if(document.getElementById("total-stock-sales")) document.getElementById("total-stock-sales").textContent = `R$ ${totalPotentialSales.toFixed(2).replace('.', ',')}`;
+        if (document.getElementById("total-stock-sales")) document.getElementById("total-stock-sales").textContent = `R$ ${totalPotentialSales.toFixed(2).replace('.', ',')}`;
         const totalPotentialProfit = totalPotentialSales - totalStockValue;
-        if(document.getElementById("total-stock-profit")) document.getElementById("total-stock-profit").textContent = `R$ ${totalPotentialProfit.toFixed(2).replace('.', ',')}`;
-        
+        if (document.getElementById("total-stock-profit")) document.getElementById("total-stock-profit").textContent = `R$ ${totalPotentialProfit.toFixed(2).replace('.', ',')}`;
+
         // --- GRÁFICO DE VENDAS (COM DADOS REAIS) ---
         const ordersQuery = firestoreQuery(collection(db, "orders"), where("status", "==", "finalizado"));
         const ordersSnapshot = await getDocs(ordersQuery);
@@ -77,7 +77,6 @@ async function loadDashboard() {
         const totalSoldValue = finalizedOrders.reduce((sum, order) => sum + (order.total || 0), 0);
         const soldElement = document.getElementById("total-sold-value");
         if (soldElement) soldElement.textContent = `R$ ${totalSoldValue.toFixed(2).replace('.', ',')}`;
-
 
         const salesByDate = finalizedOrders.reduce((acc, order) => {
             if (order.createdAt?.toDate) {
@@ -95,15 +94,15 @@ async function loadDashboard() {
         if (salesCtx) {
             salesChartInstance = new Chart(salesCtx, {
                 type: 'line',
-                data: { 
-                    labels: sortedDates, 
-                    datasets: [{ 
-                        label: 'Vendas Finalizadas (R$)', 
-                        data: salesData, 
+                data: {
+                    labels: sortedDates,
+                    datasets: [{
+                        label: 'Vendas Finalizadas (R$)',
+                        data: salesData,
                         borderColor: '#28a745',
                         backgroundColor: 'rgba(40, 167, 69, 0.1)',
                         fill: true,
-                    }] 
+                    }]
                 },
             });
         }
@@ -127,10 +126,10 @@ async function loadDashboard() {
                 type: 'pie',
                 data: {
                     labels: Object.keys(salesByCategory),
-                    datasets: [{ 
+                    datasets: [{
                         label: 'Itens Vendidos',
-                        data: Object.values(salesByCategory), 
-                        backgroundColor: ['#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8', '#6610f2', '#f012be', '#fd7e14'] 
+                        data: Object.values(salesByCategory),
+                        backgroundColor: ['#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8', '#6610f2', '#f012be', '#fd7e14']
                     }]
                 },
                 options: {
@@ -307,7 +306,7 @@ async function editProduct(productId) {
         const productRef = doc(db, "products", productId);
         const productSnap = await getDoc(productRef);
         if (!productSnap.exists()) return showMessage("Produto não encontrado.", "error");
-        
+
         const data = productSnap.data();
         editingProductId = productId;
         document.getElementById("product-name").value = data.name || "";
@@ -447,9 +446,8 @@ onAuthStateChanged(auth, async (user) => {
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists() && userDocSnap.data().role === 'admin') {
-            if(loginSection) loginSection.classList.add('hidden');
-            if(document.getElementById('admin-tabs')) document.getElementById('admin-tabs').classList.remove('hidden');
-            
+            if (loginSection) loginSection.classList.add('hidden');
+            if (document.getElementById('admin-tabs')) document.getElementById('admin-tabs').classList.remove('hidden');
             showTab('dashboard');
             loadProducts();
             loadDashboard();
@@ -459,8 +457,130 @@ onAuthStateChanged(auth, async (user) => {
             signOut(auth);
         }
     } else {
-        if(loginSection) loginSection.classList.remove('hidden');
-        if(document.getElementById('admin-tabs')) document.getElementById('admin-tabs').classList.add('hidden');
+        if (loginSection) loginSection.classList.remove('hidden');
+        if (document.getElementById('admin-tabs')) document.getElementById('admin-tabs').classList.add('hidden');
         document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
     }
+
+    let novoPedidoItems = [];
+
+    document.getElementById("launch-order-btn")?.addEventListener("click", async () => {
+        const modal = document.getElementById("launch-order-modal");
+        modal.classList.add("visible");
+
+        const select = document.getElementById("product-select");
+        const priceInput = document.getElementById("modal-product-price");  // Campo de preço no modal de NOVO pedido
+
+        try {
+            const snapshot = await getDocs(collection(db, "products"));
+            select.innerHTML = "";
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                select.innerHTML += `<option value="${doc.id}" data-name="${data.name}" data-price="${data.price}" data-image="${data.image}">${data.name}</option>`;
+            });
+
+            // Preencher automaticamente o preço do primeiro item
+            if (select.options.length > 0) {
+                const firstOption = select.options[0];
+                if (priceInput) { // Verifica se o campo de preço existe
+                    priceInput.value = parseFloat(firstOption.dataset.price).toFixed(2);
+                }
+            }
+        } catch (error) {
+            console.error("Erro ao carregar produtos no modal:", error);
+            showMessage("Não foi possível carregar os produtos.", "error");
+        }
+
+        updateTotal();
+    });
+
+    document.getElementById("product-select")?.addEventListener("change", (e) => {
+        const selectedOption = e.target.selectedOptions[0];
+        const priceInput = document.getElementById("modal-product-price");  // Campo de preço no modal de NOVO pedido
+        if (selectedOption && priceInput) {
+            priceInput.value = parseFloat(selectedOption.dataset.price).toFixed(2);
+        }
+    });
+
+    document.getElementById("add-item-btn")?.addEventListener("click", () => {
+        const select = document.getElementById("product-select");
+        const qty = parseInt(document.getElementById("product-qty").value);
+        const price = parseFloat(document.getElementById("modal-product-price").value); // Campo de preço no modal
+        const option = select.selectedOptions[0];
+        if (!option || !qty || !price) {
+            showMessage("Por favor, preencha todos os campos do item.", "error");
+            return;
+        }
+
+        novoPedidoItems.push({
+            productId: select.value,
+            name: option.dataset.name,
+            quantity: qty,
+            price: price,
+            image: option.dataset.image,
+        });
+
+        renderOrderItems();
+        updateTotal();
+    });
+
+    function renderOrderItems() {
+        const list = document.getElementById("order-items-list");
+        if (!list) return;
+        list.innerHTML = "";
+        novoPedidoItems.forEach((item, index) => {
+            list.innerHTML += `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem;">
+                    <span>${item.quantity}x ${item.name} - R$ ${item.price.toFixed(2)}</span>
+                    <button class="btn btn-danger" style="padding: 2px 6px;" onclick="removeOrderItem(${index})">X</button>
+                </div>
+            `;
+        });
+    }
+
+    function updateTotal() {
+        const total = novoPedidoItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const totalInput = document.getElementById("order-total");
+        if(totalInput) totalInput.value = total.toFixed(2);
+    }
+
+    window.removeOrderItem = (index) => {
+        novoPedidoItems.splice(index, 1);
+        renderOrderItems();
+        updateTotal();
+    };
+
+    document.getElementById("save-order-btn")?.addEventListener("click", async () => {
+        const total = parseFloat(document.getElementById("order-total").value);
+        if (novoPedidoItems.length === 0 || total <= 0) {
+            showMessage("Adicione produtos ao pedido antes de salvar.", "error");
+            return;
+        }
+
+        try {
+            await addDoc(collection(db, "orders"), {
+                items: novoPedidoItems,
+                total,
+                status: "aberto",
+                createdAt: serverTimestamp(),
+            });
+
+            showMessage("Pedido lançado com sucesso!", "success");
+            document.getElementById("launch-order-modal").classList.remove("visible");
+            novoPedidoItems = [];
+            renderOrderItems();
+            updateTotal();
+            loadOrders();
+        } catch (error) {
+            console.error("Erro ao salvar pedido: ", error);
+            showMessage("Erro ao salvar o pedido.", "error");
+        }
+    });
+
+    document.getElementById("cancel-order-btn")?.addEventListener("click", () => {
+        document.getElementById("launch-order-modal").classList.remove("visible");
+        novoPedidoItems = [];
+        renderOrderItems();
+        updateTotal();
+    });
 });
