@@ -145,15 +145,32 @@ async function loadDashboard() {
     }
 }
 
-async function loadProducts() {
+async function loadProducts(orderOption = 'name-asc') {
     if (!productsTableBody) return;
     productsTableBody.innerHTML = '<tr><td colspan="5">Carregando...</td></tr>';
     try {
         const snapshot = await getDocs(collection(db, "products"));
+        let products = snapshot.docs.map(docSnap => ({
+            id: docSnap.id,
+            ...docSnap.data()
+        }));
+
+        // Ordenação
+        const [field, direction] = orderOption.split("-");
+        products.sort((a, b) => {
+            const aValue = (a[field] || "").toString().toLowerCase();
+            const bValue = (b[field] || "").toString().toLowerCase();
+
+            if (field === "stock" || field === "price") {
+                return direction === "asc" ? a[field] - b[field] : b[field] - a[field];
+            }
+
+            return direction === "asc" ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+        });
+
+        // Renderizar
         productsTableBody.innerHTML = '';
-        snapshot.forEach(docSnap => {
-            const product = docSnap.data();
-            const id = docSnap.id;
+        products.forEach(product => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><img src="${product.image}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
@@ -161,8 +178,8 @@ async function loadProducts() {
                 <td>R$ ${product.price.toFixed(2).replace('.', ',')}</td>
                 <td>${product.stock || 0}</td>
                 <td>
-                    <button class="btn btn-primary edit-btn" data-id="${id}">Editar</button>
-                    <button class="btn btn-danger delete-btn" data-id="${id}">Excluir</button>
+                    <button class="btn btn-primary edit-btn" data-id="${product.id}">Editar</button>
+                    <button class="btn btn-danger delete-btn" data-id="${product.id}">Excluir</button>
                 </td>
             `;
             productsTableBody.appendChild(row);
@@ -172,6 +189,12 @@ async function loadProducts() {
         productsTableBody.innerHTML = '<tr><td colspan="5">Erro ao carregar produtos.</td></tr>';
     }
 }
+
+document.getElementById("sort-products")?.addEventListener("change", (e) => {
+    const option = e.target.value;
+    loadProducts(option);
+});
+
 
 async function loadOrders() {
     if (!ordersTableBody) return;

@@ -270,6 +270,21 @@
         <!-- PAINEL DE PRODUTOS -->
         <div id="products-panel" class="tab-content hidden">
             <h2>Produtos Cadastrados</h2>
+
+            <div style="margin-bottom: 1rem;">
+                <label for="sort-products">Ordenar por:</label>
+                <select id="sort-products" class="ordenar-button">
+                    <option value="name-asc">Nome (A-Z)</option>
+                    <option value="name-desc">Nome (Z-A)</option>
+                    <option value="category-asc">Categoria (A-Z)</option>
+                    <option value="category-desc">Categoria (Z-A)</option>
+                    <option value="stock-desc">Estoque (maior primeiro)</option>
+                    <option value="stock-asc">Estoque (menor primeiro)</option>
+                    <option value="price-desc">Preço (maior primeiro)</option>
+                    <option value="price-asc">Preço (menor primeiro)</option>
+                </select>
+            </div>
+
             <div class="table-wrapper">
                 <table>
                     <thead>

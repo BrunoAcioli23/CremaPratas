@@ -241,3 +241,15 @@ tbody tr:hover {
   padding: 0.5rem;
   border-radius: 6px;
 }
+
+.ordenar-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--admin-text);
+    color: #000;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
