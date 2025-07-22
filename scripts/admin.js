@@ -538,11 +538,15 @@ onAuthStateChanged(auth, async (user) => {
         });
     }
 
+    let totalEditadoManualmente = false;
+
     function updateTotal() {
+        if (totalEditadoManualmente) return; // não sobrescreve se o usuário editou manualmente
         const total = novoPedidoItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
         const totalInput = document.getElementById("order-total");
         if(totalInput) totalInput.value = total.toFixed(2);
     }
+
 
     window.removeOrderItem = (index) => {
         novoPedidoItems.splice(index, 1);
@@ -583,4 +587,8 @@ onAuthStateChanged(auth, async (user) => {
         renderOrderItems();
         updateTotal();
     });
+
+    document.getElementById("order-total")?.addEventListener("input", () => {
+    totalEditadoManualmente = true;
+});
 });
