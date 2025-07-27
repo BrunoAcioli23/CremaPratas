@@ -1,6 +1,6 @@
 <img width="1920" height="579" alt="image" src="https://github.com/user-attachments/assets/2cceef98-afcb-46e2-8787-41d25f5d5cd4" />
 
-✨ Crema Pratas - E-commerce de Joias de Prata
+## ✨ Crema Pratas - E-commerce de Joias de Prata
 
 📖 Sobre o Projeto
 Crema Pratas é uma aplicação full-stack de e-commerce dedicada à venda de joias. O projeto foi desenvolvido como uma solução completa, oferecendo uma experiência de compra elegante e segura para os clientes e uma plataforma de gerenciamento de produtos e pedidos para os administradores.
