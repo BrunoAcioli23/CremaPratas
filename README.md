@@ -43,6 +43,7 @@ Gerenciamento de Clientes: Visualização da lista de clientes cadastrados.
 
 Controle de Estoque: Atualização automática do estoque após cada venda.
 
-## 🎬 Demonstração em Vídeo
+✉️ Contato
+[Bruno Effore Acioli] - brunoeffore@outlook.com
 
-![Demonstração do E-commerce Crema Pratas](C:\Users\bruno\Videos\Gif)
+Link do Projeto: [https://github.com/seu-usuario/nome-do-repositorio](https://github.com/BrunoAcioli23/CremaPratas/)
