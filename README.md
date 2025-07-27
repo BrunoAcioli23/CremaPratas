@@ -13,7 +13,8 @@ https://www.cremapratas.com.br
 🚀 Funcionalidades Principais
 O e-commerce possui uma vasta gama de funcionalidades, tanto para clientes quanto para administradores:
 
-Para Clientes:
+## 🛍️ Para Clientes
+
 Visualização de Produtos: Navegação intuitiva por categorias (anéis, colares, pulseiras, etc.) com imagens de alta qualidade.
 
 Página de Detalhes do Produto: Descrições detalhadas, informações sobre o material (Prata 925), dimensões, e múltiplas imagens com funcionalidade de zoom.
@@ -30,7 +31,8 @@ Histórico de Pedidos: Clientes podem visualizar seus pedidos anteriores em seu 
 
 Design Responsivo: Experiência de usuário otimizada para desktops, tablets e smartphones.
 
-Para Administradores (Painel de Controle):
+## 🧑‍💻 Para Administradores (Painel de Controle):
+
 Dashboard de Vendas: Visão geral das vendas, pedidos recentes e estatísticas.
 
 Gerenciamento de Produtos: CRUD (Criar, Ler, Atualizar, Deletar) completo para os produtos da loja.
