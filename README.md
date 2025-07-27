@@ -43,7 +43,8 @@ Gerenciamento de Clientes: Visualização da lista de clientes cadastrados.
 
 Controle de Estoque: Atualização automática do estoque após cada venda.
 
-✉️ Contato
+## ✉️ Contatos
+
 [Bruno Effore Acioli] - brunoeffore@outlook.com
 
 Link do Projeto: [https://github.com/seu-usuario/nome-do-repositorio](https://github.com/BrunoAcioli23/CremaPratas/)
