@@ -1,4 +1,4 @@
-<img width="1920" height="579" alt="image" src="https://github.com/user-attachments/assets/2cceef98-afcb-46e2-8787-41d25f5d5cd4" /><img width="1920" height="579" alt="image" src="https://github.com/user-attachments/assets/afde8886-8bbb-46d3-98d9-a888c5eba3d7" />
+<img width="1920" height="579" alt="image" src="https://github.com/user-attachments/assets/2cceef98-afcb-46e2-8787-41d25f5d5cd4" />
 
 ✨ Crema Pratas - E-commerce de Joias de Prata
 
