@@ -40,3 +40,7 @@ Gerenciamento de Pedidos: Acompanhamento do status dos pedidos (processando, env
 Gerenciamento de Clientes: Visualização da lista de clientes cadastrados.
 
 Controle de Estoque: Atualização automática do estoque após cada venda.
+
+## 🎬 Demonstração em Vídeo
+
+![Demonstração do E-commerce Crema Pratas](C:\Users\bruno\Videos\Gif)
