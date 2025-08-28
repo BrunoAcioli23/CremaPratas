@@ -236,6 +236,15 @@ async function loadProducts(filters = {}, sort = {}) {
         const constraints = [];
 
         // Adiciona filtros à consulta
+        // LÓGICA DE PESQUISA ADICIONADA AQUI
+        if (filters.searchTerm) {
+            const searchTerm = filters.searchTerm;
+            // Essa técnica busca por todos os nomes que começam com o termo pesquisado
+            constraints.push(where("name", ">=", searchTerm));
+            constraints.push(where("name", "<=", searchTerm + '\uf8ff'));
+        }
+
+        // Adiciona filtros à consulta
         if (filters.category) {
             constraints.push(where("category", "==", filters.category));
         }
@@ -252,9 +261,9 @@ async function loadProducts(filters = {}, sort = {}) {
             constraints.push(where("length", "==", parseFloat(filters.length)));
         }
 
-        // Adiciona ordenação à consulta
         if (sort.field && sort.direction) {
-            constraints.push(orderBy(sort.field, sort.direction));
+            const sortField = filters.searchTerm ? 'name' : sort.field;
+            constraints.push(orderBy(sortField, sort.direction));
         }
         
         // Combina a consulta base com os filtros e a ordenação
@@ -328,6 +337,9 @@ function populateSortOptions() {
 
 function applyFiltersAndSort() {
     const filters = {
+        // LINHA NOVA ADICIONADA
+        searchTerm: document.getElementById('search-input').value.trim(),
+        
         category: document.getElementById('filter-category').value,
         stock: document.getElementById('filter-stock').value,
         thickness: document.getElementById('filter-thickness').value,
@@ -781,6 +793,7 @@ document.getElementById('sort-products')?.addEventListener('change', applyFilter
 
 document.getElementById('clear-filters-btn')?.addEventListener('click', () => {
     // Limpa os campos de filtro
+    document.getElementById('search-input').value = ''; // <-- ADICIONAR ESTA LINHA
     document.getElementById('filter-category').value = '';
     document.getElementById('filter-stock').value = '';
     document.getElementById('filter-thickness').value = '';
