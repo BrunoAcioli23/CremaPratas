@@ -145,11 +145,74 @@ async function loadDashboard() {
     }
 }
 
-async function loadProducts() {
+async function populateCategoryFilter() {
+    const categorySelect = document.getElementById('filter-category');
+    if (!categorySelect) return;
+
+    try {
+        const productsSnapshot = await getDocs(collection(db, "products"));
+        // Extrai categorias únicas
+        const categories = [...new Set(productsSnapshot.docs.map(doc => doc.data().category))];
+
+        // Limpa opções existentes (exceto a primeira "Todas")
+        categorySelect.innerHTML = '<option value="">Todas</option>';
+
+        categories.sort().forEach(category => {
+            if(category) { // Garante que não adiciona categorias vazias
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category.charAt(0).toUpperCase() + category.slice(1); // Capitaliza a primeira letra
+                categorySelect.appendChild(option);
+            }
+        });
+
+    } catch (error) {
+        console.error("Erro ao popular filtro de categorias: ", error);
+    }
+}
+
+async function loadProducts(filters = {}, sort = {}) {
     if (!productsTableBody) return;
     productsTableBody.innerHTML = '<tr><td colspan="5">Carregando...</td></tr>';
+    
     try {
-        const snapshot = await getDocs(collection(db, "products"));
+        let productsQuery = collection(db, "products");
+        const constraints = [];
+
+        // Adiciona filtros à consulta
+        if (filters.category) {
+            constraints.push(where("category", "==", filters.category));
+        }
+        if (filters.stock === 'out_of_stock') {
+            constraints.push(where("stock", "==", 0));
+        }
+        if (filters.stock === 'in_stock') {
+            constraints.push(where("stock", ">", 0));
+        }
+        if (filters.thickness) {
+             constraints.push(where("thickness", "==", parseFloat(filters.thickness)));
+        }
+        if (filters.length) {
+            constraints.push(where("length", "==", parseFloat(filters.length)));
+        }
+
+        // Adiciona ordenação à consulta
+        if (sort.field && sort.direction) {
+            constraints.push(orderBy(sort.field, sort.direction));
+        }
+        
+        // Combina a consulta base com os filtros e a ordenação
+        if (constraints.length > 0) {
+            productsQuery = firestoreQuery(productsQuery, ...constraints);
+        }
+
+        const snapshot = await getDocs(productsQuery);
+
+        if (snapshot.empty) {
+            productsTableBody.innerHTML = '<tr><td colspan="5">Nenhum produto encontrado.</td></tr>';
+            return;
+        }
+
         productsTableBody.innerHTML = '';
         snapshot.forEach(docSnap => {
             const product = docSnap.data();
@@ -157,9 +220,14 @@ async function loadProducts() {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><img src="${product.image}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
-                <td>${product.name}</td>
+                <td>
+                    ${product.name}
+                    <small style="display: block; color: var(--admin-text-secondary);">
+                        Cat: ${product.category} | Esp: ${product.thickness || 'N/A'}mm | Comp: ${product.length || 'N/A'}cm
+                    </small>
+                </td>
                 <td>R$ ${product.price.toFixed(2).replace('.', ',')}</td>
-                <td>${product.stock || 0}</td>
+                <td style="${(product.stock || 0) === 0 ? 'color: var(--admin-danger);' : ''}">${product.stock || 0}</td>
                 <td>
                     <button class="btn btn-primary edit-btn" data-id="${id}">Editar</button>
                     <button class="btn btn-danger delete-btn" data-id="${id}">Excluir</button>
@@ -169,8 +237,54 @@ async function loadProducts() {
         });
     } catch (err) {
         console.error("Erro ao carregar produtos:", err);
+        showMessage("Erro ao carregar produtos. Verifique o console.", "error");
         productsTableBody.innerHTML = '<tr><td colspan="5">Erro ao carregar produtos.</td></tr>';
     }
+}
+
+function populateSortOptions() {
+    const sortSelect = document.getElementById('sort-products');
+    if (!sortSelect) return;
+
+    // Limpa qualquer opção que possa existir
+    sortSelect.innerHTML = '';
+
+    // Define as opções de ordenação
+    const sortOptions = {
+        "name-asc": "Nome (A-Z)",
+        "name-desc": "Nome (Z-A)",
+        "category-asc": "Categoria (A-Z)",
+        "category-desc": "Categoria (Z-A)",
+        "stock-desc": "Estoque (maior primeiro)",
+        "stock-asc": "Estoque (menor primeiro)",
+        "price-desc": "Preço (maior primeiro)",
+        "price-asc": "Preço (menor primeiro)"
+    };
+
+    // Cria e adiciona cada <option> ao <select>
+    for (const value in sortOptions) {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = sortOptions[value];
+        sortSelect.appendChild(option);
+    }
+}
+
+function applyFiltersAndSort() {
+    const filters = {
+        category: document.getElementById('filter-category').value,
+        stock: document.getElementById('filter-stock').value,
+        thickness: document.getElementById('filter-thickness').value,
+        length: document.getElementById('filter-length').value,
+    };
+
+    const sortValue = document.getElementById('sort-products').value.split('-');
+    const sort = {
+        field: sortValue[0],
+        direction: sortValue[1]
+    };
+
+    loadProducts(filters, sort);
 }
 
 async function loadOrders() {
@@ -314,6 +428,8 @@ async function editProduct(productId) {
         document.getElementById("product-price").value = data.price || 0;
         document.getElementById("product-old-price").value = data.oldPrice || 0;
         document.getElementById("product-stock").value = data.stock || 0;
+        document.getElementById("product-thickness").value = data.thickness || "";
+        document.getElementById("product-length").value = data.length || "";
         document.getElementById("product-category").value = data.category || "";
         document.getElementById("product-is-selected").checked = data.isSelected || false;
         if (data.gender) {
@@ -359,6 +475,10 @@ if (productForm) {
                 price: parseFloat(document.getElementById('product-price').value),
                 oldPrice: parseFloat(document.getElementById('product-old-price').value) || 0,
                 stock: parseInt(document.getElementById('product-stock').value),
+                // CAMPOS NOVOS ADICIONADOS AQUI
+                thickness: parseFloat(document.getElementById('product-thickness').value) || null,
+                length: parseFloat(document.getElementById('product-length').value) || null,
+                // FIM DOS CAMPOS NOVOS
                 category: document.getElementById('product-category').value,
                 isSelected: document.getElementById('product-is-selected').checked,
                 gender: document.querySelector('input[name="gender"]:checked').value,
@@ -449,6 +569,9 @@ onAuthStateChanged(auth, async (user) => {
             if (loginSection) loginSection.classList.add('hidden');
             if (document.getElementById('admin-tabs')) document.getElementById('admin-tabs').classList.remove('hidden');
             showTab('dashboard');
+            populateSortOptions();
+            populateCategoryFilter();
+            applyFiltersAndSort();
             loadProducts();
             loadDashboard();
             loadOrders();
@@ -591,4 +714,25 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById("order-total")?.addEventListener("input", () => {
     totalEditadoManualmente = true;
 });
+});
+
+// Event Listeners MODIFICADOS
+document.getElementById('apply-filters-btn')?.addEventListener('click', applyFiltersAndSort);
+
+// NOVO: Event listener para o seletor de ordenação
+document.getElementById('sort-products')?.addEventListener('change', applyFiltersAndSort);
+
+
+document.getElementById('clear-filters-btn')?.addEventListener('click', () => {
+    // Limpa os campos de filtro
+    document.getElementById('filter-category').value = '';
+    document.getElementById('filter-stock').value = '';
+    document.getElementById('filter-thickness').value = '';
+    document.getElementById('filter-length').value = '';
+    
+    // Reseta o campo de ordenação para o padrão
+    document.getElementById('sort-products').value = 'name-asc';
+
+    // Recarrega os produtos com a configuração padrão
+    applyFiltersAndSort();
 });

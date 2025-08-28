@@ -154,6 +154,26 @@
                 </div>
                 <div class="form-group">
                     <label for="product-stock">Quantidade em Estoque</label>
+                    
+                <div class="form-group">
+                    <label for="product-stock">Quantidade em Estoque</label>
+                    <input type="number" id="product-stock" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-thickness">Espessura (mm - Opcional)</label>
+                    <input type="number" step="0.1" id="product-thickness" placeholder="Ex: 1.5">
+                </div>
+
+                <div class="form-group">
+                    <label for="product-length">Comprimento (cm - Opcional)</label>
+                    <input type="number" step="0.1" id="product-length" placeholder="Ex: 45">
+                </div>
+                <div class="form-group">
+                    <label for="product-image">Imagem do Produto</label>
+                    <input type="file" id="product-image" accept="image/*">
+                </div>
+
                     <input type="number" id="product-stock" min="0" required>
                 </div>
                 <div class="form-group">
@@ -269,17 +289,42 @@
         <div id="products-panel" class="tab-content hidden">
             <h2>Produtos Cadastrados</h2>
 
+            <div id="filters-container" style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; background-color: var(--admin-bg-secondary); padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
+
+                <div class="form-group" style="flex: 1 1 150px; margin-bottom: 0;">
+                    <label for="filter-category">Categoria</label>
+                    <select id="filter-category">
+                        <option value="">Todas</option>
+                        </select>
+                </div>
+
+                <div class="form-group" style="flex: 1 1 150px; margin-bottom: 0;">
+                    <label for="filter-stock">Estoque</label>
+                    <select id="filter-stock">
+                        <option value="">Todos</option>
+                        <option value="in_stock">Em estoque</option>
+                        <option value="out_of_stock">Esgotados</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="flex: 1 1 100px; margin-bottom: 0;">
+                    <label for="filter-thickness">Espessura</label>
+                    <input type="text" id="filter-thickness" placeholder="Ex: 1.5">
+                </div>
+
+                <div class="form-group" style="flex: 1 1 100px; margin-bottom: 0;">
+                    <label for="filter-length">Comprimento</label>
+                    <input type="text" id="filter-length" placeholder="Ex: 45">
+                </div>
+
+                <div style="display: flex; gap: 0.5rem; align-self: flex-end;">
+                    <button id="apply-filters-btn" class="btn btn-primary">Filtrar</button>
+                    <button id="clear-filters-btn" class="btn btn-secondary">Limpar</button>
+                </div>
+            </div>
             <div style="margin-bottom: 1rem;">
                 <label for="sort-products">Ordenar por:</label>
                 <select id="sort-products" class="ordenar-button">
-                    <option value="name-asc">Nome (A-Z)</option>
-                    <option value="name-desc">Nome (Z-A)</option>
-                    <option value="category-asc">Categoria (A-Z)</option>
-                    <option value="category-desc">Categoria (Z-A)</option>
-                    <option value="stock-desc">Estoque (maior primeiro)</option>
-                    <option value="stock-asc">Estoque (menor primeiro)</option>
-                    <option value="price-desc">Preço (maior primeiro)</option>
-                    <option value="price-asc">Preço (menor primeiro)</option>
                 </select>
             </div>
 
