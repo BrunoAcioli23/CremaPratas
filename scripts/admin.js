@@ -54,12 +54,51 @@ function showTab(tab) {
     });
 }
 
-async function loadDashboard() {
+async function populateMonthFilter() {
+    const monthSelect = document.getElementById('month-filter');
+    if (!monthSelect) return;
+
     try {
+        const ordersSnapshot = await getDocs(collection(db, "orders"));
+        const months = new Set(); // Usamos um Set para garantir valores únicos
+
+        ordersSnapshot.forEach(doc => {
+            const order = doc.data();
+            if (order.createdAt?.toDate) {
+                const date = order.createdAt.toDate();
+                // Formata a data para "YYYY-MM" (ex: "2025-08")
+                const monthYear = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+                months.add(monthYear);
+            }
+        });
+
+        // Limpa o seletor e adiciona as opções
+        monthSelect.innerHTML = '<option value="all">Todos os Meses</option>';
+        
+        // Ordena os meses do mais recente para o mais antigo
+        const sortedMonths = Array.from(months).sort().reverse();
+
+        sortedMonths.forEach(month => {
+            const option = document.createElement('option');
+            option.value = month;
+            // Formata o texto para "Mês/Ano" (ex: "Agosto/2025")
+            const [year, monthNum] = month.split('-');
+            const monthName = new Date(year, monthNum - 1).toLocaleString('pt-BR', { month: 'long' });
+            option.textContent = `${monthName.charAt(0).toUpperCase() + monthName.slice(1)}/${year}`;
+            monthSelect.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error("Erro ao popular o filtro de meses:", error);
+    }
+}
+
+async function loadDashboard(selectedMonth = 'all') {
+    try {
+        // --- CÁLCULOS DOS CARDS DE PRODUTOS (NÃO MUDAM COM O MÊS) ---
         const productsSnapshot = await getDocs(collection(db, "products"));
         const products = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-        // Cálculos dos Cards
         if (document.getElementById("total-products")) document.getElementById("total-products").textContent = products.length;
         if (document.getElementById("total-outofstock")) document.getElementById("total-outofstock").textContent = products.filter(p => (p.stock || 0) === 0).length;
         const totalStockValue = products.reduce((sum, p) => sum + ((p.stock || 0) * (p.cost || 0)), 0);
@@ -69,11 +108,29 @@ async function loadDashboard() {
         const totalPotentialProfit = totalPotentialSales - totalStockValue;
         if (document.getElementById("total-stock-profit")) document.getElementById("total-stock-profit").textContent = `R$ ${totalPotentialProfit.toFixed(2).replace('.', ',')}`;
 
-        // --- GRÁFICO DE VENDAS (COM DADOS REAIS) ---
-        const ordersQuery = firestoreQuery(collection(db, "orders"), where("status", "==", "finalizado"));
+        // --- LÓGICA DE FILTRO DE PEDIDOS POR MÊS ---
+        let ordersQuery = collection(db, "orders");
+        const constraints = [where("status", "==", "finalizado")]; // Começamos com o filtro de status
+
+        if (selectedMonth !== 'all') {
+            const [year, month] = selectedMonth.split('-').map(Number);
+            // Data de início do mês (ex: 2025-08-01 00:00:00)
+            const startDate = new Date(year, month - 1, 1);
+            // Data de fim do mês (ex: 2025-08-31 23:59:59)
+            const endDate = new Date(year, month, 0, 23, 59, 59);
+
+            // Adiciona os filtros de data à consulta
+            constraints.push(where("createdAt", ">=", startDate));
+            constraints.push(where("createdAt", "<=", endDate));
+        }
+        
+        // Aplica todos os filtros à consulta
+        ordersQuery = firestoreQuery(ordersQuery, ...constraints);
+        
         const ordersSnapshot = await getDocs(ordersQuery);
         const finalizedOrders = ordersSnapshot.docs.map(doc => doc.data());
 
+        // --- CÁLCULOS E GRÁFICOS BASEADOS NOS PEDIDOS FILTRADOS ---
         const totalSoldValue = finalizedOrders.reduce((sum, order) => sum + (order.total || 0), 0);
         const soldElement = document.getElementById("total-sold-value");
         if (soldElement) soldElement.textContent = `R$ ${totalSoldValue.toFixed(2).replace('.', ',')}`;
@@ -107,7 +164,6 @@ async function loadDashboard() {
             });
         }
 
-        // --- GRÁFICO DE PIZZA (VENDAS POR CATEGORIA) ---
         const productCategoryMap = new Map(products.map(p => [p.id, p.category]));
         const salesByCategory = finalizedOrders.reduce((acc, order) => {
             order.items.forEach(item => {
@@ -451,7 +507,7 @@ async function deleteProduct(productId) {
     try {
         await deleteDoc(doc(db, "products", productId));
         showMessage("Produto excluído com sucesso.", "success");
-        loadProducts();
+        applyFiltersAndSort();
         loadDashboard();
     } catch (error) {
         console.error("Erro ao excluir produto:", error);
@@ -509,7 +565,7 @@ if (productForm) {
             productForm.reset();
             document.querySelector('input[name="gender"][value="unissex"]').checked = true;
             editingProductId = null;
-            loadProducts();
+            applyFiltersAndSort();
             loadDashboard();
             showTab('products-panel');
         } catch (error) {
@@ -562,7 +618,7 @@ if (logoutBtn) {
 
 // --- INICIALIZAÇÃO ---
 onAuthStateChanged(auth, async (user) => {
-    if (user) {
+        if (user) {
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists() && userDocSnap.data().role === 'admin') {
@@ -571,10 +627,11 @@ onAuthStateChanged(auth, async (user) => {
             showTab('dashboard');
             populateSortOptions();
             populateCategoryFilter();
+            populateMonthFilter();
             applyFiltersAndSort();
-            loadProducts();
             loadDashboard();
             loadOrders();
+
         } else {
             showMessage('Acesso negado. Você não é um administrador.', 'error');
             signOut(auth);
@@ -716,7 +773,6 @@ onAuthStateChanged(auth, async (user) => {
 });
 });
 
-// Event Listeners MODIFICADOS
 document.getElementById('apply-filters-btn')?.addEventListener('click', applyFiltersAndSort);
 
 // NOVO: Event listener para o seletor de ordenação
@@ -735,4 +791,8 @@ document.getElementById('clear-filters-btn')?.addEventListener('click', () => {
 
     // Recarrega os produtos com a configuração padrão
     applyFiltersAndSort();
+});
+
+document.getElementById('month-filter')?.addEventListener('change', (e) => {
+    loadDashboard(e.target.value);
 });
