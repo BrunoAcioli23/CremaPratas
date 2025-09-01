@@ -391,6 +391,10 @@ async function openEditOrderModal(orderId) {
     const itemsContainer = document.getElementById("edit-order-items");
     const totalInput = document.getElementById("edit-order-total");
 
+    if (!modal) {
+        return showMessage("Erro: Modal de edição não encontrado.", "error");
+    }
+
     try {
         const orderRef = doc(db, "orders", orderId);
         const orderSnap = await getDoc(orderRef);
@@ -398,6 +402,8 @@ async function openEditOrderModal(orderId) {
 
         const order = orderSnap.data();
         modal.classList.remove("hidden");
+        modal.classList.add("visible");
+        
         modal.dataset.orderId = orderId;
         totalInput.value = order.total?.toFixed(2) || 0;
 
@@ -434,6 +440,7 @@ async function saveEditedOrder() {
         await updateDoc(orderRef, { total: newTotal, items: updatedItems });
         showMessage("Pedido atualizado com sucesso!", "success");
         modal.classList.add("hidden");
+        modal.classList.remove("visible");
         loadOrders();
     } catch (err) {
         console.error("Erro ao salvar pedido:", err);
@@ -594,7 +601,9 @@ document.addEventListener('click', (e) => {
     if (e.target.matches('.edit-btn')) editProduct(e.target.dataset.id);
     if (e.target.matches('.delete-btn')) deleteProduct(e.target.dataset.id);
     if (e.target.matches('.delete-order-btn')) deleteOrder(e.target.dataset.id);
-    if (e.target.matches('.edit-order-btn')) openEditOrderModal(e.target.dataset.id);
+    if (e.target.matches('.edit-order-btn')) {
+        openEditOrderModal(e.target.dataset.id);
+    }
     if (e.target.matches('.finalize-btn')) finalizeOrder(e.target.dataset.id);
 });
 
@@ -620,7 +629,9 @@ if (document.getElementById('save-edit-order')) {
 }
 if (document.getElementById('cancel-edit-order')) {
     document.getElementById('cancel-edit-order').addEventListener('click', () => {
-        document.getElementById('edit-order-modal').classList.add('hidden');
+        const modal = document.getElementById('edit-order-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('visible');
     });
 }
 
